@@ -1,28 +1,27 @@
-import logo from "./logo.svg";
+// import logo from "./logo.svg";
+import { height } from "@mui/system";
 import "./App.css";
-import Button from "@mui/material/Button";
+// import Button from "@mui/material/Button";
+import {
+  createTheme,
+  ThemeProvider,
+  unstable_createMuiStrictModeTheme,
+} from "@mui/material/styles";
+
+import Application from "./routes/application";
+import { green, purple } from "@mui/material/colors";
+import { Box } from "@mui/system";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <Button variant="text">Text</Button>
-        <Button variant="contained">Contained</Button>
-        <Button variant="outlined">Outlined</Button>
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Box
+      className="App"
+      style={{
+        height: "100%",
+      }}
+    >
+      <Application />
+    </Box>
   );
 }
 
