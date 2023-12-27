@@ -66,6 +66,10 @@ export default function DatePickerValue(props) {
           :where(.css-dev-only-do-not-override-abqk3i).ant-picker-range .ant-picker-active-bar {
             margin-inline-start: 0px;
           }
+
+          :where(.css-dev-only-do-not-override-1w61365).ant-picker-dropdown {
+            z-index: 10000;
+          }
         `}
       </style>
       <ConfigProvider

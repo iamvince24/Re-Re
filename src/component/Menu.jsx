@@ -19,23 +19,9 @@ import ExpandMore from "@mui/icons-material/ExpandMore";
 import StarBorder from "@mui/icons-material/StarBorder";
 import ArticleOutlinedIcon from "@mui/icons-material/ArticleOutlined";
 import LongMenu from "../component/LongMenu";
-
-import { styled, useTheme } from "@mui/material/styles";
-
-import Drawer from "@mui/material/Drawer";
-import CssBaseline from "@mui/material/CssBaseline";
-import MuiAppBar from "@mui/material/AppBar";
-import Toolbar from "@mui/material/Toolbar";
-
-import Divider from "@mui/material/Divider";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import ListItem from "@mui/material/ListItem";
-
-import ListItemIcon from "@mui/material/ListItemIcon";
-
-import MailIcon from "@mui/icons-material/Mail";
 
 const theme = createTheme({
   palette: {
@@ -70,7 +56,7 @@ function Notebook() {
       <List
         sx={{
           width: "100%",
-          bgcolor: "#F0D2CA",
+          bgcolor: "#F3D9D2",
           color: "#2E4AF3",
           py: "3px",
         }}
@@ -125,23 +111,44 @@ function Notebook() {
   );
 }
 
-const DrawerHeader = styled("div")(({ theme }) => ({
-  width: "100%",
-  display: "flex",
-  alignItems: "center",
-  //   padding: theme.spacing(0, 1),
-  padding: "0px 20px",
-  // necessary for content to be below app bar
-  ...theme.mixins.toolbar,
-  justifyContent: "space-between",
-  backgroundColor: "#F0D2CA",
-}));
-
 export default function Menu(props) {
+  //   const [open, setOpen] = React.useState(false);
+
+  const handleDrawerClose = () => {
+    props.setOpen(false);
+  };
+
   return (
-    <Fragment>
-      <DrawerHeader>
-        <Box sx={{ display: "flex", alignItems: "center", gap: "10px" }}>
+    <Box
+      sx={{
+        height: "100vh",
+        width: "20%",
+        minWidth: "350px",
+        padding: "0px 20px",
+        overflow: "scroll",
+        bgcolor: "#F3D9D2",
+      }}
+    >
+      <Box
+        sx={{
+          width: "100%",
+          height: "70px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          gap: "15px",
+        }}
+      >
+        <Button
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            gap: "15px",
+            "&:hover": {
+              backgroundColor: "rgba(112, 132, 255, 0.15)",
+            },
+          }}
+        >
           <Avatar
             alt="Your Name"
             src=""
@@ -163,85 +170,78 @@ export default function Menu(props) {
           >
             Vince Guo
           </Typography>
-        </Box>
-        <IconButton onClick={props.handleDrawerClose}>
+        </Button>
+        <IconButton onClick={handleDrawerClose} sx={{ marginRight: "-15px" }}>
           {theme.direction === "ltr" ? (
             <ChevronLeftIcon />
           ) : (
             <ChevronRightIcon />
           )}
         </IconButton>
-      </DrawerHeader>
-      <Box
-        sx={{
-          padding: "0px 20px",
-          bgcolor: "#F0D2CA",
-          height: "100%",
-        }}
-      >
-        <ThemeProvider theme={theme}>
-          <ButtonGroup
-            size="small"
-            variant="outlined"
-            sx={{
-              width: "100%",
-              margin: "12px 0px 40px",
-            }}
-          >
-            <Button
-              sx={{
-                width: "100%",
-                color: "#2E4AF3",
-              }}
-              onClick={() => props.setMode(true)}
-            >
-              Notebook
-            </Button>
-            <Button
-              sx={{ width: "100%", color: "#2E4AF3" }}
-              onClick={() => props.setMode(false)}
-            >
-              Gannt
-            </Button>
-          </ButtonGroup>
-        </ThemeProvider>
-        <Box
+      </Box>
+
+      <ThemeProvider theme={theme}>
+        <ButtonGroup
+          size="small"
+          variant="outlined"
           sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            marginBottom: "10px",
+            width: "100%",
           }}
         >
-          <Typography
-            fontSize={"md"}
+          <Button
             sx={{
-              fontWeight: 500,
-              color: "#7084FF",
-              p: "0px 6px 0px 8px",
+              width: "100%",
+              color: "#2E4AF3",
             }}
+            onClick={() => props.setMode(false)}
           >
-            Notebooks
-          </Typography>
-          <IconButton aria-label="delete">
-            <ControlPointIcon fontSize="small" sx={{ color: "#7084FF" }} />
-          </IconButton>
-        </Box>
+            Notebook
+          </Button>
+          <Button
+            sx={{ width: "100%", color: "#2E4AF3" }}
+            onClick={() => props.setMode(true)}
+          >
+            Gannt
+          </Button>
+        </ButtonGroup>
+      </ThemeProvider>
 
-        <Box
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          margin: "10px 0px 25px",
+        }}
+      >
+        <Typography
+          fontSize={"md"}
           sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "flex-start",
-            gap: "10px",
+            fontWeight: 500,
+            color: "#7084FF",
+            p: "0px 6px 0px 8px",
           }}
-        ></Box>
-        <Notebook />
-        <Notebook />
-        <Notebook />
-        <Notebook />
-        <Notebook />
+        >
+          Notebooks
+        </Typography>
+        <IconButton aria-label="delete">
+          <ControlPointIcon fontSize="small" sx={{ color: "#7084FF" }} />
+        </IconButton>
       </Box>
-    </Fragment>
+
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "flex-start",
+          gap: "10px",
+        }}
+      ></Box>
+      <Notebook />
+      <Notebook />
+      <Notebook />
+      <Notebook />
+      <Notebook />
+    </Box>
   );
 }

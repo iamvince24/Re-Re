@@ -20,6 +20,16 @@ export default function CustomSeparator() {
       //   href="/"
       //   onClick={handleClick}
     >
+      Notebooks
+    </Link>,
+    <Link
+      //   underline="hover"
+      underline="none"
+      key="1"
+      color="inherit"
+      //   href="/"
+      //   onClick={handleClick}
+    >
       Data Structure
     </Link>,
     <Link
