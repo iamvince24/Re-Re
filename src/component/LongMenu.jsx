@@ -28,8 +28,8 @@ export default function LongMenu({ onClick }) {
   };
 
   const handleClose = (event) => {
-    setAnchorEl(null);
     event.stopPropagation();
+    setAnchorEl(null);
   };
 
   return (
@@ -73,7 +73,7 @@ export default function LongMenu({ onClick }) {
           // >
           //   {option}
           // </MenuItem>
-          <AlertDialog key={option} />
+          <AlertDialog key={option} handleCloseBtn={handleClose} />
         ))}
       </Menu>
     </div>

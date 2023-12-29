@@ -28,7 +28,7 @@ const theme = createTheme({
   },
 });
 
-export default function AlertDialog() {
+export default function AlertDialog(props) {
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = (event) => {
@@ -39,6 +39,7 @@ export default function AlertDialog() {
   const handleClose = (event) => {
     event.stopPropagation();
     setOpen(false);
+    props.handleCloseBtn(event);
   };
 
   return (

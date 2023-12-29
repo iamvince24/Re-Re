@@ -11,6 +11,7 @@ import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 
 import { useSpring, animated } from "react-spring";
+import GanttChart from "./GanttChart/GanttChart";
 
 const barHeight = 70;
 const drawerWidth = 350;
@@ -29,9 +30,10 @@ export default function GanntMode(props) {
       >
         <Box
           sx={{
-            height: "180px",
-            padding: "0px 20px 20px",
-            borderBottom: "3px solid #F2D4CC",
+            // height: "180px",
+            height: "auto",
+            // padding: "0px 20px 20px",
+            padding: "0px 20px 0px",
           }}
         >
           <Box sx={{ height: "70px", display: "flex", alignItems: "center" }}>
@@ -66,7 +68,8 @@ export default function GanntMode(props) {
           <Box
             sx={{
               textAlign: "left",
-              display: "flex",
+              // display: "flex",
+              display: "none",
               justifyContent: "space-between",
               alignItems: "center",
             }}
@@ -87,6 +90,7 @@ export default function GanntMode(props) {
             </Button>
           </Box>
         </Box>
+        <GanttChart />
       </Box>
     </Fragment>
   );

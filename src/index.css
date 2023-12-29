@@ -23,6 +23,36 @@ code {
     monospace;
 }
 
+:root {
+  /* --cell-height: 24px; */
+  --primary-color: #2e4af3;
+  --background-color: #f3d9d2;
+  --cell-height: 30px;
+  --color-primary-light: #2e4af3;
+  --color-primary-dark: #f3d9d2;
+  --color-tertiary: #ececec;
+  --color-outline: white;
+  --color-SeparationLine: #808080;
+  /* --text-color: #808080;
+  --primary-color: #19d8d3;
+  --secondary-color: #32ebe7;
+  --third-color: #3f3a3a;
+  --dark-color: #44aaa7;
+  --background-color: #f2f2f2;
+  --section-background-color: #ececec;
+  --map-background-color: #f7f7f7;
+  --alert-background-color: #e1fffe;
+  --complementary-color: #d8191e; */
+  /* --text-size-h1: 2.3rem;
+  --text-size-h1-1: 2rem;
+  --text-size-h1-2: 1.5rem;
+  --text-size-h2: 1.3rem;
+  --text-size-h2-1: 1.2rem;
+  --text-size-h3: 1rem;
+  --text-size-h3-1: 0.9rem;
+  --text-size-h4: 0.8rem; */
+}
+
 /* width */
 /* ::-webkit-scrollbar {
   width: 5px;

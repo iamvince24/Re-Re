@@ -76,7 +76,7 @@ function Notebook() {
             <InboxIcon />
           </ImportContactsIcon>
           <ListItemText
-            primary="Inbox"
+            primary="Notebook"
             primaryTypographyProps={{ fontWeight: 700, pt: "2px" }}
           />
           <LongMenu />
@@ -99,7 +99,7 @@ function Notebook() {
                 <StarBorder />
               </ArticleOutlinedIcon>
               <ListItemText
-                primary="Starred"
+                primary="Chapter 1"
                 primaryTypographyProps={{ pt: "1px" }}
               />
               <LongMenu />

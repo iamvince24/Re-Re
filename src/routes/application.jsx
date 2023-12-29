@@ -9,7 +9,9 @@ import { styled } from "@mui/material/styles";
 import MuiAppBar from "@mui/material/AppBar";
 import Drawer from "@mui/material/Drawer";
 
-const drawerWidth = 350;
+import { useMediaQuery } from "@mui/material";
+
+let drawerWidth = 350;
 
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== "open",
@@ -29,8 +31,11 @@ const AppBar = styled(MuiAppBar, {
 }));
 
 export default function Application() {
+  const isSmallScreen = useMediaQuery("(max-width:767px)");
   const [mode, setMode] = useState(true);
-  const [open, setOpen] = React.useState(true);
+  const [open, setOpen] = React.useState(isSmallScreen ? false : true);
+  drawerWidth = isSmallScreen ? window.innerWidth : 350;
+  // console.log(window.innerWidth);
 
   return (
     <Fragment>
@@ -52,14 +57,17 @@ export default function Application() {
         <Drawer
           sx={{
             width: drawerWidth,
+            // width: isSmallScreen ? "100vw" : drawerWidth,
             flexShrink: 0,
             border: "none",
             "& .MuiDrawer-paper": {
               width: drawerWidth,
+              // width: isSmallScreen ? "100vw" : drawerWidth,
               boxSizing: "border-box",
             },
           }}
-          variant="persistent"
+          // variant="persistent"
+          variant={isSmallScreen ? "temporary" : "persistent"}
           anchor="left"
           open={open}
         >
