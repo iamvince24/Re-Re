@@ -21,7 +21,7 @@ export default function BasicTextFields(props) {
           // variant="standard"
           value={props.value}
           onChange={props.onChange}
-          sx={{ height: "100%" }}
+          sx={{ height: "100%", minWidth: "155px" }}
           size="small"
         />
       </Box>

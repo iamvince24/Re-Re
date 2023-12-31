@@ -1,4 +1,4 @@
-import { Fragment, useState } from "react";
+import { Fragment, useState, useEffect } from "react";
 import * as React from "react";
 import { Box } from "@mui/system";
 import Divider from "@mui/material/Divider";
@@ -8,8 +8,12 @@ import GanntMode from "../component/GanntMode";
 import { styled } from "@mui/material/styles";
 import MuiAppBar from "@mui/material/AppBar";
 import Drawer from "@mui/material/Drawer";
+import { client } from "../utils/fetchWrapper";
 
 import { useMediaQuery } from "@mui/material";
+
+import database from "../firebase.js"; // 確保路徑正確
+import { getDatabase, ref, get, onValue } from "firebase/database";
 
 let drawerWidth = 350;
 
@@ -32,10 +36,81 @@ const AppBar = styled(MuiAppBar, {
 
 export default function Application() {
   const isSmallScreen = useMediaQuery("(max-width:767px)");
-  const [mode, setMode] = useState(true);
-  const [open, setOpen] = React.useState(isSmallScreen ? false : true);
+  const [mode, setMode] = useState(false);
+  const [open, setOpen] = useState(isSmallScreen ? false : true);
+  const [notebookData, setNotebookData] = useState([
+    {
+      id: 1,
+      name: "Loading",
+      start: "2022-01-02",
+      end: "2022-01-08",
+      Chapters: [
+        {
+          id: "1",
+          name: "Loading",
+          start: "2022-01-02",
+          end: "2022-01-08",
+          content: "",
+        },
+      ],
+    },
+  ]);
+
+  const [notebookDisplay, setNotebookDisplay] = useState({
+    notebookId: 1,
+    chapterId: 1,
+  });
   drawerWidth = isSmallScreen ? window.innerWidth : 350;
-  // console.log(window.innerWidth);
+
+  // useEffect(() => {
+  //   client("notebookData.json").then(
+  //     (data) => {
+  //       setNotebookData(data?.notebooks);
+  //     },
+  //     (error) => {
+  //       console.error("Error: ", error);
+  //     }
+  //   );
+  // }, []);
+
+  // useEffect(() => {
+  //   const db = getDatabase();
+  //   const starCountRef = ref(db, "notebooks");
+  //   onValue(starCountRef, (snapshot) => {
+  //     const data = snapshot.val();
+  //     setNotebookData(data);
+  //   });
+  // }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const db = getDatabase();
+        const starCountRef = ref(db, "notebooks");
+        const snapshot = await get(starCountRef);
+        const data = snapshot.val();
+        setNotebookData(data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  // useEffect(() => {
+  //   const notebookListRef = ref(database, "notebooks");
+  //   get(notebookListRef).then(
+  //     (snapshot) => {
+  //       // 使用 get 方法
+  //       const data = snapshot.val();
+  //       setNotebookData(data);
+  //     },
+  //     (error) => {
+  //       console.error("Error: ", error);
+  //     }
+  //   );
+  // }, []);
 
   return (
     <Fragment>
@@ -71,7 +146,13 @@ export default function Application() {
           anchor="left"
           open={open}
         >
-          <Menu setMode={setMode} setOpen={setOpen} sx={{ border: "none" }} />
+          <Menu
+            sx={{ border: "none" }}
+            setMode={setMode}
+            setOpen={setOpen}
+            notebookData={notebookData}
+            setNotebookDisplay={setNotebookDisplay}
+          />
         </Drawer>
 
         <AppBar
@@ -82,7 +163,12 @@ export default function Application() {
           {mode ? (
             <GanntMode setOpen={setOpen} open={open} />
           ) : (
-            <NotebookMode setOpen={setOpen} open={open} />
+            <NotebookMode
+              setOpen={setOpen}
+              open={open}
+              notebookData={notebookData}
+              notebookDisplay={notebookDisplay}
+            />
           )}
         </AppBar>
       </Box>

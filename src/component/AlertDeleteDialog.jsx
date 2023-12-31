@@ -1,4 +1,5 @@
 import * as React from "react";
+import { Fragment, useState } from "react";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -7,6 +8,9 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import { Typography, colors } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+
+import { getDatabase, set, remove, update, ref } from "firebase/database";
+import database from "../firebase";
 
 const theme = createTheme({
   palette: {
@@ -28,8 +32,8 @@ const theme = createTheme({
   },
 });
 
-export default function AlertDialog(props) {
-  const [open, setOpen] = React.useState(false);
+export default function AlertDeleteDialog(props) {
+  const [open, setOpen] = useState(false);
 
   const handleClickOpen = (event) => {
     event.stopPropagation();
@@ -42,13 +46,30 @@ export default function AlertDialog(props) {
     props.handleCloseBtn(event);
   };
 
+  const handleDelete = () => {
+    const db = getDatabase();
+    const postData = null;
+
+    // 要刪除數據的路徑
+    let dataPath = "";
+    if (props.chapterId !== undefined) {
+      dataPath = `/notebooks/${props.id - 1}/Chapters/${props.chapterId - 1}`;
+    } else {
+      dataPath = `/notebooks/${props.id - 1}`;
+    }
+    // const newPostKey = id;
+    const updates = {};
+    updates[dataPath] = postData;
+    return update(ref(db), updates);
+  };
+
   return (
-    <React.Fragment>
+    <Fragment>
       <ThemeProvider theme={theme}>
         <Button
           variant="outlined"
           onClick={handleClickOpen}
-          sx={{ mx: "10px", px: "10px", width: "85%" }}
+          sx={{ mx: "10px", px: "10px", width: "85%", marginBottom: "5px" }}
         >
           Delete
         </Button>
@@ -62,17 +83,17 @@ export default function AlertDialog(props) {
         <DialogTitle id="alert-dialog-title">{"Delete Notebook?"}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            Let Google help apps determine location. This means sending
-            anonymous location data to Google, even when no apps are running.
+            After deleting the notebook, it will never be restored. Please
+            confirm to delete the notebook.
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Disagree</Button>
-          <Button onClick={handleClose} autoFocus>
+          <Button onClick={handleClose}>Cancel</Button>
+          <Button onClick={handleDelete} autoFocus>
             Agree
           </Button>
         </DialogActions>
       </Dialog>
-    </React.Fragment>
+    </Fragment>
   );
 }

@@ -6,6 +6,7 @@ export default function Settings({ children }) {
         #settings {
           display: flex;
           flex-wrap: nowrap;
+          justify-content: space-between;
           /* padding: 1rem 0; */
           padding: 0px 20px 20px;
           margin-bottom: 20px;

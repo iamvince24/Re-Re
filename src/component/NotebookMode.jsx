@@ -1,4 +1,4 @@
-import { Fragment } from "react";
+import { Fragment, useState, useEffect } from "react";
 import * as React from "react";
 import { Box } from "@mui/system";
 import Typography from "@mui/joy/Typography";
@@ -9,11 +9,26 @@ import DatePickerValue from "./DatePickerValue";
 import TextareaRef from "./TextareaRef";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
+import styled from "styled-components";
 
 import { useSpring, animated } from "react-spring";
 
 const barHeight = 70;
 const drawerWidth = 350;
+const toolBarHeight = 180;
+
+const TextArea = styled("textarea")(() => ({
+  resize: "none",
+  all: "unset",
+  width: "100%",
+  height: `calc(100vh - ${toolBarHeight}px)`,
+  textAlign: "left",
+  padding: "20px 25px",
+  color: "#2E4AF3",
+  overflow: "scroll",
+  letterSpacing: "0.5px",
+  lineHeight: "22px",
+}));
 
 export default function NotebookMode(props) {
   const handleDrawerOpen = () => {
@@ -61,7 +76,10 @@ export default function NotebookMode(props) {
               marginTop: "-12.5px",
             }}
           >
-            Tree Algorithm
+            {
+              props?.notebookData[props.notebookDisplay.notebookId - 1]
+                .Chapters[props.notebookDisplay.chapterId - 1].name
+            }
           </Typography>
           <Box
             sx={{
@@ -87,8 +105,15 @@ export default function NotebookMode(props) {
             </Button>
           </Box>
         </Box>
-
-        <TextareaRef />
+        <TextareaRef
+          testContent={
+            props?.notebookData[props.notebookDisplay.notebookId - 1].Chapters[
+              props.notebookDisplay.chapterId - 1
+            ].content
+          }
+          notebookData={props.notebookData}
+          notebookDisplay={props.notebookDisplay}
+        />
       </Box>
     </Fragment>
   );

@@ -27,12 +27,23 @@ code {
   /* --cell-height: 24px; */
   --primary-color: #2e4af3;
   --background-color: #f3d9d2;
-  --cell-height: 30px;
-  --color-primary-light: #2e4af3;
-  --color-primary-dark: #f3d9d2;
+  --cell-height: 40px;
+  --color-taskDuration-left: #2e4af3;
+  --color-taskDuration-right: #ebf4f5;
   --color-tertiary: #ececec;
   --color-outline: white;
   --color-SeparationLine: #808080;
+  --color-Divider: #f2d4cc;
+  --color-Gantt-Outline: #fefcfc;
+  --color-Tasks-Border-Bottom: #fefcfc;
+  --color-TimeTable-Border: #fefcfc;
+  /* --color-TimeTable-TaskRow-BorderRight: #fefcfc; */
+  /* --color-Holiday: #f0d2ca; */
+  --color-Holiday: rgb(240, 210, 202, 0.7);
+  --border-radius: 5px;
+  --width-Days: 60px;
+  --width-drawerWidth: 350px;
+
   /* --text-color: #808080;
   --primary-color: #19d8d3;
   --secondary-color: #32ebe7;
@@ -72,4 +83,10 @@ code {
 /* Handle on hover */
 /* ::-webkit-scrollbar-thumb:hover {
   background: rgba(46, 74, 243, 0.9);
+} */
+
+/* .taskRow:after:hover {
+  background: rgb(255, 255, 255, 0.5) !important;
+  position: relative;
+  z-index: 30000;
 } */

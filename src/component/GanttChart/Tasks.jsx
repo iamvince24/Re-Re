@@ -46,8 +46,8 @@ export default function Tasks({ tasks, setTasks, setTaskDurations }) {
   return (
     <Fragment>
       <div id="gantt-grid-container__tasks">
-        <div className="gantt-task-row"></div>
-        <div className="gantt-task-row"></div>
+        <div className="gantt-task-row-empty"></div>
+        <div className="gantt-task-row-empty"></div>
 
         {tasks &&
           tasks.map((tsk, i) => (
@@ -69,26 +69,34 @@ export default function Tasks({ tasks, setTasks, setTaskDurations }) {
         {`
           #gantt-grid-container__tasks {
             // outline: 0.5px solid var(--color-outline);
+            border-right: 1px solid var(--color-Tasks-Border-Bottom);
+          }
+
+          .gantt-task-row-empty {
+            display: flex;
+            text-align: center;
+            height: var(--cell-height);
+            border-bottom: 1px solid var(--color-Tasks-Border-Bottom);
           }
 
           .gantt-task-row {
             display: flex;
-            // outline: 0.5px solid var(--color-outline);
             text-align: center;
             height: var(--cell-height);
+            border-bottom: 0.5px solid var(--color-Tasks-Border-Bottom);
+            // outline: 0.5px solid var(--color-outline);
             // height: 20px;
             // border: none;
             // border-bottom: 0.3px solid white;
-            border-bottom: 0.5px solid white;
           }
 
-          input {
-            width: 127px;
-            padding-left: 10px;
-            border: none;
-            outline: none;
-            background: none;
-          }
+          // input {
+          //   width: 127px;
+          //   padding-left: 10px;
+          //   border: none;
+          //   outline: none;
+          //   background: none;
+          // }
 
           // button {
           //   line-height: 0px;

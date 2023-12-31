@@ -1,4 +1,4 @@
-import { Fragment } from "react";
+import { Fragment, useState, useEffect } from "react";
 import * as React from "react";
 import { Box, Container } from "@mui/system";
 import Avatar from "@mui/joy/Avatar";
@@ -8,20 +8,12 @@ import Button from "@mui/material/Button";
 import { IconButton } from "@mui/material";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import ImportContactsIcon from "@mui/icons-material/ImportContacts";
-import List from "@mui/material/List";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemText from "@mui/material/ListItemText";
-import Collapse from "@mui/material/Collapse";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import ExpandLess from "@mui/icons-material/ExpandLess";
-import ExpandMore from "@mui/icons-material/ExpandMore";
-import StarBorder from "@mui/icons-material/StarBorder";
-import ArticleOutlinedIcon from "@mui/icons-material/ArticleOutlined";
-import LongMenu from "../component/LongMenu";
-import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+
+import { getDatabase, ref, set, child, push, update } from "firebase/database";
+
+import Notebook from "./notebook";
 
 const theme = createTheme({
   palette: {
@@ -43,80 +35,48 @@ const theme = createTheme({
   },
 });
 
-function Notebook() {
-  const [open, setOpen] = React.useState(true);
+function writeNewPost(id) {
+  const db = getDatabase();
 
-  const handleClick = (event) => {
-    event.stopPropagation();
-    setOpen(!open);
+  // A post entry.
+  const postData = {
+    id: id,
+    name: "Default Notebook",
+    start: "2022-01-01",
+    end: "2022-01-10",
+    Chapters: [
+      {
+        id: `${id + "-1"}`,
+        name: "Default Chapter",
+        start: "2022-01-01",
+        end: "2022-01-10",
+        content: "Lorem ipsum",
+      },
+    ],
   };
 
-  return (
-    <Fragment>
-      <List
-        sx={{
-          width: "100%",
-          bgcolor: "#F3D9D2",
-          color: "#2E4AF3",
-          py: "3px",
-        }}
-        component="nav"
-        aria-labelledby="nested-list-subheader"
-      >
-        <ListItemButton
-          onClick={handleClick}
-          sx={{
-            display: "flex",
-            alignContent: "center",
-            padding: "0px 0px 0px 8px",
-          }}
-        >
-          {open ? <ExpandLess /> : <ExpandMore />}
-          <ImportContactsIcon sx={{ color: "#2E4AF3", mx: "10px" }}>
-            <InboxIcon />
-          </ImportContactsIcon>
-          <ListItemText
-            primary="Notebook"
-            primaryTypographyProps={{ fontWeight: 700, pt: "2px" }}
-          />
-          <LongMenu />
-        </ListItemButton>
-        <Collapse in={open} timeout="auto" unmountOnExit>
-          <List component="div" disablePadding>
-            <ListItemButton
-              sx={{
-                py: 0.25,
-                pr: 0,
-                ml: 6,
-              }}
-            >
-              <ArticleOutlinedIcon
-                sx={{
-                  color: "#2E4AF3",
-                  marginRight: "10px",
-                }}
-              >
-                <StarBorder />
-              </ArticleOutlinedIcon>
-              <ListItemText
-                primary="Chapter 1"
-                primaryTypographyProps={{ pt: "1px" }}
-              />
-              <LongMenu />
-            </ListItemButton>
-          </List>
-        </Collapse>
-      </List>
-    </Fragment>
-  );
+  // Get a key for a new Post.
+  const newPostKey = id;
+  const updates = {};
+  updates["/notebooks/" + newPostKey] = postData;
+
+  return update(ref(db), updates);
 }
 
 export default function Menu(props) {
-  //   const [open, setOpen] = React.useState(false);
+  const [notebookList, setNotebookList] = useState(props.notebookData);
 
   const handleDrawerClose = () => {
     props.setOpen(false);
   };
+
+  const handleAddNotebook = () => {
+    writeNewPost(props.notebookData.length);
+  };
+
+  useEffect(() => {
+    setNotebookList(props.notebookData);
+  }, [props.notebookData]);
 
   return (
     <Box
@@ -225,23 +185,27 @@ export default function Menu(props) {
           Notebooks
         </Typography>
         <IconButton aria-label="delete">
-          <ControlPointIcon fontSize="small" sx={{ color: "#7084FF" }} />
+          <ControlPointIcon
+            fontSize="small"
+            sx={{ color: "#7084FF" }}
+            onClick={handleAddNotebook}
+          />
         </IconButton>
       </Box>
 
-      <Box
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "flex-start",
-          gap: "10px",
-        }}
-      ></Box>
-      <Notebook />
-      <Notebook />
-      <Notebook />
-      <Notebook />
-      <Notebook />
+      <Box sx={{ marginBottom: "50px" }}>
+        {notebookList
+          ? notebookList.map((notebook, index) => {
+              return (
+                <Notebook
+                  notebook={notebook}
+                  key={`${notebook.id}-${index}`}
+                  setNotebookDisplay={props.setNotebookDisplay}
+                />
+              );
+            })
+          : null}
+      </Box>
     </Box>
   );
 }

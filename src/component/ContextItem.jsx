@@ -3,12 +3,12 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
+import { Box } from "@mui/system";
 
 import FormDialog from "./FormDialog";
 
 export default function ContextItem(props) {
   const [contextMenu, setContextMenu] = React.useState(null);
-  const [isEditing, setIsEditing] = React.useState(false); // 新增編輯狀態
 
   const handleContextMenu = (event) => {
     event.preventDefault();
@@ -26,30 +26,26 @@ export default function ContextItem(props) {
     setContextMenu(null);
   };
 
-  const handleRenameClick = () => {
-    setIsEditing(true);
-    handleClose();
-  };
-
-  const handleBlur = () => {
-    setIsEditing(false);
-  };
+  // const handleRenameClick = () => {
+  //   setIsEditing(true);
+  //   handleClose();
+  // };
 
   return (
-    <div onContextMenu={handleContextMenu} style={{ cursor: "context-menu" }}>
-      {isEditing ? (
-        <TextField
-          value={props.value}
-          onChange={(e) => props.onChange(e)}
-          onBlur={handleBlur}
-          autoFocus
-          sx={{ bgcolor: "red" }}
-        />
-      ) : (
-        <Typography sx={{ flexWrap: "nowrap", paddingLeft: "10px" }}>
-          {props.value}
-        </Typography>
-      )}
+    <Box
+      onContextMenu={handleContextMenu}
+      style={{ cursor: "context-menu" }}
+      sx={{ display: "flex", alignItems: "center" }}
+    >
+      <Typography
+        sx={{
+          flexWrap: "nowrap",
+          paddingLeft: "10px",
+          color: "var(--primary-color)",
+        }}
+      >
+        {props.value}
+      </Typography>
       <Menu
         open={contextMenu !== null}
         onClose={handleClose}
@@ -67,6 +63,6 @@ export default function ContextItem(props) {
         />
         <MenuItem onClick={props.handleDelete(props.num)}>Delete</MenuItem>
       </Menu>
-    </div>
+    </Box>
   );
 }

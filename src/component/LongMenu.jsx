@@ -4,32 +4,28 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 
-import AlertDialog from "../component/AlertDialog";
+import AlertDeleteDialog from "./AlertDeleteDialog";
+import AlertRenameDialog from "./AlertRenameDialog";
+import FormDialog from "./FormDialog";
 
-const options = ["Delete"];
+const options = ["Rename", "Delete"];
 
 const ITEM_HEIGHT = 48;
 
-export default function LongMenu({ onClick }) {
+export default function LongMenu(props) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
-  //   const handleClick = (event) => {
-  //     setAnchorEl(event.currentTarget);
-  //   };
-  //   const handleClose = () => {
-  //     setAnchorEl(null);
-  //   };
+
+  // console.log(props.id);
+
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
     event.stopPropagation();
-    if (onClick) {
-      onClick(event);
-    }
   };
 
   const handleClose = (event) => {
-    event.stopPropagation();
     setAnchorEl(null);
+    event.stopPropagation();
   };
 
   return (
@@ -53,6 +49,7 @@ export default function LongMenu({ onClick }) {
         anchorEl={anchorEl}
         open={open}
         onClose={handleClose}
+        onClick={handleClose}
         PaperProps={{
           style: {
             maxHeight: ITEM_HEIGHT * 4.5,
@@ -65,16 +62,18 @@ export default function LongMenu({ onClick }) {
           alignContent: "center",
         }}
       >
-        {options.map((option) => (
-          // <MenuItem
-          //   key={option}
-          //   selected={option === "Pyxis"}
-          //   onClick={handleClose}
-          // >
-          //   {option}
-          // </MenuItem>
-          <AlertDialog key={option} handleCloseBtn={handleClose} />
-        ))}
+        <FormDialog
+          handleClose={handleClose}
+          handleCloseBtn={handleClose}
+          id={props.id}
+          chapterId={props.chapterId}
+          notebook={props.notebook}
+        />
+        <AlertDeleteDialog
+          handleCloseBtn={handleClose}
+          id={props.id}
+          chapterId={props.chapterId}
+        />
       </Menu>
     </div>
   );

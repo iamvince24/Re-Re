@@ -4,15 +4,14 @@ export default function Grid({ children }) {
       {children}
       <style>{`
         #gantt-grid-container {
+          height: calc(100% - 240px);
           display: grid;
-          // grid-template-columns: 150px 1fr;
-          grid-template-columns: 200px 1fr;
-          // outline: 2px solid var(--color-outline);
+          grid-template-columns: 175px 1fr;
           border-radius: 5px;
-          // border-radius: 10px;
-          border: 2px solid white;
-          // box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.05);
+          outline: 2px solid var(--color-Gantt-Outline);
+          box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.05);
           margin: 0px 20px ;
+          overflow: scroll;
         }
       `}</style>
     </div>
