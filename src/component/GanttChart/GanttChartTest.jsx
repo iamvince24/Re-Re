@@ -21,11 +21,13 @@ import Brightness1Icon from "@mui/icons-material/Brightness1";
 
 import ColorMenu from "../ColorMenu";
 
-export default function TimeTable({
+export default function GanttChartTest({
   timeRange,
   tasks,
+  setTasks,
   taskDurations,
   setTaskDurations,
+  notebookData,
 }) {
   const [contextMenu, setContextMenu] = useState(null);
   const handleContextMenu = (event, taskId, formattedDate) => {
@@ -116,10 +118,12 @@ export default function TimeTable({
         </span>
       </div>
     );
+
     // create day and week rows
     const numDays = getDaysInMonth(month.getFullYear(), month.getMonth() + 1);
     const currYear = month.getFullYear();
     const currMonth = month.getMonth() + 1;
+
     for (let j = 1; j <= numDays; j++) {
       const currentDate = new Date(currYear, currMonth - 1, j);
       const dayOfWeek = currentDate.getDay();
@@ -141,18 +145,20 @@ export default function TimeTable({
         </div>
       );
     }
+
     dayRows.push(
       <div
         key={i}
         style={{
           ...ganttTimePeriod,
           outline: "none",
-          color: "var(  --primary-color)",
+          color: "var(--primary-color)",
         }}
       >
         {dayRow}
       </div>
     );
+
     dayRow = [];
     month.setMonth(month.getMonth() + 1);
   }
@@ -162,10 +168,19 @@ export default function TimeTable({
     setTaskDurationElDraggedId(taskDurationId);
   }
 
+  //   console.log(notebookData);
+
+  let notebookRow = [];
+  let notebookTitleRow = [];
+  let chapterRows = [];
+  let chapterRow = [];
+
   // create task rows
-  if (tasks) {
-    tasks.forEach((task) => {
+  if (notebookData) {
+    notebookData?.map((notebook) => {
       let mnth = new Date(startMonth);
+      //   taskRow.push(<div>{task.name}</div>);
+
       for (let i = 0; i < numMonths; i++) {
         const curYear = mnth.getFullYear();
         const curMonth = mnth.getMonth() + 1;
@@ -173,15 +188,17 @@ export default function TimeTable({
         for (let j = 1; j <= numDays; j++) {
           // color weekend cells differently
           const dayOfTheWeek = getDayOfWeek(curYear, curMonth - 1, j - 1);
+
           // add task and date data attributes
           const formattedDate = createFormattedDateFromStr(
             curYear,
             curMonth,
             j
           );
+
           taskRow.push(
             <div
-              key={`${task.id}-${j}`}
+              key={`${notebook.id}-${j}`}
               style={{
                 ...ganttTimePeriodCell,
                 borderRight:
@@ -189,12 +206,12 @@ export default function TimeTable({
                 backgroundColor:
                   dayOfTheWeek === "S" ? "var(--color-Holiday)" : "none",
               }}
-              data-task={task.id}
+              data-task={notebook.id}
               data-date={formattedDate}
-              onDrop={onTaskDurationDrop}
+              //   onDrop={onTaskDurationDrop}
             >
-              {taskDurations.map((el, i) => {
-                if (el.task === task.id && el.start === formattedDate) {
+              {notebookData.map((el, i) => {
+                if (el.id === notebook.id && el.start === formattedDate) {
                   return (
                     <div
                       className="taskDuration"
@@ -213,7 +230,7 @@ export default function TimeTable({
                       }}
                       onKeyDown={(e) => deleteTaskDuration(e, el.id)}
                       onContextMenu={(e) =>
-                        handleContextMenu(e, task.id, formattedDate)
+                        handleContextMenu(e, notebook.id, formattedDate)
                       }
                     ></div>
                   );
@@ -224,7 +241,7 @@ export default function TimeTable({
         }
         taskRows.push(
           <div
-            key={`${i}-${task.id}`}
+            key={`${i}-${notebook.id}`}
             className="taskRow"
             style={{
               ...ganttTimePeriod,
@@ -233,9 +250,85 @@ export default function TimeTable({
             {taskRow}
           </div>
         );
+
         taskRow = [];
         mnth.setMonth(mnth.getMonth() + 1);
       }
+
+      //   taskRow = [];
+      notebook.Chapters?.map((chapter) => {
+        let chapterMnth = new Date(startMonth);
+        for (let i = 0; i < numMonths; i++) {
+          const curYear = chapterMnth.getFullYear();
+          const curMonth = chapterMnth.getMonth() + 1;
+          const numDays = getDaysInMonth(curYear, curMonth);
+          for (let j = 1; j <= numDays; j++) {
+            // color weekend cells differently
+            const dayOfTheWeek = getDayOfWeek(curYear, curMonth - 1, j - 1);
+            // add task and date data attributes
+            const formattedDateInner = createFormattedDateFromStr(
+              curYear,
+              curMonth,
+              j
+            );
+            taskRow.push(
+              <div
+                key={`${chapter.id}-${j}`}
+                style={{
+                  ...ganttTimePeriodCell,
+                  borderRight:
+                    "0.5px solid var(--color-TimeTable-TaskRow-BorderRight)",
+                  backgroundColor:
+                    dayOfTheWeek === "S" ? "var(--color-Holiday)" : "none",
+                }}
+                data-task={chapter.id}
+                data-date={formattedDateInner}
+                //   onDrop={onTaskDurationDrop}
+              >
+                {notebook.Chapters?.map((el, i) => {
+                  if (el.id === chapter.id && el.start === formattedDateInner) {
+                    return (
+                      <div
+                        className="taskDuration"
+                        key={`${i}-${el.id}`}
+                        draggable="true"
+                        tabIndex="0"
+                        onDragStart={() => handleDragStart(el.id)}
+                        style={{
+                          ...taskDuration,
+                          width: `calc(${dayDiff(
+                            el.start,
+                            el.end
+                          )} * 100% - 1px)`,
+                          opacity:
+                            taskDurationElDraggedId === el.id ? "0.5" : "1",
+                        }}
+                        onKeyDown={(e) => deleteTaskDuration(e, el.id)}
+                        onContextMenu={(e) =>
+                          handleContextMenu(e, chapter.id, formattedDateInner)
+                        }
+                      ></div>
+                    );
+                  }
+                })}
+              </div>
+            );
+          }
+          taskRows.push(
+            <div
+              key={`${i}-${chapter.id}`}
+              className="taskRow"
+              style={{
+                ...ganttTimePeriod,
+              }}
+            >
+              {taskRow}
+            </div>
+          );
+          taskRow = [];
+          chapterMnth.setMonth(chapterMnth.getMonth() + 1);
+        }
+      });
     });
   }
 
@@ -285,7 +378,10 @@ export default function TimeTable({
     <Fragment>
       <div
         id="gantt-grid-container__time"
-        style={{ gridTemplateColumns: `repeat(${numMonths}, 1fr)` }}
+        style={{
+          gridTemplateColumns: `repeat(${numMonths}, 1fr)`,
+          alignContent: "start",
+        }}
       >
         {monthRows}
         {dayRows}
@@ -296,7 +392,7 @@ export default function TimeTable({
             display: "grid",
             gridTemplateColumns: `repeat(${numMonths}, 1fr)`,
           }}
-          onDragOver={(e) => e.preventDefault()}
+          //   onDragOver={(e) => e.preventDefault()}
         >
           {taskRows}
         </div>

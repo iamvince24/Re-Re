@@ -15,9 +15,9 @@ const TextArea = styled.textarea.attrs(() => ({
   width: 100%;
   height: calc(100vh - ${toolBarHeight}px);
   text-align: left;
-  padding: 20px 25px;
+  /* padding: 20px 25px; */
   color: #2e4af3;
-  overflow: scroll;
+  overflow-y: scroll;
   letter-spacing: 0.5px;
   line-height: 22px;
 `;
@@ -25,14 +25,9 @@ const TextArea = styled.textarea.attrs(() => ({
 export default function TextareaRef(props) {
   return (
     <TextArea
-      value={
-        props?.notebookData[props.notebookDisplay.notebookId - 1].Chapters[
-          props.notebookDisplay.chapterId - 1
-        ].content
-      }
-      onChange={(e) => {
-        // Add your logic to handle textarea changes here
-      }}
+      // value={props.testContent}
+      value={props.markdownText}
+      onChange={props.handleInputChange}
     />
   );
 }

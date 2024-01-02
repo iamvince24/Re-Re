@@ -23,10 +23,12 @@ import ArticleOutlinedIcon from "@mui/icons-material/ArticleOutlined";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import Notebook from "../notebook";
+import NotebookListGantt from "./NotebookListGantt";
 
 import ContextItem from "../ContextItem";
 
-export default function Tasks({
+export default function TasksTest({
   tasks,
   setTasks,
   setTaskDurations,
@@ -82,20 +84,12 @@ export default function Tasks({
       <div id="gantt-grid-container__tasks">
         <div className="gantt-task-row-empty"></div>
         <div className="gantt-task-row-empty"></div>
-        {tasks &&
-          tasks.map((tsk, i) => (
-            <div key={`${i}-${tsk.id}-${tsk.name}`} className="gantt-task-row">
-              <ContextItem
-                data-task-id={tsk.id}
-                num={tsk.id}
-                value={tsk.name}
-                // onChange={(e) => onChange(e, i)}
-                onChange={onChange}
-                ref={(el) => (inputRef.current[i] = el)}
-                i={i}
-                handleDelete={handleDelete}
-              />
-            </div>
+        {notebookData &&
+          notebookData.map((notebook, index) => (
+            <NotebookListGantt
+              notebook={notebook}
+              key={`${notebook.id}-${index}`}
+            />
           ))}
       </div>
       <style>

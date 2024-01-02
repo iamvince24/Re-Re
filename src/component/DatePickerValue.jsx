@@ -1,18 +1,65 @@
 import * as React from "react";
+import { Fragment, useState, useEffect } from "react";
 import dayjs from "dayjs";
 import { ConfigProvider, Space } from "antd";
 
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import { DatePicker } from "antd";
-import { Fragment } from "react";
+
+import {
+  getDatabase,
+  set,
+  remove,
+  update,
+  ref,
+  push,
+  child,
+} from "firebase/database";
 dayjs.extend(customParseFormat);
 
 const { RangePicker } = DatePicker;
-const dateFormat = "YYYY/MM/DD";
+const dateFormat = "YYYY-MM-DD";
 
 export default function DatePickerValue(props) {
-  const [startvalue, setStartValue] = React.useState(dayjs("2022-04-17"));
-  const [endvalue, setEndValue] = React.useState(dayjs("2022-04-17"));
+  const { notebookData, notebookDisplay } = props;
+  const chapter =
+    notebookData[notebookDisplay.notebookId - 1].Chapters[
+      notebookDisplay.chapterId - 1
+    ];
+
+  const [startvalue, setStartValue] = useState(dayjs(chapter.start));
+
+  const [endvalue, setEndValue] = useState(dayjs(chapter.end));
+
+  function handleNewDate(startValue, endValue) {
+    setStartValue(startValue);
+    setEndValue(endValue);
+    handleUpdateNewDate(
+      dayjs(startValue).format(dateFormat),
+      dayjs(endValue).format(dateFormat)
+    );
+  }
+
+  const handleUpdateNewDate = (startValue, endValue) => {
+    const db = getDatabase();
+    const postData = {
+      ...chapter,
+      start: startValue,
+      end: endValue,
+    };
+    const dataPath = `/notebooks/${
+      props.notebookDisplay.notebookId - 1
+    }/Chapters/${props.notebookDisplay.chapterId - 1}`;
+    const updates = {};
+    updates[dataPath] = postData;
+
+    return update(ref(db), updates);
+  };
+
+  useEffect(() => {
+    setStartValue(dayjs(chapter.start));
+    setEndValue(dayjs(chapter.end));
+  }, [notebookData, notebookDisplay]);
 
   return (
     <Fragment>
@@ -101,15 +148,22 @@ export default function DatePickerValue(props) {
             //   dayjs("2015/01/01", dateFormat),
             //   dayjs("2015/01/01", dateFormat),
             // ]}
-            defaultValue={[
-              dayjs(startvalue, dateFormat),
-              dayjs(endvalue, dateFormat),
-            ]}
+            // defaultValue={[
+            //   dayjs(startvalue, dateFormat),
+            //   dayjs(endvalue, dateFormat),
+            // ]}
+            // defaultValue={[dayjs(startvalue), dayjs(endvalue)]}
+            value={[dayjs(startvalue), dayjs(endvalue)]}
             format={dateFormat}
             className="custom-range-picker"
             onChange={(newValue) => {
-              setStartValue(newValue);
-              setEndValue(newValue);
+              // console.log(newValue);
+              const [startValue, endValue] = newValue;
+              // console.log(startValue);
+              // console.log(endValue);
+              // setStartValue(startValue);
+              // setEndValue(endValue);
+              handleNewDate(startValue, endValue);
             }}
           />
         </Space>

@@ -36,20 +36,20 @@ const AppBar = styled(MuiAppBar, {
 
 export default function Application() {
   const isSmallScreen = useMediaQuery("(max-width:767px)");
-  const [mode, setMode] = useState(false);
+  const [mode, setMode] = useState(true);
   const [open, setOpen] = useState(isSmallScreen ? false : true);
   const [notebookData, setNotebookData] = useState([
     {
       id: 1,
       name: "Loading",
-      start: "2022-01-02",
-      end: "2022-01-08",
+      start: "YYYY-MM-DD",
+      end: "YYYY-MM-DD",
       Chapters: [
         {
           id: "1",
           name: "Loading",
-          start: "2022-01-02",
-          end: "2022-01-08",
+          start: "YYYY-MM-DD",
+          end: "YYYY-MM-DD",
           content: "",
         },
       ],
@@ -161,13 +161,20 @@ export default function Application() {
           sx={{ bgcolor: "#F3D9D2", borderLeft: "3px solid #F0D2CA" }}
         >
           {mode ? (
-            <GanntMode setOpen={setOpen} open={open} />
+            <GanntMode
+              setOpen={setOpen}
+              open={open}
+              notebookData={notebookData}
+              notebookDisplay={notebookDisplay}
+              mode={mode}
+            />
           ) : (
             <NotebookMode
               setOpen={setOpen}
               open={open}
               notebookData={notebookData}
               notebookDisplay={notebookDisplay}
+              mode={mode}
             />
           )}
         </AppBar>

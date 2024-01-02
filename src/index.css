@@ -41,7 +41,8 @@ code {
   /* --color-Holiday: #f0d2ca; */
   --color-Holiday: rgb(240, 210, 202, 0.7);
   --border-radius: 5px;
-  --width-Days: 60px;
+  /* --width-Days: 60px; */
+  --width-Days: 30px;
   --width-drawerWidth: 350px;
 
   /* --text-color: #808080;
@@ -89,4 +90,49 @@ code {
   background: rgb(255, 255, 255, 0.5) !important;
   position: relative;
   z-index: 30000;
+} */
+
+h1 {
+  margin: 10px 0px 5px;
+  font-weight: 900;
+}
+
+h2 {
+  margin: 10px 0px 5px;
+  font-weight: bold;
+}
+
+p {
+  line-height: 22px;
+  margin: 2.5px 0px;
+}
+
+img {
+  width: 100%;
+  max-width: 800px;
+}
+
+a {
+  /* color: #f3304d; */
+  color: var(--primary-color);
+  /* background-image: linear-gradient(
+    90deg,
+    var(--color-taskDuration-left) 10%,
+    var(--color-taskDuration-right) 50%,
+    var(--color-taskDuration-left) 100%
+  );
+  color: rgb(137, 218, 227);
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  -webkit-box-decoration-break: clone; */
+}
+
+/* @media (min-width: 1300) and (max-width: 1023px)  {
+
+} */
+
+/* @media (min-width: 1300) and (max-width: 2000) {
+  img {
+    width: 80%;
+  }
 } */

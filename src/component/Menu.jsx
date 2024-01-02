@@ -161,7 +161,7 @@ export default function Menu(props) {
             sx={{ width: "100%", color: "#2E4AF3" }}
             onClick={() => props.setMode(true)}
           >
-            Gannt
+            Gantt
           </Button>
         </ButtonGroup>
       </ThemeProvider>
@@ -195,7 +195,7 @@ export default function Menu(props) {
 
       <Box sx={{ marginBottom: "50px" }}>
         {notebookList
-          ? notebookList.map((notebook, index) => {
+          ? notebookList?.map((notebook, index) => {
               return (
                 <Notebook
                   notebook={notebook}

@@ -1,4 +1,5 @@
 import * as React from "react";
+import { Fragment } from "react";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
 import Typography from "@mui/material/Typography";
 import Link from "@mui/material/Link";
@@ -10,37 +11,37 @@ function handleClick(event) {
   console.info("You clicked a breadcrumb.");
 }
 
-export default function CustomSeparator() {
+export default function CustomSeparator(props) {
+  const { notebookData, notebookDisplay, mode } = props;
+
   const breadcrumbs = [
     <Link
       //   underline="hover"
       underline="none"
       key="1"
       color="inherit"
-      //   href="/"
-      //   onClick={handleClick}
     >
-      Notebooks
+      All
     </Link>,
     <Link
       //   underline="hover"
       underline="none"
       key="1"
       color="inherit"
-      //   href="/"
-      //   onClick={handleClick}
     >
-      Data Structure
+      {notebookData[notebookDisplay.notebookId - 1].name}
     </Link>,
     <Link
       //   underline="hover"
       underline="none"
       key="2"
       color="inherit"
-      //   href="/material-ui/getting-started/installation/"
-      //   onClick={handleClick}
     >
-      Tree Algorithm
+      {
+        notebookData[notebookDisplay.notebookId - 1].Chapters[
+          notebookDisplay.chapterId - 1
+        ].name
+      }
     </Link>,
   ];
 
@@ -50,7 +51,49 @@ export default function CustomSeparator() {
         separator={<NavigateNextIcon fontSize="small" />}
         aria-label="breadcrumb"
       >
-        {breadcrumbs}
+        {mode ? (
+          <Link
+            //   underline="hover"
+            underline="none"
+            key="1"
+            color="inherit"
+          >
+            All Notebooks Gantt
+          </Link>
+        ) : (
+          <Link
+            //   underline="hover"
+            underline="none"
+            key="1"
+            color="inherit"
+          >
+            All
+          </Link>
+        )}
+        {mode ? null : (
+          <Link
+            //   underline="hover"
+            underline="none"
+            key="1"
+            color="inherit"
+          >
+            {notebookData[notebookDisplay.notebookId - 1].name}
+          </Link>
+        )}
+        {mode ? null : (
+          <Link
+            //   underline="hover"
+            underline="none"
+            key="2"
+            color="inherit"
+          >
+            {
+              notebookData[notebookDisplay.notebookId - 1].Chapters[
+                notebookDisplay.chapterId - 1
+              ].name
+            }
+          </Link>
+        )}
       </Breadcrumbs>
     </Stack>
   );

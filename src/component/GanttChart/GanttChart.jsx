@@ -11,8 +11,11 @@ import Tasks from "./Tasks";
 import TimeRange from "./TimeRange";
 import TimeTable from "./TimeTable";
 import Divider from "@mui/material/Divider";
+import GanttChartTest from "./GanttChartTest";
+import TasksTest from "./TasksTest";
 
 export default function GanttChart(props) {
+  const { notebookData, notebookDisplay } = props;
   const [tasks, setTasks] = useState(null);
   const [taskDurations, setTaskDurations] = useState(null);
   const [timeRange, setTimeRange] = useState({
@@ -47,17 +50,22 @@ export default function GanttChart(props) {
         <AddTaskDuration tasks={tasks} setTaskDurations={setTaskDurations} />
         <TimeRange timeRange={timeRange} setTimeRange={setTimeRange} />
       </Settings>
+
       <Grid>
-        <Tasks
+        <TasksTest
           tasks={tasks}
           setTasks={setTasks}
           setTaskDurations={setTaskDurations}
+          notebookData={props.notebookData}
+          notebookDisplay={props.notebookDisplay}
         />
-        <TimeTable
+        <GanttChartTest
           timeRange={timeRange}
           tasks={tasks}
+          setTasks={setTasks}
           taskDurations={taskDurations}
           setTaskDurations={setTaskDurations}
+          notebookData={notebookData}
         />
       </Grid>
     </Fragment>

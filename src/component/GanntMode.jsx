@@ -49,7 +49,11 @@ export default function GanntMode(props) {
             >
               <MenuIcon sx={{ color: "#2E4AF3" }} />
             </IconButton>
-            <CustomSeparator />
+            <CustomSeparator
+              notebookData={props.notebookData}
+              notebookDisplay={props.notebookDisplay}
+              mode={props.mode}
+            />
           </Box>
           <Typography
             gutterBottom
@@ -63,7 +67,7 @@ export default function GanntMode(props) {
               marginTop: "-12.5px",
             }}
           >
-            GanntMode
+            GanttMode
           </Typography>
           <Box
             sx={{
@@ -74,7 +78,10 @@ export default function GanntMode(props) {
               alignItems: "center",
             }}
           >
-            <DatePickerValue />
+            <DatePickerValue
+              notebookData={props.notebookData}
+              notebookDisplay={props.notebookDisplay}
+            />
             <Button
               sx={{
                 background: "rgb(112, 132, 255, 0.1)",
@@ -90,7 +97,11 @@ export default function GanntMode(props) {
             </Button>
           </Box>
         </Box>
-        <GanttChart />
+
+        <GanttChart
+          notebookData={props.notebookData}
+          notebookDisplay={props.notebookDisplay}
+        />
       </Box>
     </Fragment>
   );
