@@ -1,5 +1,4 @@
 import { useState, Fragment } from "react";
-
 import Button from "@mui/material/Button";
 import {
   monthDiff,
@@ -175,16 +174,15 @@ export default function GanttChartTest({
   let chapterRows = [];
   let chapterRow = [];
 
-  // create task rows
+  // create notebook rows
   if (notebookData) {
     notebookData?.map((notebook) => {
       let mnth = new Date(startMonth);
-      //   taskRow.push(<div>{task.name}</div>);
-
       for (let i = 0; i < numMonths; i++) {
         const curYear = mnth.getFullYear();
         const curMonth = mnth.getMonth() + 1;
         const numDays = getDaysInMonth(curYear, curMonth);
+
         for (let j = 1; j <= numDays; j++) {
           // color weekend cells differently
           const dayOfTheWeek = getDayOfWeek(curYear, curMonth - 1, j - 1);
@@ -255,7 +253,6 @@ export default function GanttChartTest({
         mnth.setMonth(mnth.getMonth() + 1);
       }
 
-      //   taskRow = [];
       notebook.Chapters?.map((chapter) => {
         let chapterMnth = new Date(startMonth);
         for (let i = 0; i < numMonths; i++) {
