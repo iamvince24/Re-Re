@@ -1,38 +1,15 @@
 import * as React from "react";
 import { Fragment } from "react";
 import { useEffect, useRef } from "react";
-import LongMenu from "../LongMenu";
-import { Box, Container } from "@mui/system";
-import Avatar from "@mui/joy/Avatar";
-import Typography from "@mui/joy/Typography";
-import ControlPointIcon from "@mui/icons-material/ControlPoint";
-import Button from "@mui/material/Button";
-import { IconButton } from "@mui/material";
-import ButtonGroup from "@mui/material/ButtonGroup";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
-import ImportContactsIcon from "@mui/icons-material/ImportContacts";
-import List from "@mui/material/List";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemText from "@mui/material/ListItemText";
-import Collapse from "@mui/material/Collapse";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import ExpandLess from "@mui/icons-material/ExpandLess";
-import ExpandMore from "@mui/icons-material/ExpandMore";
-import StarBorder from "@mui/icons-material/StarBorder";
-import ArticleOutlinedIcon from "@mui/icons-material/ArticleOutlined";
-import MenuIcon from "@mui/icons-material/Menu";
-import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import Notebook from "../notebook";
 import NotebookListGantt from "./NotebookListGantt";
-
-import ContextItem from "../ContextItem";
 
 export default function TasksTest({
   tasks,
   setTasks,
   setTaskDurations,
   notebookData,
+  ganttUnfoldList,
+  setGanttUnfoldList,
 }) {
   const [open, setOpen] = React.useState(true);
 
@@ -63,7 +40,6 @@ export default function TasksTest({
   function onChange(value, num) {
     // const { value } = e.target;
     // const idNum = parseInt(e.target.getAttribute("data-task-id"));
-    // const value = ;
     const idNum = num;
 
     let newTasks = tasks.filter((task) => task.id !== idNum);
@@ -89,6 +65,8 @@ export default function TasksTest({
             <NotebookListGantt
               notebook={notebook}
               key={`${notebook.id}-${index}`}
+              ganttUnfoldList={ganttUnfoldList}
+              setGanttUnfoldList={setGanttUnfoldList}
             />
           ))}
       </div>

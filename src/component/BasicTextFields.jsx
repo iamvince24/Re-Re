@@ -7,7 +7,7 @@ export default function BasicTextFields(props) {
   return (
     <Fragment>
       <Box
-        component="form"
+        // component="form"
         sx={{
           "& > :not(style)": { m: 1, width: "100%" },
         }}
@@ -27,9 +27,9 @@ export default function BasicTextFields(props) {
       </Box>
       <style>
         {`
-      .MuiInputBase-root MuiOutlinedInput-root .MuiInputBase-colorPrimary .MuiInputBase-formControl .css-9ddj71-MuiInputBase-root-MuiOutlinedInput-root {
-       background: red;
-      }
+        .MuiInputBase-root MuiOutlinedInput-root .MuiInputBase-colorPrimary .MuiInputBase-formControl .css-9ddj71-MuiInputBase-root-MuiOutlinedInput-root {
+        background: red;
+        }
       `}
       </style>
     </Fragment>

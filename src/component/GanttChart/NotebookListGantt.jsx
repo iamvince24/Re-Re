@@ -44,12 +44,39 @@ const theme = createTheme({
 });
 
 export default function NotebookListGantt(props) {
-  const [open, setOpen] = useState(true);
+  const { ganttUnfoldList, setGanttUnfoldList } = props;
+  const unfold = ganttUnfoldList.list.includes(props.notebook.id);
+  const [open, setOpen] = useState(false);
+  // const [open, setOpen] = useState(true);
+  // console.log(open);
 
   const handleClick = (event) => {
     event.stopPropagation();
-    setOpen(!open);
+    // setOpen(!open);
+    handleGanttUnfoldAction(open);
   };
+
+  const handleGanttUnfoldAction = (open) => {
+    if (open) {
+      setGanttUnfoldList((prevList) => ({
+        ...prevList,
+        list: prevList.list.filter((value) => value !== props.notebook.id),
+      }));
+    } else {
+      setGanttUnfoldList((prevList) => ({
+        ...prevList,
+        list: [...prevList.list, props.notebook.id],
+      }));
+    }
+  };
+
+  useEffect(() => {
+    if (unfold) {
+      setOpen(true);
+    } else {
+      setOpen(false);
+    }
+  }, [unfold]);
 
   return (
     <Fragment>

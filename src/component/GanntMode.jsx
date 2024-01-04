@@ -34,6 +34,8 @@ export default function GanntMode(props) {
             height: "auto",
             // padding: "0px 20px 20px",
             padding: "0px 20px 0px",
+            borderBottom: "3px solid #F2D4CC",
+            marginBottom: "25px",
           }}
         >
           <Box sx={{ height: "70px", display: "flex", alignItems: "center" }}>

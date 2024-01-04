@@ -38,19 +38,31 @@ const theme = createTheme({
 function writeNewPost(id) {
   const db = getDatabase();
 
+  const currentDate = new Date();
+  const year = currentDate.getFullYear();
+  const month = currentDate.getMonth() + 1;
+  const day = currentDate.getDate();
+
+  const defaultStartDate = `${year}-${month < 10 ? "0" + month : month}-${
+    day < 10 ? "0" + day : day
+  }`;
+  const defaultEndDate = `${year}-${month < 10 ? "0" + month : month}-${
+    day < 10 ? "0" + day : day + 1
+  }`;
+
   // A post entry.
   const postData = {
     id: id,
     name: "Default Notebook",
-    start: "2022-01-01",
-    end: "2022-01-10",
+    start: defaultStartDate,
+    end: defaultEndDate,
     Chapters: [
       {
-        id: `${id + "-1"}`,
+        id: id,
         name: "Default Chapter",
-        start: "2022-01-01",
-        end: "2022-01-10",
-        content: "Lorem ipsum",
+        start: defaultStartDate,
+        end: defaultEndDate,
+        content: "Type something",
       },
     ],
   };
@@ -71,7 +83,7 @@ export default function Menu(props) {
   };
 
   const handleAddNotebook = () => {
-    writeNewPost(props.notebookData.length);
+    writeNewPost(props.notebookData[props.notebookData.length - 1].id + 1);
   };
 
   useEffect(() => {
@@ -184,12 +196,8 @@ export default function Menu(props) {
         >
           Notebooks
         </Typography>
-        <IconButton aria-label="delete">
-          <ControlPointIcon
-            fontSize="small"
-            sx={{ color: "#7084FF" }}
-            onClick={handleAddNotebook}
-          />
+        <IconButton aria-label="delete" onClick={handleAddNotebook}>
+          <ControlPointIcon fontSize="small" sx={{ color: "#7084FF" }} />
         </IconButton>
       </Box>
 

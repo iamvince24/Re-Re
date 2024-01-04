@@ -13,6 +13,7 @@ import TimeTable from "./TimeTable";
 import Divider from "@mui/material/Divider";
 import GanttChartTest from "./GanttChartTest";
 import TasksTest from "./TasksTest";
+import { v4 as uuidv4 } from "uuid";
 
 export default function GanttChart(props) {
   const { notebookData, notebookDisplay } = props;
@@ -20,10 +21,14 @@ export default function GanttChart(props) {
   const [taskDurations, setTaskDurations] = useState(null);
   const [timeRange, setTimeRange] = useState({
     fromSelectMonth: 0,
-    fromSelectYear: "2022",
-    toSelectMonth: 5,
-    toSelectYear: "2022",
+    fromSelectYear: "2024",
+    toSelectMonth: 11,
+    toSelectYear: "2024",
   });
+  const [ganttUnfoldList, setGanttUnfoldList] = useState({
+    list: [],
+  });
+  // console.log(ganttUnfoldList);
 
   useEffect(() => {
     client("data.json").then(
@@ -40,32 +45,46 @@ export default function GanttChart(props) {
   return (
     <Fragment>
       <Settings>
-        <AddTask tasks={tasks} setTasks={setTasks} />
+        <AddTask key={uuidv4()} tasks={tasks} setTasks={setTasks} />
         <Divider
+          key={uuidv4()}
           orientation="vertical"
           variant="middle"
           flexItem
           sx={{ margin: "0px 15px" }}
         />
-        <AddTaskDuration tasks={tasks} setTaskDurations={setTaskDurations} />
-        <TimeRange timeRange={timeRange} setTimeRange={setTimeRange} />
+        <AddTaskDuration
+          key={uuidv4()}
+          tasks={tasks}
+          setTaskDurations={setTaskDurations}
+        />
+        <TimeRange
+          key={uuidv4()}
+          timeRange={timeRange}
+          setTimeRange={setTimeRange}
+        />
       </Settings>
 
       <Grid>
         <TasksTest
+          key={uuidv4()}
           tasks={tasks}
           setTasks={setTasks}
           setTaskDurations={setTaskDurations}
           notebookData={props.notebookData}
           notebookDisplay={props.notebookDisplay}
+          ganttUnfoldList={ganttUnfoldList}
+          setGanttUnfoldList={setGanttUnfoldList}
         />
         <GanttChartTest
+          key={uuidv4()}
           timeRange={timeRange}
           tasks={tasks}
           setTasks={setTasks}
           taskDurations={taskDurations}
           setTaskDurations={setTaskDurations}
           notebookData={notebookData}
+          ganttUnfoldList={ganttUnfoldList}
         />
       </Grid>
     </Fragment>

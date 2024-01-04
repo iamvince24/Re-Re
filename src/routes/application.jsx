@@ -37,6 +37,7 @@ const AppBar = styled(MuiAppBar, {
 export default function Application() {
   const isSmallScreen = useMediaQuery("(max-width:767px)");
   const [mode, setMode] = useState(true);
+  // const [open, setOpen] = useState(false);
   const [open, setOpen] = useState(isSmallScreen ? false : true);
   const [notebookData, setNotebookData] = useState([
     {

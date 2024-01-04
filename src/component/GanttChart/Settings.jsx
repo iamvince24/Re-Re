@@ -4,7 +4,8 @@ export default function Settings({ children }) {
       {children}
       <style jsx>{`
         #settings {
-          display: flex;
+          /* display: flex; */
+          display: none;
           flex-wrap: nowrap;
           justify-content: space-between;
           /* padding: 1rem 0; */
