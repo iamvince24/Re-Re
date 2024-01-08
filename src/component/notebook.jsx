@@ -77,7 +77,11 @@ export default function Notebook(props) {
           </ImportContactsIcon>
           <ListItemText
             primary={props.notebook?.name}
-            primaryTypographyProps={{ fontWeight: 700, pt: "2px" }}
+            primaryTypographyProps={{
+              fontWeight: 700,
+              pt: "2px",
+              overflow: "hidden",
+            }}
           />
           <LongMenu id={props.notebook.id} notebook={props.notebook} />
         </ListItemButton>

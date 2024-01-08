@@ -7,7 +7,6 @@ export default function Grid({ children }) {
           height: auto;
           max-height: calc(100% - 240px);
           display: grid;
-          // grid-template-columns: 175px 1fr;
           grid-template-columns: 225px 1fr;
           border-radius: 5px;
           outline: 2px solid var(--color-Gantt-Outline);

@@ -16,39 +16,6 @@ export default function TasksTest({
   const inputRef = useRef([]);
   const indexRef = useRef(null);
 
-  const handleClick = (event) => {
-    event.stopPropagation();
-    setOpen(!open);
-  };
-
-  const handleDelete = (id) => (e) => {
-    // console.log(e.target.getAttribute("data-task-id"));
-    const idNum = id;
-    // const newTasks = tasks.filter((task) => task.id !== idNum);
-    const newTasks = tasks.filter((task) => task.id !== idNum);
-    // update state (if data on backend - make API request to update data)
-    setTasks(newTasks);
-    setTaskDurations((prevState) => {
-      // delete any taskDurations associated with the task
-      const newTaskDurations = prevState.filter(
-        (taskDuration) => taskDuration.task !== idNum
-      );
-      return newTaskDurations;
-    });
-  };
-
-  function onChange(value, num) {
-    // const { value } = e.target;
-    // const idNum = parseInt(e.target.getAttribute("data-task-id"));
-    const idNum = num;
-
-    let newTasks = tasks.filter((task) => task.id !== idNum);
-    newTasks.push({ id: idNum, name: value });
-    newTasks = newTasks.sort((a, b) => a.id - b.id);
-    // update state (if data on backend - make API request to update data)
-    setTasks(newTasks);
-  }
-
   useEffect(() => {
     if (inputRef.current.length && indexRef.current >= 0) {
       inputRef?.current[indexRef.current]?.focus();
@@ -75,6 +42,7 @@ export default function TasksTest({
           #gantt-grid-container__tasks {
             // outline: 0.5px solid var(--color-outline);
             border-right: 1px solid var(--color-Tasks-Border-Bottom);
+            overflow: auto;
           }
 
           .gantt-task-row-empty {

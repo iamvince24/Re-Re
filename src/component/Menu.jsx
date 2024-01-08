@@ -1,5 +1,6 @@
 import { Fragment, useState, useEffect } from "react";
 import * as React from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { Box, Container } from "@mui/system";
 import Avatar from "@mui/joy/Avatar";
 import Typography from "@mui/joy/Typography";
@@ -14,6 +15,8 @@ import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import { getDatabase, ref, set, child, push, update } from "firebase/database";
 
 import Notebook from "./notebook";
+import { logout, auth } from "../firebase";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 const theme = createTheme({
   palette: {
@@ -35,7 +38,7 @@ const theme = createTheme({
   },
 });
 
-function writeNewPost(id) {
+function writeNewPost(uid, id) {
   const db = getDatabase();
 
   const currentDate = new Date();
@@ -70,25 +73,42 @@ function writeNewPost(id) {
   // Get a key for a new Post.
   const newPostKey = id;
   const updates = {};
-  updates["/notebooks/" + newPostKey] = postData;
+  updates["/users/" + uid + "/notebooks/" + newPostKey] = postData;
 
   return update(ref(db), updates);
 }
 
 export default function Menu(props) {
   const [notebookList, setNotebookList] = useState(props.notebookData);
+  const [user, loading, error] = useAuthState(auth);
+  const navigate = useNavigate();
 
   const handleDrawerClose = () => {
     props.setOpen(false);
   };
 
   const handleAddNotebook = () => {
-    writeNewPost(props.notebookData[props.notebookData.length - 1].id + 1);
+    writeNewPost(
+      props.uid,
+      props.notebookData[props.notebookData.length - 1].id + 1
+    );
+  };
+
+  const handleLogOut = () => {
+    logout();
+    window.localStorage.removeItem("uid");
+    navigate("/");
   };
 
   useEffect(() => {
     setNotebookList(props.notebookData);
   }, [props.notebookData]);
+
+  // useEffect(() => {
+  //   if (!user) {
+  //     navigate("/");
+  //   }
+  // }, [user]);
 
   return (
     <Box
@@ -214,6 +234,9 @@ export default function Menu(props) {
             })
           : null}
       </Box>
+      <Button sx={{ width: "100%", color: "#2E4AF3" }} onClick={handleLogOut}>
+        Log out
+      </Button>
     </Box>
   );
 }

@@ -107,7 +107,7 @@ export default function NotebookListGantt(props) {
           </ImportContactsIcon>
           <ListItemText
             primary={props.notebook?.name}
-            primaryTypographyProps={{ fontWeight: 700 }}
+            primaryTypographyProps={{ fontWeight: 700, whiteSpace: "nowrap" }}
           />
         </ListItemButton>
         {props.notebook?.Chapters

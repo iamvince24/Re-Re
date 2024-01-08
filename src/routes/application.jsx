@@ -1,7 +1,6 @@
 import { Fragment, useState, useEffect } from "react";
 import * as React from "react";
 import { Box } from "@mui/system";
-import Divider from "@mui/material/Divider";
 import Menu from "../component/Menu";
 import NotebookMode from "../component/NotebookMode";
 import GanntMode from "../component/GanntMode";
@@ -12,8 +11,10 @@ import { client } from "../utils/fetchWrapper";
 
 import { useMediaQuery } from "@mui/material";
 
-import database from "../firebase.js"; // 確保路徑正確
 import { getDatabase, ref, get, onValue } from "firebase/database";
+
+import { logout, auth } from "../firebase";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 let drawerWidth = 350;
 
@@ -61,7 +62,9 @@ export default function Application() {
     notebookId: 1,
     chapterId: 1,
   });
+
   drawerWidth = isSmallScreen ? window.innerWidth : 350;
+  const [user, loading, error] = useAuthState(auth);
 
   // useEffect(() => {
   //   client("notebookData.json").then(
@@ -83,13 +86,37 @@ export default function Application() {
   //   });
   // }, []);
 
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const db = getDatabase();
+  //       const starCountRef = ref(db, "notebooks");
+  //       const snapshot = await get(starCountRef);
+  //       const data = snapshot.val();
+  //       setNotebookData(data);
+  //     } catch (error) {
+  //       console.error("Error fetching data:", error);
+  //     }
+  //   };
+
+  //   fetchData();
+  // }, []);
+
+  const uid = window.localStorage.getItem("uid");
+  console.log(uid);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
         const db = getDatabase();
-        const starCountRef = ref(db, "notebooks");
+        const starCountRef = await ref(db, `users/${uid}/notebooks`);
+        // onValue(starCountRef, (snapshot) => {
+        //   const data = snapshot.val();
+        //   setNotebookData(data);
+        // });
         const snapshot = await get(starCountRef);
         const data = snapshot.val();
+        console.log(data);
         setNotebookData(data);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -153,6 +180,7 @@ export default function Application() {
             setOpen={setOpen}
             notebookData={notebookData}
             setNotebookDisplay={setNotebookDisplay}
+            uid={uid}
           />
         </Drawer>
 

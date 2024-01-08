@@ -14,36 +14,36 @@ function handleClick(event) {
 export default function CustomSeparator(props) {
   const { notebookData, notebookDisplay, mode } = props;
 
-  const breadcrumbs = [
-    <Link
-      //   underline="hover"
-      underline="none"
-      key="1"
-      color="inherit"
-    >
-      All
-    </Link>,
-    <Link
-      //   underline="hover"
-      underline="none"
-      key="1"
-      color="inherit"
-    >
-      {notebookData[notebookDisplay.notebookId - 1].name}
-    </Link>,
-    <Link
-      //   underline="hover"
-      underline="none"
-      key="2"
-      color="inherit"
-    >
-      {
-        notebookData[notebookDisplay.notebookId - 1].Chapters[
-          notebookDisplay.chapterId - 1
-        ].name
-      }
-    </Link>,
-  ];
+  // const breadcrumbs = [
+  //   <Link
+  //     //   underline="hover"
+  //     underline="none"
+  //     key="1"
+  //     color="inherit"
+  //   >
+  //     All
+  //   </Link>,
+  //   <Link
+  //     //   underline="hover"
+  //     underline="none"
+  //     key="1"
+  //     color="inherit"
+  //   >
+  //     {notebookData[notebookDisplay.notebookId - 1].name}
+  //   </Link>,
+  //   <Link
+  //     //   underline="hover"
+  //     underline="none"
+  //     key="2"
+  //     color="inherit"
+  //   >
+  //     {
+  //       notebookData[notebookDisplay.notebookId - 1].Chapters[
+  //         notebookDisplay.chapterId - 1
+  //       ].name
+  //     }
+  //   </Link>,
+  // ];
 
   return (
     <Stack spacing={2}>
