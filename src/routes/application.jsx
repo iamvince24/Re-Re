@@ -37,7 +37,7 @@ const AppBar = styled(MuiAppBar, {
 
 export default function Application() {
   const isSmallScreen = useMediaQuery("(max-width:767px)");
-  const [mode, setMode] = useState(true);
+  const [mode, setMode] = useState(false);
   // const [open, setOpen] = useState(false);
   const [open, setOpen] = useState(isSmallScreen ? false : true);
   const [notebookData, setNotebookData] = useState([
@@ -103,21 +103,20 @@ export default function Application() {
   // }, []);
 
   const uid = window.localStorage.getItem("uid");
-  console.log(uid);
+  // console.log(uid);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const db = getDatabase();
         const starCountRef = await ref(db, `users/${uid}/notebooks`);
-        // onValue(starCountRef, (snapshot) => {
-        //   const data = snapshot.val();
-        //   setNotebookData(data);
-        // });
-        const snapshot = await get(starCountRef);
-        const data = snapshot.val();
-        console.log(data);
-        setNotebookData(data);
+        onValue(starCountRef, (snapshot) => {
+          const data = snapshot.val();
+          setNotebookData(data);
+        });
+        // const snapshot = await get(starCountRef);
+        // const data = snapshot.val();
+        // setNotebookData(data);
       } catch (error) {
         console.error("Error fetching data:", error);
       }

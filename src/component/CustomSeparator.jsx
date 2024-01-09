@@ -14,6 +14,18 @@ function handleClick(event) {
 export default function CustomSeparator(props) {
   const { notebookData, notebookDisplay, mode } = props;
 
+  const targetNotebook = notebookData.filter((notebook) => {
+    if (notebook.id === notebookDisplay.notebookId) {
+      return notebook;
+    }
+  });
+
+  const chapter = targetNotebook[0].Chapters.filter((chapter) => {
+    if (chapter.id === notebookDisplay.chapterId) {
+      return chapter;
+    }
+  });
+
   // const breadcrumbs = [
   //   <Link
   //     //   underline="hover"
@@ -77,7 +89,10 @@ export default function CustomSeparator(props) {
             key="1"
             color="inherit"
           >
-            {notebookData[notebookDisplay.notebookId - 1].name}
+            {
+              // notebookData[notebookDisplay.notebookId - 1].name
+              targetNotebook[0]?.name
+            }
           </Link>
         )}
         {mode ? null : (
@@ -88,9 +103,10 @@ export default function CustomSeparator(props) {
             color="inherit"
           >
             {
-              notebookData[notebookDisplay.notebookId - 1].Chapters[
-                notebookDisplay.chapterId - 1
-              ].name
+              // notebookData[notebookDisplay.notebookId - 1].Chapters[
+              //   notebookDisplay.chapterId - 1
+              // ].name
+              chapter[0]?.name
             }
           </Link>
         )}

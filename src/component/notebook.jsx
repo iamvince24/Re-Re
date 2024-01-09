@@ -83,7 +83,13 @@ export default function Notebook(props) {
               overflow: "hidden",
             }}
           />
-          <LongMenu id={props.notebook.id} notebook={props.notebook} />
+          <LongMenu
+            addChapter={true}
+            id={props.notebook.id}
+            notebook={props.notebook}
+            notebookData={props.notebookData}
+            deleteMessage={props.notebook.name}
+          />
         </ListItemButton>
         {props.notebook?.Chapters
           ? props.notebook?.Chapters.map((chapters, index) => {
@@ -124,6 +130,8 @@ export default function Notebook(props) {
                         id={props.notebook.id}
                         chapterId={chapters.id}
                         notebook={props.notebook}
+                        notebookData={props.notebookData}
+                        deleteMessage={chapters.name}
                       />
                     </ListItemButton>
                   </List>

@@ -62,33 +62,53 @@ export default function FormDialog(props) {
     setNewName("");
   };
 
-  // console.log(props.chapterId);
-  // console.log(props.id);
-  // console.log(props.notebook.Chapters[props.chapterId - 1]);
-
   const handleRename = (name) => {
     const db = getDatabase();
+
+    const uid = window.localStorage.getItem("uid");
+    let notebookIdForFunc = 0;
+    let chapterIdForFunc = 0;
+
+    for (var i = 0; i < props.notebookData.length; i++) {
+      if (props.notebookData[i]?.id === props.id) {
+        notebookIdForFunc = i;
+        if (props.chapterId !== undefined) {
+          for (var j = 0; j < props.notebookData[i].Chapters.length; j++) {
+            if (
+              props.notebookData[notebookIdForFunc].Chapters[j]?.id ===
+              props.chapterId
+            ) {
+              chapterIdForFunc = j;
+              break;
+            }
+          }
+        } else {
+          break;
+        }
+      }
+    }
 
     // A post entry.
     let postData = {};
     if (props.chapterId !== undefined) {
       postData = {
-        ...props.notebook.Chapters[props.chapterId - 1],
+        ...props.notebookData[notebookIdForFunc].Chapters[chapterIdForFunc],
         name: name,
       };
     } else {
       postData = {
-        ...props.notebook,
+        ...props.notebookData[notebookIdForFunc],
         name: name,
       };
     }
 
     let dataPath = "";
     if (props.chapterId !== undefined) {
-      dataPath = `/notebooks/${props.id - 1}/Chapters/${props.chapterId - 1}`;
+      dataPath = `/users/${uid}/notebooks/${notebookIdForFunc}/Chapters/${chapterIdForFunc}`;
     } else {
-      dataPath = `/notebooks/${props.id - 1}`;
+      dataPath = `/users/${uid}/notebooks/${notebookIdForFunc}`;
     }
+
     const updates = {};
     updates[dataPath] = postData;
 
@@ -125,7 +145,7 @@ export default function FormDialog(props) {
               Confirm
             </Button>
           ) : null}
-          {props.id ? (
+          {props?.id ? (
             <Button
               onClick={() => {
                 handleRename(newName);

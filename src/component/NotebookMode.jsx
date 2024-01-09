@@ -31,14 +31,10 @@ const TextArea = styled("text")(() => ({
   resize: "none",
   all: "unset",
   width: "100%",
-  // width: "500px",
   height: `calc(100vh - ${toolBarHeight}px)`,
   textAlign: "left",
-  // padding: "20px 25px",
   color: "#2E4AF3",
-  // overflow: "auto",
   letterSpacing: "0.5px",
-  // lineHeight: "22px",
   lineHeight: "30px",
   display: "flex",
   flexDirection: "column",
@@ -47,11 +43,46 @@ const TextArea = styled("text")(() => ({
 
 export default function NotebookMode(props) {
   const [toggleNotebookDisplay, setToggleNotebookDisplay] = useState(false);
-  const [markdownText, setMarkdownText] = useState(
-    props?.notebookData[props.notebookDisplay.notebookId - 1].Chapters[
-      props.notebookDisplay.chapterId - 1
-    ].content
-  );
+
+  const { notebookData, notebookDisplay } = props;
+
+  const targetNotebook = notebookData.filter((notebook) => {
+    if (notebook.id === notebookDisplay.notebookId) {
+      return notebook;
+    }
+  });
+
+  const chapter = targetNotebook[0].Chapters.filter((chapter) => {
+    if (chapter.id === notebookDisplay.chapterId) {
+      return chapter;
+    }
+  });
+
+  const [chapterName, setChapterName] = useState(chapter[0]?.name);
+  const [markdownText, setMarkdownText] = useState(chapter[0]?.content);
+
+  const uid = window.localStorage.getItem("uid");
+  let notebookIdForFunc = 0;
+  let chapterIdForFunc = 0;
+
+  for (var i = 0; i < props.notebookData.length; i++) {
+    if (notebookData[i]?.id === notebookDisplay.notebookId) {
+      notebookIdForFunc = i;
+      if (notebookDisplay.chapterId !== undefined) {
+        for (var j = 0; j < props.notebookData[i].Chapters.length; j++) {
+          if (
+            notebookData[notebookIdForFunc].Chapters[j]?.id ===
+            notebookDisplay.chapterId
+          ) {
+            chapterIdForFunc = j;
+            break;
+          }
+        }
+      } else {
+        break;
+      }
+    }
+  }
 
   const handleDrawerOpen = () => {
     props.setOpen(true);
@@ -59,22 +90,18 @@ export default function NotebookMode(props) {
 
   const handleInputChange = (e) => {
     setMarkdownText(e.target.value);
-    console.log(e.target.value);
   };
 
   const handleUpdateNotebookContent = (content) => {
     setToggleNotebookDisplay(false);
-    // setMarkdownText(content);
+
     const db = getDatabase();
     const postData = {
-      ...props.notebookData[props.notebookDisplay.notebookId - 1].Chapters[
-        props.notebookDisplay.chapterId - 1
-      ],
+      ...chapter[0],
       content: content,
     };
-    const dataPath = `/notebooks/${
-      props.notebookDisplay.notebookId - 1
-    }/Chapters/${props.notebookDisplay.chapterId - 1}`;
+
+    const dataPath = `/users/${uid}/notebooks/${notebookIdForFunc}/Chapters/${chapterIdForFunc}`;
     const updates = {};
     updates[dataPath] = postData;
 
@@ -82,11 +109,8 @@ export default function NotebookMode(props) {
   };
 
   useEffect(() => {
-    setMarkdownText(
-      props?.notebookData[props.notebookDisplay.notebookId - 1].Chapters[
-        props.notebookDisplay.chapterId - 1
-      ].content
-    );
+    setChapterName(chapter[0]?.name);
+    setMarkdownText(chapter[0]?.content);
   }, [props.notebookData, props.notebookDisplay]);
 
   return (
@@ -118,8 +142,8 @@ export default function NotebookMode(props) {
               <MenuIcon sx={{ color: "#2E4AF3" }} />
             </IconButton>
             <CustomSeparator
-              notebookData={props.notebookData}
-              notebookDisplay={props.notebookDisplay}
+              notebookData={notebookData}
+              notebookDisplay={notebookDisplay}
               mode={props.mode}
             />
           </Box>
@@ -127,7 +151,6 @@ export default function NotebookMode(props) {
             gutterBottom
             sx={{
               fontWeight: 900,
-              // typography: "h1",
               fontSize: "36px",
               color: "#2E4AF3",
               textTransform: "capitalize",
@@ -135,10 +158,7 @@ export default function NotebookMode(props) {
               marginTop: "-12.5px",
             }}
           >
-            {
-              props?.notebookData[props.notebookDisplay.notebookId - 1]
-                .Chapters[props.notebookDisplay.chapterId - 1].name
-            }
+            {chapterName}
           </Typography>
           <Box
             sx={{
@@ -149,8 +169,8 @@ export default function NotebookMode(props) {
             }}
           >
             <DatePickerValue
-              notebookData={props.notebookData}
-              notebookDisplay={props.notebookDisplay}
+              notebookData={notebookData}
+              notebookDisplay={notebookDisplay}
             />
             {toggleNotebookDisplay ? (
               <Button
@@ -197,8 +217,8 @@ export default function NotebookMode(props) {
           {toggleNotebookDisplay ? (
             <TextareaRef
               testContent={
-                props?.notebookData[props.notebookDisplay.notebookId - 1]
-                  .Chapters[props.notebookDisplay.chapterId - 1].content
+                notebookData[notebookIdForFunc]?.Chapters[chapterIdForFunc]
+                  .content
               }
               notebookData={props.notebookData}
               notebookDisplay={props.notebookDisplay}

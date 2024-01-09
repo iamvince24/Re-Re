@@ -22,14 +22,48 @@ const dateFormat = "YYYY-MM-DD";
 
 export default function DatePickerValue(props) {
   const { notebookData, notebookDisplay } = props;
-  const chapter =
-    notebookData[notebookDisplay.notebookId - 1].Chapters[
-      notebookDisplay.chapterId - 1
-    ];
 
-  const [startvalue, setStartValue] = useState(dayjs(chapter.start));
+  const targetNotebook = notebookData.filter((notebook) => {
+    if (notebook.id === notebookDisplay.notebookId) {
+      return notebook;
+    }
+  });
 
-  const [endvalue, setEndValue] = useState(dayjs(chapter.end));
+  const chapter = targetNotebook[0].Chapters.filter((chapter) => {
+    if (chapter.id === notebookDisplay.chapterId) {
+      return chapter;
+    }
+  });
+
+  const uid = window.localStorage.getItem("uid");
+  let notebookIdForFunc = 0;
+  let chapterIdForFunc = 0;
+
+  for (var i = 0; i < props.notebookData.length; i++) {
+    if (props.notebookData[i]?.id === props.id) {
+      notebookIdForFunc = i;
+      if (props.chapterId !== undefined) {
+        for (var j = 0; j < props.notebookData[i].Chapters.length; j++) {
+          if (
+            props.notebookData[notebookIdForFunc].Chapters[j]?.id ===
+            props.chapterId
+          ) {
+            chapterIdForFunc = j;
+            break;
+          }
+        }
+      } else {
+        break;
+      }
+    }
+  }
+
+  const [startvalue, setStartValue] = useState(
+    notebookData[notebookIdForFunc].Chapters[chapterIdForFunc].start
+  );
+  const [endvalue, setEndValue] = useState(
+    notebookData[notebookIdForFunc].Chapters[chapterIdForFunc].end
+  );
 
   function handleNewDate(startValue, endValue) {
     setStartValue(startValue);
@@ -43,13 +77,13 @@ export default function DatePickerValue(props) {
   const handleUpdateNewDate = (startValue, endValue) => {
     const db = getDatabase();
     const postData = {
-      ...chapter,
+      ...chapter[0],
       start: startValue,
       end: endValue,
     };
-    const dataPath = `/notebooks/${
-      props.notebookDisplay.notebookId - 1
-    }/Chapters/${props.notebookDisplay.chapterId - 1}`;
+
+    const dataPath = `/users/${uid}/notebooks/${notebookIdForFunc}/Chapters/${chapterIdForFunc}`;
+
     const updates = {};
     updates[dataPath] = postData;
 
@@ -57,8 +91,8 @@ export default function DatePickerValue(props) {
   };
 
   useEffect(() => {
-    setStartValue(dayjs(chapter.start));
-    setEndValue(dayjs(chapter.end));
+    setStartValue(dayjs(chapter[0]?.start));
+    setEndValue(dayjs(chapter[0]?.end));
   }, [notebookData, notebookDisplay]);
 
   return (
@@ -144,25 +178,11 @@ export default function DatePickerValue(props) {
             }}
             allowClear={false}
             allowEmpty={[false, false]}
-            // defaultValue={[
-            //   dayjs("2015/01/01", dateFormat),
-            //   dayjs("2015/01/01", dateFormat),
-            // ]}
-            // defaultValue={[
-            //   dayjs(startvalue, dateFormat),
-            //   dayjs(endvalue, dateFormat),
-            // ]}
-            // defaultValue={[dayjs(startvalue), dayjs(endvalue)]}
             value={[dayjs(startvalue), dayjs(endvalue)]}
             format={dateFormat}
             className="custom-range-picker"
             onChange={(newValue) => {
-              // console.log(newValue);
               const [startValue, endValue] = newValue;
-              // console.log(startValue);
-              // console.log(endValue);
-              // setStartValue(startValue);
-              // setEndValue(endValue);
               handleNewDate(startValue, endValue);
             }}
           />

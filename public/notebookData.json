@@ -9,14 +9,14 @@
           "end": "2024-01-08",
           "Chapters": [
             {
-              "id": "1",
+              "id": 1,
               "name": "Ch5 Tree",
               "start": "2024-01-02",
               "end": "2024-01-08",
               "content": "sdfgdsf"
             },
             {
-              "id": "2",
+              "id": 2,
               "name": "Ch6 Graphy",
               "start": "2024-01-09",
               "end": "2024-01-28",
@@ -31,14 +31,14 @@
           "end": "2024-01-08",
           "Chapters": [
             {
-              "id": "1",
+              "id": 1,
               "name": "Chapter 1",
               "start": "2024-01-02",
               "end": "2024-01-08",
               "content": "Lorem ipsum"
             },
             {
-              "id": "2",
+              "id": 2,
               "name": "Chapter 2",
               "start": "2024-01-02",
               "end": "2024-01-08",
@@ -53,14 +53,14 @@
           "end": "2024-01-08",
           "Chapters": [
             {
-              "id": "1",
+              "id": 1,
               "name": "Chapter 1",
               "start": "2024-01-02",
               "end": "2024-01-08",
               "content": "Lorem ipsum"
             },
             {
-              "id": "2",
+              "id": 2,
               "name": "Chapter 2",
               "start": "2024-01-02",
               "end": "2024-01-08",
@@ -75,14 +75,14 @@
           "end": "2024-01-08",
           "Chapters": [
             {
-              "id": "1",
+              "id": 1,
               "name": "Chapter 1",
               "start": "2024-01-02",
               "end": "2024-01-08",
               "content": "Lorem ipsum"
             },
             {
-              "id": "2",
+              "id": 2,
               "name": "Chapter 2",
               "start": "2024-01-02",
               "end": "2024-01-08",
@@ -97,14 +97,14 @@
           "end": "2024-01-08",
           "Chapters": [
             {
-              "id": "1",
+              "id": 1,
               "name": "Chapter 1",
               "start": "2024-01-02",
               "end": "2024-01-08",
               "content": "Lorem ipsum"
             },
             {
-              "id": "2",
+              "id": 2,
               "name": "Chapter 2",
               "start": "2024-01-02",
               "end": "2024-01-08",
@@ -119,14 +119,14 @@
           "end": "2024-01-08",
           "Chapters": [
             {
-              "id": "1",
+              "id": 1,
               "name": "Chapter 1",
               "start": "2024-01-02",
               "end": "2024-01-08",
               "content": "Lorem ipsum"
             },
             {
-              "id": "2",
+              "id": 2,
               "name": "Chapter 2",
               "start": "2024-01-02",
               "end": "2024-01-08",
@@ -141,14 +141,14 @@
           "end": "2024-01-08",
           "Chapters": [
             {
-              "id": "1",
+              "id": 1,
               "name": "Chapter 1",
               "start": "2024-01-02",
               "end": "2024-01-08",
               "content": "Lorem ipsum"
             },
             {
-              "id": "2",
+              "id": 2,
               "name": "Chapter 2",
               "start": "2024-01-02",
               "end": "2024-01-08",
@@ -163,14 +163,14 @@
           "end": "2024-01-08",
           "Chapters": [
             {
-              "id": "1",
+              "id": 1,
               "name": "Chapter 1",
               "start": "2024-01-02",
               "end": "2024-01-08",
               "content": "Lorem ipsum"
             },
             {
-              "id": "2",
+              "id": 2,
               "name": "Chapter 2",
               "start": "2024-01-02",
               "end": "2024-01-08",
@@ -185,14 +185,14 @@
           "end": "2024-01-08",
           "Chapters": [
             {
-              "id": "1",
+              "id": 1,
               "name": "Chapter 1",
               "start": "2024-01-02",
               "end": "2024-01-08",
               "content": "Lorem ipsum"
             },
             {
-              "id": "2",
+              "id": 2,
               "name": "Chapter 2",
               "start": "2024-01-02",
               "end": "2024-01-08",
@@ -207,14 +207,14 @@
           "end": "2024-01-08",
           "Chapters": [
             {
-              "id": "1",
+              "id": 1,
               "name": "Chapter 1",
               "start": "2024-01-02",
               "end": "2024-01-08",
               "content": "Lorem ipsum"
             },
             {
-              "id": "2",
+              "id": 2,
               "name": "Chapter 2",
               "start": "2024-01-02",
               "end": "2024-01-08",

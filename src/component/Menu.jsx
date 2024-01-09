@@ -46,36 +46,48 @@ function writeNewPost(uid, id) {
   const month = currentDate.getMonth() + 1;
   const day = currentDate.getDate();
 
-  const defaultStartDate = `${year}-${month < 10 ? "0" + month : month}-${
-    day < 10 ? "0" + day : day
-  }`;
-  const defaultEndDate = `${year}-${month < 10 ? "0" + month : month}-${
-    day < 10 ? "0" + day : day + 1
-  }`;
+  // Create a Date object for the current date
+  const defaultStartDate = new Date(year, month - 1, day);
+
+  // Create a Date object for the end date and add one day
+  const defaultEndDate = new Date(year, month - 1, day);
+  defaultEndDate.setDate(defaultEndDate.getDate() + 1);
+
+  // Format dates as strings
+  const formattedStartDate = formatDate(defaultStartDate);
+  const formattedEndDate = formatDate(defaultEndDate);
 
   // A post entry.
   const postData = {
     id: id,
     name: "Default Notebook",
-    start: defaultStartDate,
-    end: defaultEndDate,
+    start: formattedStartDate,
+    end: formattedEndDate,
     Chapters: [
       {
         id: id,
         name: "Default Chapter",
-        start: defaultStartDate,
-        end: defaultEndDate,
+        start: formattedStartDate,
+        end: formattedEndDate,
         content: "Type something",
       },
     ],
   };
 
-  // Get a key for a new Post.
   const newPostKey = id;
   const updates = {};
   updates["/users/" + uid + "/notebooks/" + newPostKey] = postData;
 
   return update(ref(db), updates);
+}
+
+function formatDate(date) {
+  const year = date.getFullYear();
+  const month = date.getMonth() + 1;
+  const day = date.getDate();
+  return `${year}-${month < 10 ? "0" + month : month}-${
+    day < 10 ? "0" + day : day
+  }`;
 }
 
 export default function Menu(props) {
@@ -226,6 +238,7 @@ export default function Menu(props) {
           ? notebookList?.map((notebook, index) => {
               return (
                 <Notebook
+                  notebookData={notebookList}
                   notebook={notebook}
                   key={`${notebook.id}-${index}`}
                   setNotebookDisplay={props.setNotebookDisplay}

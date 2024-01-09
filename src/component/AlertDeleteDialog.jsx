@@ -8,6 +8,7 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import { Typography, colors } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import MenuItem from "@mui/material/MenuItem";
 
 import { getDatabase, set, remove, update, ref } from "firebase/database";
 import database from "../firebase";
@@ -46,6 +47,29 @@ export default function AlertDeleteDialog(props) {
     props.handleCloseBtn(event);
   };
 
+  const uid = window.localStorage.getItem("uid");
+  let notebookIdForFunc = 0;
+  let chapterIdForFunc = 0;
+
+  for (var i = 0; i < props.notebookData.length; i++) {
+    if (props.notebookData[i]?.id === props.id) {
+      notebookIdForFunc = i;
+      if (props.chapterId !== undefined) {
+        for (var j = 0; j < props.notebookData[i].Chapters.length; j++) {
+          if (
+            props.notebookData[notebookIdForFunc].Chapters[j]?.id ===
+            props.chapterId
+          ) {
+            chapterIdForFunc = j;
+            break;
+          }
+        }
+      } else {
+        break;
+      }
+    }
+  }
+
   const handleDelete = () => {
     const db = getDatabase();
     const postData = null;
@@ -53,11 +77,10 @@ export default function AlertDeleteDialog(props) {
     // 要刪除數據的路徑
     let dataPath = "";
     if (props.chapterId !== undefined) {
-      dataPath = `/notebooks/${props.id - 1}/Chapters/${props.chapterId - 1}`;
+      dataPath = `/users/${uid}/notebooks/${notebookIdForFunc}/Chapters/${chapterIdForFunc}`;
     } else {
-      dataPath = `/notebooks/${props.id - 1}`;
+      dataPath = `/users/${uid}/notebooks/${notebookIdForFunc}`;
     }
-    // const newPostKey = id;
     const updates = {};
     updates[dataPath] = postData;
     return update(ref(db), updates);
@@ -66,13 +89,9 @@ export default function AlertDeleteDialog(props) {
   return (
     <Fragment>
       <ThemeProvider theme={theme}>
-        <Button
-          variant="outlined"
-          onClick={handleClickOpen}
-          sx={{ mx: "10px", px: "10px", width: "85%", marginBottom: "5px" }}
-        >
+        <MenuItem variant="outlined" onClick={handleClickOpen}>
           Delete
-        </Button>
+        </MenuItem>
       </ThemeProvider>
       <Dialog
         open={open}
@@ -80,7 +99,7 @@ export default function AlertDeleteDialog(props) {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">{"Delete Notebook?"}</DialogTitle>
+        <DialogTitle id="alert-dialog-title">{`Delete ${props.deleteMessage}?`}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
             After deleting the notebook, it will never be restored. Please
