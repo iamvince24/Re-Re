@@ -13,9 +13,6 @@ import { useMediaQuery } from "@mui/material";
 
 import { getDatabase, ref, get, onValue } from "firebase/database";
 
-import { logout, auth } from "../firebase";
-import { useAuthState } from "react-firebase-hooks/auth";
-
 let drawerWidth = 350;
 
 const AppBar = styled(MuiAppBar, {
@@ -37,8 +34,7 @@ const AppBar = styled(MuiAppBar, {
 
 export default function Application() {
   const isSmallScreen = useMediaQuery("(max-width:767px)");
-  const [mode, setMode] = useState(false);
-  // const [open, setOpen] = useState(false);
+  const [mode, setMode] = useState(true);
   const [open, setOpen] = useState(isSmallScreen ? false : true);
   const [notebookData, setNotebookData] = useState([
     {
@@ -64,46 +60,8 @@ export default function Application() {
   });
 
   drawerWidth = isSmallScreen ? window.innerWidth : 350;
-  const [user, loading, error] = useAuthState(auth);
-
-  // useEffect(() => {
-  //   client("notebookData.json").then(
-  //     (data) => {
-  //       setNotebookData(data?.notebooks);
-  //     },
-  //     (error) => {
-  //       console.error("Error: ", error);
-  //     }
-  //   );
-  // }, []);
-
-  // useEffect(() => {
-  //   const db = getDatabase();
-  //   const starCountRef = ref(db, "notebooks");
-  //   onValue(starCountRef, (snapshot) => {
-  //     const data = snapshot.val();
-  //     setNotebookData(data);
-  //   });
-  // }, []);
-
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const db = getDatabase();
-  //       const starCountRef = ref(db, "notebooks");
-  //       const snapshot = await get(starCountRef);
-  //       const data = snapshot.val();
-  //       setNotebookData(data);
-  //     } catch (error) {
-  //       console.error("Error fetching data:", error);
-  //     }
-  //   };
-
-  //   fetchData();
-  // }, []);
 
   const uid = window.localStorage.getItem("uid");
-  // console.log(uid);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -114,9 +72,6 @@ export default function Application() {
           const data = snapshot.val();
           setNotebookData(data);
         });
-        // const snapshot = await get(starCountRef);
-        // const data = snapshot.val();
-        // setNotebookData(data);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -124,20 +79,6 @@ export default function Application() {
 
     fetchData();
   }, []);
-
-  // useEffect(() => {
-  //   const notebookListRef = ref(database, "notebooks");
-  //   get(notebookListRef).then(
-  //     (snapshot) => {
-  //       // 使用 get 方法
-  //       const data = snapshot.val();
-  //       setNotebookData(data);
-  //     },
-  //     (error) => {
-  //       console.error("Error: ", error);
-  //     }
-  //   );
-  // }, []);
 
   return (
     <Fragment>

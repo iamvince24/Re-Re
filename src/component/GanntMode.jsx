@@ -1,4 +1,4 @@
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
 import * as React from "react";
 import { Box } from "@mui/system";
 import Typography from "@mui/joy/Typography";
@@ -9,16 +9,49 @@ import DatePickerValue from "./DatePickerValue";
 import TextareaRef from "./TextareaRef";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
+import { months } from "../utils/constants";
+import { dayDiff } from "../utils/dateFunctions";
 
 import { useSpring, animated } from "react-spring";
 import GanttChart from "./GanttChart/GanttChart";
+import DateRangePicker from "./DateRangePicker";
 
 const barHeight = 70;
 const drawerWidth = 350;
 
 export default function GanntMode(props) {
+  const [timeRange, setTimeRange] = useState({
+    fromSelectMonth: 0,
+    fromSelectYear: "2024",
+    toSelectMonth: 11,
+    toSelectYear: "2024",
+  });
+  console.log(timeRange);
+
   const handleDrawerOpen = () => {
     props.setOpen(true);
+  };
+
+  const handleGanttMoveToday = () => {
+    const scrollingContainer = document.getElementById(
+      "gantt-grid-container__time"
+    );
+
+    const currentDate = new Date();
+    const year = currentDate.getFullYear();
+    const month = currentDate.getMonth() + 1;
+    const day = currentDate.getDate();
+
+    const formattedToday = `${year}-${month < 10 ? "0" + month : month}-${
+      day < 10 ? "0" + day : day
+    }`;
+
+    const startDate = `${timeRange.fromSelectYear}-${
+      months[timeRange.fromSelectMonth]
+    }-01`;
+
+    scrollingContainer.scrollLeft =
+      (dayDiff(startDate, formattedToday) - 2) * 30;
   };
 
   return (
@@ -32,8 +65,7 @@ export default function GanntMode(props) {
           sx={{
             // height: "180px",
             height: "auto",
-            // padding: "0px 20px 20px",
-            padding: "0px 20px 0px",
+            padding: "0px 20px 20px",
             borderBottom: "3px solid #F2D4CC",
             marginBottom: "25px",
           }}
@@ -74,15 +106,17 @@ export default function GanntMode(props) {
           <Box
             sx={{
               textAlign: "left",
-              // display: "flex",
-              display: "none",
+              display: "flex",
+              // display: "none",
               justifyContent: "space-between",
               alignItems: "center",
             }}
           >
-            <DatePickerValue
+            <DateRangePicker
               notebookData={props.notebookData}
               notebookDisplay={props.notebookDisplay}
+              timeRange={timeRange}
+              setTimeRange={setTimeRange}
             />
             <Button
               sx={{
@@ -90,12 +124,16 @@ export default function GanntMode(props) {
                 textTransform: "capitalize",
                 color: "#2E4AF3",
                 height: "42px",
-                padding: "0px 15px",
+                // padding: "0px 15px",
+                padding: "0px 20px",
                 marginTop: "-10px",
                 letterSpacing: "0.5px",
               }}
+              onClick={() => {
+                handleGanttMoveToday();
+              }}
             >
-              To Editor
+              Today
             </Button>
           </Box>
         </Box>
@@ -103,6 +141,7 @@ export default function GanntMode(props) {
         <GanttChart
           notebookData={props.notebookData}
           notebookDisplay={props.notebookDisplay}
+          timeRange={timeRange}
         />
       </Box>
     </Fragment>

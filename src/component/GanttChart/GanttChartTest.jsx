@@ -53,15 +53,13 @@ export default function GanttChartTest({
     display: "flex",
   };
 
-  // creating rows
-  const startMonth = new Date(
-    parseInt(timeRange.fromSelectYear),
-    timeRange.fromSelectMonth
+  const [startMonth, setStartMonth] = useState(
+    new Date(parseInt(timeRange.fromSelectYear), timeRange.fromSelectMonth)
   );
-  const endMonth = new Date(
-    parseInt(timeRange.toSelectYear),
-    timeRange.toSelectMonth
+  const [endMonth, setEndMonth] = useState(
+    new Date(parseInt(timeRange.toSelectYear), timeRange.toSelectMonth)
   );
+
   const numMonths = monthDiff(startMonth, endMonth) + 1;
   let month = new Date(startMonth);
 
@@ -138,27 +136,14 @@ export default function GanttChartTest({
     month.setMonth(month.getMonth() + 1);
   }
 
-  // useEffect(() => {
-  //   const scrollingContainer = document.getElementById(
-  //     "gantt-grid-container__time"
-  //   );
-
-  //   const currentDate = new Date();
-  //   const year = currentDate.getFullYear();
-  //   const month = currentDate.getMonth() + 1;
-  //   const day = currentDate.getDate();
-
-  //   const formattedToday = `${year}-${month < 10 ? "0" + month : month}-${
-  //     day < 10 ? "0" + day : day
-  //   }`;
-
-  //   const startDate = `${timeRange.fromSelectYear}-${
-  //     months[timeRange.fromSelectMonth]
-  //   }-01`;
-
-  //   scrollingContainer.scrollLeft =
-  //     (dayDiff(startDate, formattedToday) - 2) * 30;
-  // }, []);
+  useEffect(() => {
+    setStartMonth(
+      new Date(parseInt(timeRange.fromSelectYear), timeRange.fromSelectMonth)
+    );
+    setEndMonth(
+      new Date(parseInt(timeRange.toSelectYear), timeRange.toSelectMonth)
+    );
+  }, [timeRange]);
 
   return (
     <Fragment>

@@ -16,19 +16,13 @@ import TasksTest from "./TasksTest";
 import { v4 as uuidv4 } from "uuid";
 
 export default function GanttChart(props) {
-  const { notebookData, notebookDisplay } = props;
+  const { notebookData, notebookDisplay, timeRange, setTimeRange } = props;
   const [tasks, setTasks] = useState(null);
   const [taskDurations, setTaskDurations] = useState(null);
-  const [timeRange, setTimeRange] = useState({
-    fromSelectMonth: 0,
-    fromSelectYear: "2024",
-    toSelectMonth: 11,
-    toSelectYear: "2024",
-  });
+  // const [timeRange, setTimeRange] = useState(props.timeRange);
   const [ganttUnfoldList, setGanttUnfoldList] = useState({
     list: [],
   });
-  // console.log(ganttUnfoldList);
 
   useEffect(() => {
     client("data.json").then(
