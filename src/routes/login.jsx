@@ -19,32 +19,25 @@ import {
   registerWithEmailAndPassword,
   logInWithEmailAndPassword,
   signInWithGoogle,
-  database,
 } from "../firebase";
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { ref, get } from "firebase/database";
 
-const theme = createTheme({
-  palette: {
-    primary: {
-      main: "#2E4AF3",
-      // light: will be calculated from palette.primary.main,
-      // dark: will be calculated from palette.primary.main,
-      // contrastText: will be calculated to contrast with palette.primary.main
-    },
-    secondary: {
-      main: "#E0C2FF",
-      light: "#F5EBFF",
-      // dark: will be calculated from palette.secondary.main,
-      contrastText: "#47008F",
-    },
-    background: {
-      main: "#F3D9D2",
-    },
-  },
-});
+// const theme = createTheme({
+//   palette: {
+//     primary: {
+//       main: "#144445",
+//     },
+//     secondary: {
+//       main: "#E0C2FF",
+//       light: "#F5EBFF",
+//       contrastText: "#47008F",
+//     },
+//     background: {
+//       main: "#F3D9D2",
+//     },
+//   },
+// });
 
-export default function Login() {
+export default function Login(props) {
   const [email, setEmail] = useState("test@gmail.com");
   const [password, setPassword] = useState("test123");
 
@@ -53,18 +46,6 @@ export default function Login() {
 
   const handleLogin = async () => {
     try {
-      // if (!email) {
-      //   throw new Error("Please enter email");
-      // }
-      // const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      // if (!emailRegex.test(email)) {
-      //   throw new Error("Please enter a valid email address");
-      // }
-
-      // if (password.length < 6) {
-      //   throw new Error("Password must be at least six characters");
-      // }
-
       await logInWithEmailAndPassword(auth, email, password);
       navigate("/application");
     } catch (error) {
@@ -75,18 +56,6 @@ export default function Login() {
 
   const handleRegister = async () => {
     try {
-      // if (!email) {
-      //   throw new Error("Please enter email");
-      // }
-      // const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      // if (!emailRegex.test(email)) {
-      //   throw new Error("Please enter a valid email address");
-      // }
-
-      // if (password.length < 6) {
-      //   throw new Error("Password must be at least six characters");
-      // }
-
       await registerWithEmailAndPassword(email, password);
       navigate("/application");
     } catch (error) {
@@ -107,24 +76,24 @@ export default function Login() {
   return (
     <Fragment>
       <Box sx={{ display: "flex", width: "100vw", height: "100vh" }}>
-        <ThemeProvider theme={theme}>
+        <ThemeProvider theme={props.theme}>
           <Card
             sx={{
-              width: "400px",
-              height: "400px",
-              margin: "100px auto",
-              boxShadow: "none",
+              width: props.isSmall500 ? 275 : 345,
+              height: props.isSmall500 ? 350 : 390,
+              margin: props.isSmall500 ? "50px auto" : "100px auto",
               display: "flex",
               flexDirection: "column",
               gap: "20px",
-              padding: "40px 40px 20px",
-              backgroundColor: "var(--background-color)",
+              padding: props.isSmall500 ? "20px 20px 10px" : "40px 40px 20px",
+              backgroundColor: "var(--buttton-background-color)",
             }}
           >
             <Typography
-              variant="h5"
+              // variant="h5"
+              color="secondary"
               sx={{
-                color: "var(--primary-color)",
+                fontSize: props.isSmall500 ? 20 : 25,
                 fontWeight: 900,
                 whiteSpace: "nowrap",
                 textAlign: "center",
@@ -134,58 +103,64 @@ export default function Login() {
               Let’s get started!
             </Typography>
             <Typography
+              color="secondary"
               variant="caption"
               sx={{
-                color: "var(--primary-color)",
                 whiteSpace: "nowrap",
                 textAlign: "center",
               }}
             >
               Please confirm your email to continue
             </Typography>
+
             <TextField
               id="outlined-basic"
               label="Email"
               variant="outlined"
-              color="primary"
+              color="secondary"
               size="small"
               defaultValue={email}
               onChange={(e) => setEmail(e.target.value)}
-              // focused
+              autoFocus
             />
             <TextField
               id="outlined-basic"
               label="Password"
               variant="outlined"
-              color="primary"
+              color="secondary"
               size="small"
               defaultValue={password}
               onChange={(e) => setPassword(e.target.value)}
-              // focused
             />
 
             <Stack
-              spacing={4}
+              // spacing={4}
               direction="row"
               sx={{
                 width: "100%",
-                margin: "auto",
+                margin: props.isSmall500 ? "5px 0px 5px" : "10px 0px 5px",
                 display: "flex",
-                justifyContent: "center",
+                justifyContent: "space-between",
                 alignItems: "center",
               }}
             >
               <Button
+                color="secondary"
                 variant="contained"
-                sx={{ boxShadow: "none" }}
-                onClick={handleLogin}
+                sx={{
+                  boxShadow: "none",
+                  color: "var(--primary-color)",
+                  fontWeight: 700,
+                  fontSize: props.isSmall500 ? "10px" : "small",
+                }}
+                onClick={handleRegister}
               >
-                Log In
+                Sign up
               </Button>
               <Typography
+                color="secondary"
                 variant="body"
                 sx={{
-                  color: "var(--primary-color)",
                   whiteSpace: "nowrap",
                   textAlign: "center",
                 }}
@@ -193,16 +168,28 @@ export default function Login() {
                 or
               </Typography>
               <Button
+                color="secondary"
                 variant="contained"
-                sx={{ boxShadow: "none" }}
-                onClick={handleRegister}
+                sx={{
+                  boxShadow: "none",
+                  color: "var(--primary-color)",
+                  fontWeight: 700,
+                  fontSize: props.isSmall500 ? "10px" : "small",
+                }}
+                onClick={handleLogin}
               >
-                Sign up
+                Log In
               </Button>
             </Stack>
             <Button
+              color="secondary"
               variant="contained"
-              sx={{ boxShadow: "none" }}
+              sx={{
+                boxShadow: "none",
+                color: "var(--primary-color)",
+                fontWeight: 700,
+                fontSize: props.isSmall500 ? "10px" : "small",
+              }}
               onClick={handleSignInWithGoogle}
             >
               Log In With Google

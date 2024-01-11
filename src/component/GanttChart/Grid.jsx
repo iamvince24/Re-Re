@@ -1,4 +1,4 @@
-export default function Grid({ children }) {
+export default function Grid({ children, isSmallScreen }) {
   return (
     <div id="gantt-grid-container">
       {children}
@@ -6,8 +6,8 @@ export default function Grid({ children }) {
         #gantt-grid-container {
           height: auto;
           max-height: calc(100% - 240px);
-          display: grid;
-          grid-template-columns: 225px 1fr;
+          display: grid;   
+          grid-template-columns: ${isSmallScreen ? "180px 1fr" : "225px 1fr"};
           border-radius: 5px;
           outline: 2px solid var(--color-Gantt-Outline);
           box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.05);

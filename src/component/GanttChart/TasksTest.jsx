@@ -3,14 +3,17 @@ import { Fragment } from "react";
 import { useEffect, useRef } from "react";
 import NotebookListGantt from "./NotebookListGantt";
 
-export default function TasksTest({
-  tasks,
-  setTasks,
-  setTaskDurations,
-  notebookData,
-  ganttUnfoldList,
-  setGanttUnfoldList,
-}) {
+export default function TasksTest(
+  {
+    tasks,
+    setTasks,
+    setTaskDurations,
+    notebookData,
+    ganttUnfoldList,
+    setGanttUnfoldList,
+  },
+  props
+) {
   const [open, setOpen] = React.useState(true);
 
   const inputRef = useRef([]);
@@ -34,13 +37,13 @@ export default function TasksTest({
               key={`${notebook.id}-${index}`}
               ganttUnfoldList={ganttUnfoldList}
               setGanttUnfoldList={setGanttUnfoldList}
+              isSmallScreen={props.isSmallScreen}
             />
           ))}
       </div>
       <style>
         {`
           #gantt-grid-container__tasks {
-            // outline: 0.5px solid var(--color-outline);
             border-right: 1px solid var(--color-Tasks-Border-Bottom);
             overflow: auto;
           }

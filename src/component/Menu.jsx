@@ -2,8 +2,8 @@ import { Fragment, useState, useEffect } from "react";
 import * as React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Box, Container } from "@mui/system";
-import Avatar from "@mui/joy/Avatar";
-import Typography from "@mui/joy/Typography";
+import Avatar from "@mui/material/Avatar";
+import Typography from "@mui/material/Typography";
 import ControlPointIcon from "@mui/icons-material/ControlPoint";
 import Button from "@mui/material/Button";
 import { IconButton } from "@mui/material";
@@ -15,28 +15,23 @@ import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import { getDatabase, ref, set, child, push, update } from "firebase/database";
 
 import Notebook from "./notebook";
-import { logout, auth } from "../firebase";
-import { useAuthState } from "react-firebase-hooks/auth";
+import { logout } from "../firebase";
 
-const theme = createTheme({
-  palette: {
-    primary: {
-      main: "#2E4AF3",
-      // light: will be calculated from palette.primary.main,
-      // dark: will be calculated from palette.primary.main,
-      // contrastText: will be calculated to contrast with palette.primary.main
-    },
-    secondary: {
-      main: "#E0C2FF",
-      light: "#F5EBFF",
-      // dark: will be calculated from palette.secondary.main,
-      contrastText: "#47008F",
-    },
-    background: {
-      main: "#F3D9D2",
-    },
-  },
-});
+// const theme = createTheme({
+//   palette: {
+//     primary: {
+//       main: "#2E4AF3",
+//     },
+//     secondary: {
+//       main: "#E0C2FF",
+//       light: "#F5EBFF",
+//       contrastText: "#47008F",
+//     },
+//     background: {
+//       main: "#F3D9D2",
+//     },
+//   },
+// });
 
 function writeNewPost(uid, id) {
   const db = getDatabase();
@@ -92,7 +87,6 @@ function formatDate(date) {
 
 export default function Menu(props) {
   const [notebookList, setNotebookList] = useState(props.notebookData);
-  const [user, loading, error] = useAuthState(auth);
   const navigate = useNavigate();
 
   const handleDrawerClose = () => {
@@ -116,140 +110,184 @@ export default function Menu(props) {
     setNotebookList(props.notebookData);
   }, [props.notebookData]);
 
-  // useEffect(() => {
-  //   if (!user) {
-  //     navigate("/");
-  //   }
-  // }, [user]);
-
   return (
-    <Box
-      sx={{
-        height: "100vh",
-        width: "20%",
-        minWidth: "350px",
-        padding: "0px 20px",
-        overflow: "scroll",
-        bgcolor: "#F3D9D2",
-      }}
-    >
+    <ThemeProvider theme={props.theme}>
       <Box
         sx={{
-          width: "100%",
-          height: "70px",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          gap: "15px",
+          height: "100vh",
+          width: "auto",
+          minWidth: "300px",
+          padding: "0px 20px",
+          overflow: "scroll",
+          // bgcolor: "#F3D9D2",
+          // bgcolor: "#144445",
+          // backgroundImage: 'url("../assets/img/noise_white.png")',
         }}
       >
-        <Button
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            gap: "15px",
-            "&:hover": {
-              backgroundColor: "rgba(112, 132, 255, 0.15)",
-            },
-          }}
-        >
-          <Avatar
-            alt="Your Name"
-            src=""
-            variant="square"
-            size="sm"
-            sx={{
-              fontWeight: "900",
-              backgroundColor: "#2E4AF3",
-              color: "white",
-            }}
-          />
-          <Typography
-            fontSize={"lg"}
-            sx={{
-              fontWeight: 700,
-              color: "#2E4AF3",
-              textTransform: "capitalize",
-            }}
-          >
-            Vince Guo
-          </Typography>
-        </Button>
-        <IconButton onClick={handleDrawerClose} sx={{ marginRight: "-15px" }}>
-          {theme.direction === "ltr" ? (
-            <ChevronLeftIcon />
-          ) : (
-            <ChevronRightIcon />
-          )}
-        </IconButton>
-      </Box>
-
-      <ThemeProvider theme={theme}>
-        <ButtonGroup
-          size="small"
-          variant="outlined"
+        <Box
           sx={{
             width: "100%",
+            height: "70px",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            gap: "15px",
           }}
         >
           <Button
+            color="primary"
             sx={{
-              width: "100%",
-              color: "#2E4AF3",
+              display: "flex",
+              alignItems: "center",
+              gap: "15px",
+              // border: `1px solid ${props.theme.palette.primary.main}`,
+              "&:hover": {
+                // backgroundColor: "rgba(112, 132, 255, 0.15)",
+                backgroundColor: "rgb(214, 159, 149, 0.1)",
+              },
             }}
-            onClick={() => props.setMode(false)}
+          >
+            <Avatar
+              color="primary"
+              alt="Your Name"
+              src=""
+              // variant="square"
+              size="sm"
+              sx={{
+                fontWeight: "900",
+                backgroundColor: `${props.theme.palette.primary.main}`,
+                // color: "white",
+              }}
+            />
+            <Typography
+              fontSize={"lg"}
+              sx={{
+                fontWeight: 900,
+                color: `${props.theme.palette.primary.main}`,
+                textTransform: "capitalize",
+              }}
+            >
+              Vince Guo
+            </Typography>
+          </Button>
+          <IconButton
+            color="primary"
+            onClick={handleDrawerClose}
+            sx={{ marginRight: "-15px" }}
+          >
+            {props.theme?.direction === "ltr" ? (
+              <ChevronLeftIcon />
+            ) : (
+              <ChevronRightIcon />
+            )}
+          </IconButton>
+        </Box>
+
+        <ButtonGroup
+          size="small"
+          variant="contained"
+          sx={{
+            width: "100%",
+            boxShadow: "none",
+          }}
+        >
+          <Button
+            color="primary"
+            sx={{
+              width: "50%",
+              color: `${props.theme.palette.secondary.main}`,
+              fontWeight: "700",
+            }}
+            onClick={() => {
+              props.setMode(false);
+              if (props.isSmallScreen) {
+                props.setMode(false);
+                props.setOpen(false);
+              }
+            }}
           >
             Notebook
           </Button>
           <Button
-            sx={{ width: "100%", color: "#2E4AF3" }}
-            onClick={() => props.setMode(true)}
+            color="primary"
+            sx={{
+              width: "50%",
+              // color: "#2E4AF3"
+              // color: `${props.theme.palette.primary.main}`,
+              color: `${props.theme.palette.secondary.main}`,
+              fontWeight: "700",
+            }}
+            onClick={() => {
+              props.setMode(true);
+              if (props.isSmallScreen) {
+                props.setMode(true);
+                props.setOpen(false);
+              }
+            }}
           >
             Gantt
           </Button>
         </ButtonGroup>
-      </ThemeProvider>
 
-      <Box
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          margin: "10px 0px 25px",
-        }}
-      >
-        <Typography
-          fontSize={"md"}
+        <Box
           sx={{
-            fontWeight: 500,
-            color: "#7084FF",
-            p: "0px 6px 0px 8px",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            margin: "10px 0px 25px",
           }}
         >
-          Notebooks
-        </Typography>
-        <IconButton aria-label="delete" onClick={handleAddNotebook}>
-          <ControlPointIcon fontSize="small" sx={{ color: "#7084FF" }} />
-        </IconButton>
-      </Box>
+          <Typography
+            fontSize={"md"}
+            sx={{
+              fontWeight: 700,
+              // color: "#7084FF",
+              color: `${props.theme.palette.primary.main}`,
+              p: "0px 6px 0px 8px",
+            }}
+          >
+            Notebooks
+          </Typography>
+          <IconButton aria-label="delete" onClick={handleAddNotebook}>
+            <ControlPointIcon
+              fontSize="small"
+              sx={{ color: `${props.theme.palette.primary.main}` }}
+            />
+          </IconButton>
+        </Box>
 
-      <Box sx={{ marginBottom: "50px" }}>
-        {notebookList
-          ? notebookList?.map((notebook, index) => {
-              return (
-                <Notebook
-                  notebookData={notebookList}
-                  notebook={notebook}
-                  key={`${notebook.id}-${index}`}
-                  setNotebookDisplay={props.setNotebookDisplay}
-                />
-              );
-            })
-          : null}
+        <Box sx={{ marginBottom: "50px" }}>
+          {notebookList
+            ? notebookList?.map((notebook, index) => {
+                return (
+                  <Notebook
+                    theme={props.theme}
+                    notebookData={notebookList}
+                    notebook={notebook}
+                    key={`${notebook.id}-${index}`}
+                    setNotebookDisplay={props.setNotebookDisplay}
+                    isSmallScreen={props.isSmallScreen}
+                    setMode={props.setMode}
+                    setOpen={props.setOpen}
+                  />
+                );
+              })
+            : null}
+        </Box>
+        <Button
+          variant="contained"
+          sx={{
+            width: "100%",
+            color: `${props.theme.palette.secondary.main}`,
+            fontWeight: "700",
+            marginBottom: "20px",
+            boxShadow: "none",
+          }}
+          onClick={handleLogOut}
+        >
+          Log out
+        </Button>
       </Box>
-      <Button sx={{ width: "100%", color: "#2E4AF3" }} onClick={handleLogOut}>
-        Log out
-      </Button>
-    </Box>
+    </ThemeProvider>
   );
 }

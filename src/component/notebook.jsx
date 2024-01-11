@@ -53,93 +53,110 @@ export default function Notebook(props) {
 
   return (
     <Fragment>
-      <List
-        sx={{
-          width: "100%",
-          bgcolor: "#F3D9D2",
-          color: "#2E4AF3",
-          py: "3px",
-        }}
-        component="nav"
-        aria-labelledby="nested-list-subheader"
-      >
-        <ListItemButton
-          onClick={handleClick}
+      <ThemeProvider theme={props.theme}>
+        <List
           sx={{
-            display: "flex",
-            alignContent: "center",
-            padding: "0px 0px 0px 8px",
+            width: "100%",
+            // bgcolor: "#F3D9D2",
+            // color: "#2E4AF3",
+            color: `${props.theme.palette.primary.main}`,
+            py: "3px",
           }}
+          component="nav"
+          aria-labelledby="nested-list-subheader"
         >
-          {open ? <ExpandLess /> : <ExpandMore />}
-          <ImportContactsIcon sx={{ color: "#2E4AF3", mx: "10px" }}>
-            <InboxIcon />
-          </ImportContactsIcon>
-          <ListItemText
-            primary={props.notebook?.name}
-            primaryTypographyProps={{
-              fontWeight: 700,
-              pt: "2px",
-              overflow: "hidden",
+          <ListItemButton
+            onClick={handleClick}
+            sx={{
+              display: "flex",
+              alignContent: "center",
+              padding: "0px 0px 0px 8px",
+              "&:hover": {
+                backgroundColor: "rgb(214, 159, 149, 0.15)",
+              },
             }}
-          />
-          <LongMenu
-            addChapter={true}
-            id={props.notebook.id}
-            notebook={props.notebook}
-            notebookData={props.notebookData}
-            deleteMessage={props.notebook.name}
-          />
-        </ListItemButton>
-        {props.notebook?.Chapters
-          ? props.notebook?.Chapters.map((chapters, index) => {
-              return (
-                <Collapse
-                  in={open}
-                  timeout="auto"
-                  unmountOnExit
-                  key={`${chapters.id}-${index}`}
-                >
-                  <List component="div" disablePadding>
-                    <ListItemButton
-                      sx={{
-                        py: 0.25,
-                        pr: 0,
-                        ml: 6,
-                      }}
-                    >
-                      <ArticleOutlinedIcon
+          >
+            {open ? <ExpandLess /> : <ExpandMore />}
+            <ImportContactsIcon
+              sx={{ color: `${props.theme.palette.primary.main}`, mx: "10px" }}
+            >
+              <InboxIcon />
+            </ImportContactsIcon>
+            <ListItemText
+              primary={props.notebook?.name}
+              primaryTypographyProps={{
+                fontWeight: 700,
+                pt: "2px",
+                overflow: "hidden",
+              }}
+            />
+            <LongMenu
+              theme={props.theme}
+              addChapter={true}
+              id={props.notebook.id}
+              notebook={props.notebook}
+              notebookData={props.notebookData}
+              deleteMessage={props.notebook.name}
+            />
+          </ListItemButton>
+          {props.notebook?.Chapters
+            ? props.notebook?.Chapters.map((chapters, index) => {
+                return (
+                  <Collapse
+                    in={open}
+                    timeout="auto"
+                    unmountOnExit
+                    key={`${chapters.id}-${index}`}
+                  >
+                    <List component="div" disablePadding>
+                      <ListItemButton
                         sx={{
-                          color: "#2E4AF3",
-                          marginRight: "10px",
+                          py: 0.25,
+                          pr: 0,
+                          ml: 6,
+                          "&:hover": {
+                            backgroundColor: "rgb(214, 159, 149, 0.15)",
+                          },
                         }}
                       >
-                        <StarBorder />
-                      </ArticleOutlinedIcon>
-                      <ListItemText
-                        primary={chapters.name}
-                        primaryTypographyProps={{ pt: "1px" }}
-                        onClick={() => {
-                          props.setNotebookDisplay({
-                            notebookId: props.notebook.id,
-                            chapterId: chapters.id,
-                          });
-                        }}
-                      />
-                      <LongMenu
-                        id={props.notebook.id}
-                        chapterId={chapters.id}
-                        notebook={props.notebook}
-                        notebookData={props.notebookData}
-                        deleteMessage={chapters.name}
-                      />
-                    </ListItemButton>
-                  </List>
-                </Collapse>
-              );
-            })
-          : null}
-      </List>
+                        <ArticleOutlinedIcon
+                          sx={{
+                            color: `${props.theme.palette.primary.main}`,
+                            marginRight: "10px",
+                          }}
+                        >
+                          <StarBorder />
+                        </ArticleOutlinedIcon>
+                        <ListItemText
+                          primary={chapters.name}
+                          primaryTypographyProps={{ pt: "1px" }}
+                          onClick={() => {
+                            props.setNotebookDisplay({
+                              notebookId: props.notebook.id,
+                              chapterId: chapters.id,
+                            });
+                            if (props.isSmallScreen) {
+                              props.setMode(false);
+                              props.setOpen(false);
+                            }
+                          }}
+                        />
+                        <LongMenu
+                          theme={props.theme}
+                          id={props.notebook.id}
+                          chapterId={chapters.id}
+                          notebook={props.notebook}
+                          notebookData={props.notebookData}
+                          deleteMessage={chapters.name}
+                        />
+                      </ListItemButton>
+                    </List>
+                  </Collapse>
+                );
+              })
+            : null}
+        </List>
+      </ThemeProvider>
     </Fragment>
   );
 }

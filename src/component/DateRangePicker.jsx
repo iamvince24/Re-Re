@@ -115,7 +115,6 @@ export default function DateRangePicker(props) {
             style={{
               border: "none",
               background: "rgb(112,132,255,0.1)",
-              marginTop: "-10px",
             }}
             picker="month"
             allowClear={false}

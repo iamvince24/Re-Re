@@ -7,34 +7,13 @@ import GanntMode from "../component/GanntMode";
 import { styled } from "@mui/material/styles";
 import MuiAppBar from "@mui/material/AppBar";
 import Drawer from "@mui/material/Drawer";
-import { client } from "../utils/fetchWrapper";
-
 import { useMediaQuery } from "@mui/material";
+import { getDatabase, ref, onValue } from "firebase/database";
+import { ThemeProvider } from "@mui/material/styles";
 
-import { getDatabase, ref, get, onValue } from "firebase/database";
-
-let drawerWidth = 350;
-
-const AppBar = styled(MuiAppBar, {
-  shouldForwardProp: (prop) => prop !== "open",
-})(({ theme, open }) => ({
-  transition: theme.transitions.create(["margin", "width"], {
-    easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.leavingScreen,
-  }),
-  ...(open && {
-    width: `calc(100% - ${drawerWidth}px)`,
-    marginLeft: `${drawerWidth}px`,
-    transition: theme.transitions.create(["margin", "width"], {
-      easing: theme.transitions.easing.easeOut,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  }),
-}));
-
-export default function Application() {
+export default function Application(props) {
   const isSmallScreen = useMediaQuery("(max-width:767px)");
-  const [mode, setMode] = useState(true);
+  const [mode, setMode] = useState(false);
   const [open, setOpen] = useState(isSmallScreen ? false : true);
   const [notebookData, setNotebookData] = useState([
     {
@@ -59,10 +38,26 @@ export default function Application() {
     chapterId: 1,
   });
 
-  drawerWidth = isSmallScreen ? window.innerWidth : 350;
+  let drawerWidth = isSmallScreen ? "100vw" : 350;
+
+  const AppBar = styled(MuiAppBar, {
+    shouldForwardProp: (prop) => prop !== "open",
+  })(({ theme, open }) => ({
+    transition: theme.transitions.create(["margin", "width"], {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen,
+    }),
+    ...(open && {
+      width: `calc(100% - ${drawerWidth}px)`,
+      marginLeft: `${drawerWidth}px`,
+      transition: theme.transitions.create(["margin", "width"], {
+        easing: theme.transitions.easing.easeOut,
+        duration: theme.transitions.duration.enteringScreen,
+      }),
+    }),
+  }));
 
   const uid = window.localStorage.getItem("uid");
-
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -87,67 +82,79 @@ export default function Application() {
         .css-12i7wg6-MuiPaper-root-MuiDrawer-paper {
           border: none;
         }
+
+         .css-nhf7i1 {
+          background: 'black';
+        }
       `}
       </style>
-      <Box
-        component="section"
-        sx={{
-          display: "flex",
-          flexDirection: "row",
-          backgroundColor: "#F3D9D2",
-        }}
-      >
-        <Drawer
+      <ThemeProvider theme={props.theme}>
+        <Box
+          component="section"
           sx={{
-            width: drawerWidth,
-            // width: isSmallScreen ? "100vw" : drawerWidth,
-            flexShrink: 0,
-            border: "none",
-            "& .MuiDrawer-paper": {
+            display: "flex",
+            flexDirection: "row",
+            backgroundColor: "black",
+          }}
+        >
+          <Drawer
+            sx={{
               width: drawerWidth,
               // width: isSmallScreen ? "100vw" : drawerWidth,
-              boxSizing: "border-box",
-            },
-          }}
-          // variant="persistent"
-          variant={isSmallScreen ? "temporary" : "persistent"}
-          anchor="left"
-          open={open}
-        >
-          <Menu
-            sx={{ border: "none" }}
-            setMode={setMode}
-            setOpen={setOpen}
-            notebookData={notebookData}
-            setNotebookDisplay={setNotebookDisplay}
-            uid={uid}
-          />
-        </Drawer>
+              flexShrink: 0,
+              border: "none",
+              "& .MuiDrawer-paper": {
+                width: drawerWidth,
+                // width: isSmallScreen ? "100vw" : drawerWidth,
+                boxSizing: "border-box",
+              },
+            }}
+            // variant="persistent"
+            variant={isSmallScreen ? "temporary" : "persistent"}
+            anchor="left"
+            open={open}
+          >
+            <Menu
+              theme={props.theme}
+              sx={{ border: "none" }}
+              setMode={setMode}
+              setOpen={setOpen}
+              notebookData={notebookData}
+              setNotebookDisplay={setNotebookDisplay}
+              uid={uid}
+              isSmallScreen={isSmallScreen}
+            />
+          </Drawer>
 
-        <AppBar
-          position="fixed"
-          open={open}
-          sx={{ bgcolor: "#F3D9D2", borderLeft: "3px solid #F0D2CA" }}
-        >
-          {mode ? (
-            <GanntMode
-              setOpen={setOpen}
-              open={open}
-              notebookData={notebookData}
-              notebookDisplay={notebookDisplay}
-              mode={mode}
-            />
-          ) : (
-            <NotebookMode
-              setOpen={setOpen}
-              open={open}
-              notebookData={notebookData}
-              notebookDisplay={notebookDisplay}
-              mode={mode}
-            />
-          )}
-        </AppBar>
-      </Box>
+          <AppBar
+            position="fixed"
+            open={open}
+            sx={{ bgcolor: "#F3D9D2", borderLeft: "3px solid #F0D2CA" }}
+          >
+            {mode ? (
+              <GanntMode
+                theme={props.theme}
+                setOpen={setOpen}
+                open={open}
+                notebookData={notebookData}
+                notebookDisplay={notebookDisplay}
+                mode={mode}
+                isSmallScreen={isSmallScreen}
+              />
+            ) : (
+              <NotebookMode
+                theme={props.theme}
+                setOpen={setOpen}
+                open={open}
+                notebookData={notebookData}
+                notebookDisplay={notebookDisplay}
+                mode={mode}
+                isSmallScreen={isSmallScreen}
+              />
+            )}
+          </AppBar>
+        </Box>
+      </ThemeProvider>
     </Fragment>
   );
 }

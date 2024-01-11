@@ -1,38 +1,46 @@
 import React, { Fragment } from "react";
 import { Box } from "@mui/system";
 import Typography from "@mui/material/Typography";
+import { ThemeProvider } from "@mui/material/styles";
 
-export default function Home() {
+export default function Home(props) {
   return (
     <Fragment>
-      <Box sx={{ margin: "100px 50px 50px" }}>
+      <ThemeProvider theme={props.theme}>
         <Box
-          // variant="h1"
           sx={{
-            fontSize: 90,
-            color: "var(--primary-color)",
-            fontWeight: 900,
-            textAlign: "center",
-            letterSpacing: "-1px",
-            lineHeight: "90px",
+            margin: props.isSmall500 ? "50px 20px 25px" : "100px 50px 50px",
           }}
         >
-          A tool for <br />
-          Recording and Reviewing your learning
-        </Box>
-        <Box
-          sx={{ display: "flex", justifyContent: "center", marginTop: "50px" }}
-        >
           <Typography
+            color="primary"
+            sx={{
+              fontSize: props.isSmall500 ? 40 : 90,
+              fontWeight: 900,
+              // width: "80%",
+              margin: "auto",
+              // color: "var(--primary-color)",
+              textAlign: "center",
+              letterSpacing: "-1px",
+              lineHeight: props.isSmall500 ? "50px" : "90px",
+            }}
+          >
+            A tool for <br />
+            Recording and Reviewing your learning
+          </Typography>
+          <Typography
+            color="primary"
             variant="h6"
             sx={{
-              width: "80%",
+              width: props.isSmall500 ? "90%" : "80%",
               margin: "auto",
-              color: "var(--primary-color)",
+              marginTop: props.isSmall500 ? "20px" : "40px",
+              // color: "var(--primary-color)",
               fontWeight: 500,
               textAlign: "center",
               letterSpacing: "0.5px",
-              lineHeight: "25px",
+              lineHeight: props.isSmall500 ? "20px" : "30px",
+              fontSize: props.isSmall500 ? "14px" : "h6",
             }}
           >
             Introducing the app, the ultimate solution for effortless Note
@@ -42,7 +50,7 @@ export default function Home() {
             making note-taking a breeze.
           </Typography>
         </Box>
-      </Box>
+      </ThemeProvider>
     </Fragment>
   );
 }

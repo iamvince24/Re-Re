@@ -26,7 +26,6 @@ export default function GanntMode(props) {
     toSelectMonth: 11,
     toSelectYear: "2024",
   });
-  console.log(timeRange);
 
   const handleDrawerOpen = () => {
     props.setOpen(true);
@@ -59,6 +58,7 @@ export default function GanntMode(props) {
       <Box
         sx={{
           height: "100vh",
+          overflow: "auto",
         }}
       >
         <Box
@@ -107,9 +107,11 @@ export default function GanntMode(props) {
             sx={{
               textAlign: "left",
               display: "flex",
-              // display: "none",
-              justifyContent: "space-between",
-              alignItems: "center",
+              flexDirection: `${props.isSmallScreen ? "column" : "row"}`,
+              justifyContent: `${
+                props.isSmallScreen ? "flex-start" : "space-between"
+              }`,
+              alignItems: `${props.isSmallScreen ? "flex-start" : "center"}`,
             }}
           >
             <DateRangePicker
@@ -124,9 +126,8 @@ export default function GanntMode(props) {
                 textTransform: "capitalize",
                 color: "#2E4AF3",
                 height: "42px",
-                // padding: "0px 15px",
                 padding: "0px 20px",
-                marginTop: "-10px",
+                marginTop: `${props.isSmallScreen ? "10px" : "0px"}`,
                 letterSpacing: "0.5px",
               }}
               onClick={() => {
@@ -142,6 +143,7 @@ export default function GanntMode(props) {
           notebookData={props.notebookData}
           notebookDisplay={props.notebookDisplay}
           timeRange={timeRange}
+          isSmallScreen={props.isSmallScreen}
         />
       </Box>
     </Fragment>

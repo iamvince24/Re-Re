@@ -59,7 +59,7 @@ export default function GanttChart(props) {
         />
       </Settings>
 
-      <Grid>
+      <Grid isSmallScreen={props.isSmallScreen}>
         <TasksTest
           key={uuidv4()}
           tasks={tasks}
@@ -69,6 +69,7 @@ export default function GanttChart(props) {
           notebookDisplay={props.notebookDisplay}
           ganttUnfoldList={ganttUnfoldList}
           setGanttUnfoldList={setGanttUnfoldList}
+          isSmallScreen={props.isSmallScreen}
         />
         <GanttChartTest
           key={uuidv4()}
@@ -79,6 +80,7 @@ export default function GanttChart(props) {
           setTaskDurations={setTaskDurations}
           notebookData={notebookData}
           ganttUnfoldList={ganttUnfoldList}
+          isSmallScreen={props.isSmallScreen}
         />
       </Grid>
     </Fragment>

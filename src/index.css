@@ -14,7 +14,9 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: #f3d9d2;
+  /* background: #f3d9d2; */
+  background: var(--background-color);
+  background-image: url("./assets/img/noise_white.png");
 }
 
 code {
@@ -24,8 +26,12 @@ code {
 
 :root {
   /* --cell-height: 24px; */
-  --primary-color: #2e4af3;
-  --background-color: #f3d9d2;
+  /* --primary-color: #2e4af3; */
+  --primary-color: #d69f95;
+  --secondary-color: #144445;
+  /* --background-color: #f3d9d2; */
+  --background-color: #144445;
+  --buttton-background-color: #d69f95;
   --cell-height: 40px;
   --color-taskDuration-left: #2e4af3;
   --color-taskDuration-right: #ebf4f5;
@@ -63,6 +69,25 @@ code {
   --text-size-h3-1: 0.9rem;
   --text-size-h4: 0.8rem; */
 }
+
+.MuiButton-containedPrimary .Mui-active {
+  color: #d69f95;
+}
+
+.MuiBox-root {
+  background: var(--secondary-color);
+  background-image: url("./assets/img/noise_white.png");
+}
+
+/* .MuiBox-root .css-izdrea {
+  background: var(--secondary-color);
+  background-image: url("./assets/img/noise_white.png");
+}
+
+.MuiBox-root .css-1omejne {
+  background: var(--secondary-color);
+  background-image: url("./assets/img/noise_white.png");
+} */
 
 /* width */
 /* ::-webkit-scrollbar {

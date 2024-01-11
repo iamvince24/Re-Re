@@ -5,90 +5,66 @@ import { Box } from "@mui/system";
 import Button from "@mui/material/Button";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
+import SvgIcon from "@mui/material/SvgIcon";
+import Logo from "../assets/img/logo";
+import IconButton from "@mui/material/IconButton";
+import { LinkButton } from "../component/Button";
 
-const theme = createTheme({
-  palette: {
-    primary: {
-      main: "#2E4AF3",
-      // light: will be calculated from palette.primary.main,
-      // dark: will be calculated from palette.primary.main,
-      // contrastText: will be calculated to contrast with palette.primary.main
-    },
-    secondary: {
-      main: "#E0C2FF",
-      light: "#F5EBFF",
-      // dark: will be calculated from palette.secondary.main,
-      contrastText: "#47008F",
-    },
-    background: {
-      main: "#F3D9D2",
-    },
-  },
-});
-
-export default function Navigation() {
+export default function Navigation(props) {
   return (
     <Fragment>
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          color: "white",
-          padding: "15px 50px",
-          // backgroundColor: "var(--primary-color)",
-          borderBottom: "2px solid #F0D2CA",
-        }}
-      >
-        <Link
-          to="/"
-          style={{
-            color: "white",
-            textDecoration: "none",
-            display: "flex",
-            alignItems: "center",
-          }}
-        >
-          <img
-            src={logo2}
-            alt="re-re"
-            style={{
-              height: "35px",
-            }}
-          />
-        </Link>
+      <ThemeProvider theme={props.theme}>
         <Box
           sx={{
             display: "flex",
-            gap: "30px",
+            justifyContent: "space-between",
             alignItems: "center",
-            paddingTop: "5px",
+            color: "white",
+            padding: props.isSmall500 ? "7.5px 15px" : "15px 50px",
+            borderBottom: "1.5px solid #F0D2CA",
           }}
         >
           <Link
-            to="/login"
+            to="/"
+            color="secondary"
             style={{
-              color: "var(--primary-color)",
+              color: "white",
               textDecoration: "none",
-              fontWeight: 700,
+              display: "flex",
+              alignItems: "center",
             }}
           >
-            Log In
-          </Link>
-          <ThemeProvider theme={theme}>
-            <Button
-              size="small"
-              variant="contained"
+            <IconButton
               sx={{
-                backgroundColor: "var(--primary-color)",
-                boxShadow: "none",
+                "&:hover": {
+                  opacity: 0.9,
+                },
               }}
             >
+              <Logo
+                theme={props.theme}
+                // fontSize={"45px"}
+                isSmall500={props.isSmall500}
+              />
+            </IconButton>
+          </Link>
+          <Box
+            sx={{
+              display: "flex",
+              gap: props.isSmall500 ? "10px" : "30px",
+              alignItems: "center",
+              paddingTop: "5px",
+            }}
+          >
+            <LinkButton to="/login" isSmall500={props.isSmall500}>
+              Log In
+            </LinkButton>
+            <LinkButton to="/" isSmall500={props.isSmall500}>
               Start for free
-            </Button>
-          </ThemeProvider>
+            </LinkButton>
+          </Box>
         </Box>
-      </Box>
+      </ThemeProvider>
     </Fragment>
   );
 }

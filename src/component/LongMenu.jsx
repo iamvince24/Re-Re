@@ -3,6 +3,8 @@ import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
+import { Box } from "@mui/system";
+import { Fragment } from "react";
 
 import AlertDeleteDialog from "./AlertDeleteDialog";
 import AlertRenameDialog from "./AlertRenameDialog";
@@ -10,6 +12,7 @@ import FormDialog from "./FormDialog";
 import { Button } from "@mui/material";
 
 import { getDatabase, ref, set, child, push, update } from "firebase/database";
+import { ThemeProvider } from "@mui/material/styles";
 
 const options = ["Rename", "Delete"];
 
@@ -100,7 +103,7 @@ export default function LongMenu(props) {
   };
 
   return (
-    <div>
+    <Fragment>
       <IconButton
         aria-label="more"
         id="long-button"
@@ -108,7 +111,7 @@ export default function LongMenu(props) {
         aria-expanded={open ? "true" : undefined}
         aria-haspopup="true"
         onClick={handleClick}
-        sx={{ color: "#2E4AF3" }}
+        sx={{ color: `${props.theme.palette.primary.main}` }}
       >
         <MoreVertIcon fontSize="small" />
       </IconButton>
@@ -152,6 +155,6 @@ export default function LongMenu(props) {
           deleteMessage={props.deleteMessage}
         />
       </Menu>
-    </div>
+    </Fragment>
   );
 }

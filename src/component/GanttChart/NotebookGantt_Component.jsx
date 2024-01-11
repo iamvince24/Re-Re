@@ -180,7 +180,6 @@ export default function NotebookGanttComponent(props) {
       <div
         key={uuidv4()}
         style={{
-          // ...ganttTimePeriodCell,
           height: "40px",
           padding: "0.5px 0px",
           display: "flex",
@@ -194,8 +193,6 @@ export default function NotebookGanttComponent(props) {
           )} - 2 ) * var(--width-Days))`,
         }}
         data-task={notebook.id}
-        // data-date={formattedDate}
-        //   onDrop={onTaskDurationDrop}
       >
         <div
           key={uuidv4()}
@@ -221,10 +218,6 @@ export default function NotebookGanttComponent(props) {
             )} * var(--width-Days))`,
             opacity: taskDurationElDraggedId === notebook.id ? "0.5" : "1",
           }}
-          // onKeyDown={(e) => deleteTaskDuration(e, notebook.id)}
-          // onContextMenu={(e) =>
-          //   handleContextMenu(e, notebook.id, formattedDate)
-          // }
         ></div>
       </div>
     );
@@ -264,5 +257,16 @@ export default function NotebookGanttComponent(props) {
     }
   }
 
-  return <Fragment>{taskRows}</Fragment>;
+  return (
+    <Fragment>
+      {taskRows}
+      <style>
+        {`
+          .taskDuration {
+            // background-image: url("./assets/img/noise_white.png");
+          }
+        `}
+      </style>
+    </Fragment>
+  );
 }

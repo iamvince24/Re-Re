@@ -98,7 +98,6 @@ export default function NotebookListGantt(props) {
             height: "40px",
             display: "flex",
             alignContent: "center",
-            // padding: "0px 0px 0px 8px",
           }}
         >
           {open ? <ExpandLess /> : <ExpandMore />}
@@ -107,7 +106,10 @@ export default function NotebookListGantt(props) {
           </ImportContactsIcon>
           <ListItemText
             primary={props.notebook?.name}
-            primaryTypographyProps={{ fontWeight: 700, whiteSpace: "nowrap" }}
+            primaryTypographyProps={{
+              fontWeight: 700,
+              whiteSpace: "nowrap",
+            }}
           />
         </ListItemButton>
         {props.notebook?.Chapters
@@ -123,8 +125,6 @@ export default function NotebookListGantt(props) {
                   <List component="div" disablePadding sx={{ height: "40px" }}>
                     <ListItemButton
                       sx={{
-                        // py: 0.25,
-                        // py: 0,
                         p: 0,
                         ml: 6,
                         height: "40px",
