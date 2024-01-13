@@ -21,14 +21,14 @@ const theme = createTheme({
   palette: {
     primary: {
       // main: "#2E4AF3",
-      main: "#D69F95",
+      main: "#F4F4F3",
       light: "#F2D4CC",
     },
     lightPrimary: {
       main: "#f3d9d2",
     },
     secondary: {
-      main: "#144445",
+      main: "#262626",
       // light: "#F5EBFF",
       // contrastText: "#47008F",
     },
@@ -40,6 +40,19 @@ const theme = createTheme({
     },
     action: {
       hover: "white",
+    },
+    ganttHoliday: {
+      main: "rgb(71,71,71,0.4)",
+    },
+    dividerBorder: {
+      main: "#F4F4F3",
+    },
+    iconColor: {
+      white: {
+        solid: "#F4F4F3",
+        gradientLeft: "#F4F4F3",
+        gradientRight: "#F4F4F3",
+      },
     },
   },
 });

@@ -13,7 +13,7 @@ import { ThemeProvider } from "@mui/material/styles";
 
 export default function Application(props) {
   const isSmallScreen = useMediaQuery("(max-width:767px)");
-  const [mode, setMode] = useState(false);
+  const [mode, setMode] = useState(isSmallScreen ? false : true);
   const [open, setOpen] = useState(isSmallScreen ? false : true);
   const [notebookData, setNotebookData] = useState([
     {
@@ -129,7 +129,12 @@ export default function Application(props) {
           <AppBar
             position="fixed"
             open={open}
-            sx={{ bgcolor: "#F3D9D2", borderLeft: "3px solid #F0D2CA" }}
+            sx={{
+              bgcolor: "#F3D9D2",
+              borderLeft: open
+                ? `3px solid ${props.theme.palette.dividerBorder.main}`
+                : "none",
+            }}
           >
             {mode ? (
               <GanntMode

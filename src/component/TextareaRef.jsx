@@ -7,22 +7,22 @@ import styled from "styled-components";
 
 const toolBarHeight = 180;
 
-const TextArea = styled.textarea.attrs(() => ({
-  placeholder: "Type something...",
-}))`
-  resize: none;
-  all: unset;
-  width: 100%;
-  height: calc(100vh - ${toolBarHeight}px);
-  text-align: left;
-  /* padding: 20px 25px; */
-  color: #2e4af3;
-  overflow-y: scroll;
-  letter-spacing: 0.5px;
-  line-height: 22px;
-`;
-
 export default function TextareaRef(props) {
+  const TextArea = styled.textarea.attrs(() => ({
+    placeholder: "Type something...",
+  }))`
+    resize: none;
+    all: unset;
+    width: 100%;
+    height: calc(100vh - ${toolBarHeight}px);
+    text-align: left;
+    /* padding: 20px 25px; */
+    color: ${props.theme.palette.primary.main};
+    overflow-y: scroll;
+    letter-spacing: 0.5px;
+    line-height: 22px;
+  `;
+
   return (
     <TextArea
       // value={props.testContent}

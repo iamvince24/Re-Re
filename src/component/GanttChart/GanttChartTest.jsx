@@ -10,6 +10,7 @@ import Brightness1Icon from "@mui/icons-material/Brightness1";
 import NotebookGanttComponent from "./NotebookGantt_Component";
 
 export default function GanttChartTest({
+  theme,
   timeRange,
   tasks,
   setTasks,
@@ -18,22 +19,6 @@ export default function GanttChartTest({
   notebookData,
   ganttUnfoldList,
 }) {
-  const [contextMenu, setContextMenu] = useState(null);
-  const handleContextMenu = (event, taskId, formattedDate) => {
-    event.preventDefault();
-    const mouseX = event.clientX + 2;
-    const mouseY = event.clientY - 6;
-    setContextMenu({
-      mouseX,
-      mouseY,
-      taskId,
-      formattedDate,
-    });
-  };
-  const handleClose = () => {
-    setContextMenu(null);
-  };
-
   // for dynamic css styling
   const ganttTimePeriod = {
     display: "grid",
@@ -71,7 +56,6 @@ export default function GanttChartTest({
     // create month rows
     monthRows.push(
       <div
-        // key={i}
         key={uuidv4()}
         style={{
           ...ganttTimePeriod,
@@ -83,7 +67,8 @@ export default function GanttChartTest({
         <span
           style={{
             ...ganttTimePeriodSpan,
-            color: "var(--primary-color)",
+            // color: "var(--primary-color)",
+            color: `${theme.palette.primary.main}`,
             fontWeight: 500,
           }}
         >
@@ -110,7 +95,7 @@ export default function GanttChartTest({
             borderBottom: "1px solid var(--color-TimeTable-Border)",
             backgroundColor:
               dayOfWeek === 0 || dayOfWeek === 6
-                ? "var(--color-Holiday)"
+                ? `${theme.palette.ganttHoliday.main}`
                 : "none",
           }}
         >
@@ -166,6 +151,7 @@ export default function GanttChartTest({
           {notebookData?.map((notebook, index) => {
             return (
               <NotebookGanttComponent
+                theme={theme}
                 id={notebook.id}
                 key={index}
                 notebook={notebook}
@@ -182,36 +168,6 @@ export default function GanttChartTest({
           })}
         </div>
       </div>
-      {contextMenu && (
-        <Menu
-          open={true}
-          onClose={handleClose}
-          anchorReference="anchorPosition"
-          anchorPosition={{ top: contextMenu.mouseY, left: contextMenu.mouseX }}
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "space-between",
-          }}
-        >
-          <MenuItem
-            onClick={handleClose}
-            sx={{ gap: "5px", color: "var(--primary-color)" }}
-          >
-            <Brightness1Icon />
-            <Typography sx={{ color: "var(--primary-color)" }}>Blue</Typography>
-          </MenuItem>
-          <MenuItem onClick={handleClose} sx={{ gap: "5px", color: "#fbd07c" }}>
-            <Brightness1Icon />
-            <Typography sx={{ color: "#fbd07c" }}>Yellow</Typography>
-          </MenuItem>
-          <MenuItem onClick={handleClose} sx={{ gap: "5px", color: "#43b692" }}>
-            <Brightness1Icon />
-            <Typography sx={{ color: "#43b692" }}>Green</Typography>
-          </MenuItem>
-        </Menu>
-      )}
       <style>
         {`
         #gantt-grid-container__time {
@@ -239,7 +195,8 @@ export default function GanttChartTest({
           left: 0;
           width: 100%;
           height: 100%;
-          background: rgba(255, 255, 255, 0.3);
+          background: rgba(155, 155, 155, 0.2);
+          // background: ${theme.palette.ganttHoliday.main};
           z-index: 2;
         }
       `}

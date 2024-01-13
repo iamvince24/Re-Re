@@ -65,14 +65,14 @@ export default function DatePickerValue(props) {
     notebookData[notebookIdForFunc].Chapters[chapterIdForFunc].end
   );
 
-  function handleNewDate(startValue, endValue) {
+  const handleNewDate = (startValue, endValue) => {
     setStartValue(startValue);
     setEndValue(endValue);
     handleUpdateNewDate(
       dayjs(startValue).format(dateFormat),
       dayjs(endValue).format(dateFormat)
     );
-  }
+  };
 
   const handleUpdateNewDate = (startValue, endValue) => {
     const db = getDatabase();
@@ -116,7 +116,11 @@ export default function DatePickerValue(props) {
           }
 
           .custom-range-picker .anticon.anticon-swap-right {
-            color: #2e4af3;
+            color: var(--secondary-color);
+          }
+
+          .anticon .anticon-swap-right {
+            color: ${props.theme.palette.secondary.main};
           }
 
           :where(.css-dev-only-do-not-override-1w61365).ant-picker-range {
@@ -130,10 +134,15 @@ export default function DatePickerValue(props) {
             padding: 2.5px;
             border-radius: 4px;
             text-align: center;
+            font-weight: 700;
+          }
+
+          .custom-range-picker .anticon.anticon-swap-right {
+            color: ${props.theme.palette.secondary.main};
           }
 
           .custom-range-picker .ant-picker-input input:hover {
-            background: rgb(112, 132, 255, 0.2);
+            background: rgb(214, 159, 149, 0.15);
           }
 
           :where(.css-dev-only-do-not-override-abqk3i).ant-picker {
@@ -148,24 +157,28 @@ export default function DatePickerValue(props) {
             margin-inline-start: 0px;
           }
 
-          :where(.css-dev-only-do-not-override-1w61365).ant-picker-dropdown {
+          .ant-picker-dropdown-range {
             z-index: 10000;
+          }
+
+          .anticon svg {
+            ${props.theme.palette.secondary.main}
           }
         `}
       </style>
       <ConfigProvider
         theme={{
           token: {
-            colorPrimary: "#2E4AF3",
+            colorPrimary: `${props.theme.palette.secondary.main}`,
             borderRadius: 4,
-            hoverBorderColor: "#2E4AF3",
-            colorBorder: "#2E4AF3",
-            colorText: "#2E4AF3",
-            colorIcon: "#2E4AF3",
-            colorIconHover: "#2E4AF3",
+            hoverBorderColor: `${props.theme.palette.secondary.main}`,
+            colorBorder: `${props.theme.palette.secondary.main}`,
+            colorText: `${props.theme.palette.secondary.main}`,
+            colorIcon: `${props.theme.palette.secondary.main}`,
+            colorIconHover: `${props.theme.palette.secondary.main}`,
             warningActiveShadow: "none",
-            colorBgContainer: "#F3D9D2",
-            cellActiveWithRangeBg: "#F3D9D2",
+            // colorBgContainer: "#F3D9D2",
+            // cellActiveWithRangeBg: "#F3D9D2",
           },
         }}
       >
@@ -173,8 +186,10 @@ export default function DatePickerValue(props) {
           <RangePicker
             style={{
               border: "none",
-              background: "rgb(112,132,255,0.1)",
+              background: `${props.theme.palette.primary.main}`,
               marginTop: "-10px",
+              zIndex: "10000",
+              height: props.isSmallScreen ? "35px" : "42px",
             }}
             allowClear={false}
             allowEmpty={[false, false]}

@@ -10,6 +10,7 @@ import TextareaRef from "./TextareaRef";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import styled from "styled-components";
+import { ThemeProvider } from "@mui/material/styles";
 
 import { useSpring, animated } from "react-spring";
 import Markdown from "react-markdown";
@@ -115,123 +116,144 @@ export default function NotebookMode(props) {
 
   return (
     <Fragment>
-      <Box
-        sx={{
-          height: "100vh",
-          width: "100%",
-        }}
-      >
+      <ThemeProvider theme={props.theme}>
         <Box
           sx={{
-            height: "180px",
-            padding: "0px 20px 20px",
-            borderBottom: "3px solid #F2D4CC",
+            height: "100vh",
+            width: "100%",
           }}
         >
-          <Box sx={{ height: "70px", display: "flex", alignItems: "center" }}>
-            <IconButton
-              color="inherit"
-              aria-label="open drawer"
-              onClick={handleDrawerOpen}
-              edge="start"
-              sx={{
-                mr: 2,
-                ...(props.open && { display: "none" }),
-              }}
-            >
-              <MenuIcon sx={{ color: "#2E4AF3" }} />
-            </IconButton>
-            <CustomSeparator
-              notebookData={notebookData}
-              notebookDisplay={notebookDisplay}
-              mode={props.mode}
-            />
-          </Box>
-          <Typography
-            gutterBottom
-            sx={{
-              fontWeight: 900,
-              fontSize: "36px",
-              color: "#2E4AF3",
-              textTransform: "capitalize",
-              textAlign: "left",
-              marginTop: "-12.5px",
-            }}
-          >
-            {chapterName}
-          </Typography>
           <Box
             sx={{
-              textAlign: "left",
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
+              height: props.isSmallScreen ? "auto" : "180px",
+              padding: "0px 20px 20px",
+              borderBottom: props.isSmallScreen
+                ? `1.5px solid ${props.theme.palette.dividerBorder.main}`
+                : `3px solid ${props.theme.palette.dividerBorder.main}`,
             }}
           >
-            <DatePickerValue
-              notebookData={notebookData}
-              notebookDisplay={notebookDisplay}
-            />
+            <Box sx={{ height: "70px", display: "flex", alignItems: "center" }}>
+              <IconButton
+                color="inherit"
+                aria-label="open drawer"
+                onClick={handleDrawerOpen}
+                edge="start"
+                sx={{
+                  mr: 2,
+                  ...(props.open && { display: "none" }),
+                }}
+              >
+                <MenuIcon
+                  sx={{ color: `${props.theme.palette.primary.main}` }}
+                />
+              </IconButton>
+              <CustomSeparator
+                theme={props.theme}
+                notebookData={notebookData}
+                notebookDisplay={notebookDisplay}
+                mode={props.mode}
+              />
+            </Box>
+            <Typography
+              gutterBottom
+              sx={{
+                fontWeight: 900,
+                fontSize: "36px",
+                // color: "#2E4AF3",
+                color: `${props.theme.palette.primary.main}`,
+                textTransform: "capitalize",
+                textAlign: "left",
+                marginTop: "-12.5px",
+              }}
+            >
+              {chapterName}
+            </Typography>
+            <Box
+              sx={{
+                textAlign: "left",
+                display: "flex",
+                flexDirection: props.isSmallScreen ? "column" : "row",
+                justifyContent: "space-between",
+                alignItems: props.isSmallScreen ? "flex-start" : "center",
+                marginTop: "35px",
+                gap: props.isSmallScreen ? "20px" : "none",
+              }}
+            >
+              <DatePickerValue
+                theme={props.theme}
+                notebookData={notebookData}
+                notebookDisplay={notebookDisplay}
+                isSmallScreen={props.isSmallScreen}
+              />
+              {toggleNotebookDisplay ? (
+                <Button
+                  color="primary"
+                  variant="contained"
+                  sx={{
+                    textTransform: "capitalize",
+                    color: `${props.theme.palette.secondary.main}`,
+                    height: props.isSmallScreen ? "35px" : "42px",
+                    padding: "0px 15px",
+                    // marginTop: "-10px",
+                    letterSpacing: "0.5px",
+                    boxShadow: "none",
+                    fontWeight: 700,
+                  }}
+                  onClick={() => handleUpdateNotebookContent(markdownText)}
+                >
+                  Done
+                </Button>
+              ) : (
+                <Button
+                  color="primary"
+                  variant="contained"
+                  sx={{
+                    // background: "rgb(112, 132, 255, 0.1)",
+                    textTransform: "capitalize",
+                    color: `${props.theme.palette.secondary.main}`,
+                    height: props.isSmallScreen ? "35px" : "42px",
+                    padding: "0px 15px",
+                    marginTop: "-10px",
+                    letterSpacing: "0.5px",
+                    boxShadow: "none",
+                    fontWeight: 700,
+                  }}
+                  onClick={() => setToggleNotebookDisplay(true)}
+                >
+                  To Editor Markdown
+                </Button>
+              )}
+            </Box>
+          </Box>
+          <Box
+            sx={{
+              width: "100%",
+              padding: "20px",
+              lineHeight: "30px",
+              overflowY: "scroll",
+              height: `calc(100vh - ${toolBarHeight}px)`,
+            }}
+          >
             {toggleNotebookDisplay ? (
-              <Button
-                sx={{
-                  background: "rgb(112, 132, 255, 0.1)",
-                  textTransform: "capitalize",
-                  color: "#2E4AF3",
-                  height: "42px",
-                  padding: "0px 15px",
-                  marginTop: "-10px",
-                  letterSpacing: "0.5px",
-                }}
-                onClick={() => handleUpdateNotebookContent(markdownText)}
-              >
-                Done
-              </Button>
+              <TextareaRef
+                theme={props.theme}
+                testContent={
+                  notebookData[notebookIdForFunc]?.Chapters[chapterIdForFunc]
+                    .content
+                }
+                notebookData={props.notebookData}
+                notebookDisplay={props.notebookDisplay}
+                markdownText={markdownText}
+                handleInputChange={handleInputChange}
+              />
             ) : (
-              <Button
-                sx={{
-                  background: "rgb(112, 132, 255, 0.1)",
-                  textTransform: "capitalize",
-                  color: "#2E4AF3",
-                  height: "42px",
-                  padding: "0px 15px",
-                  marginTop: "-10px",
-                  letterSpacing: "0.5px",
-                }}
-                onClick={() => setToggleNotebookDisplay(true)}
-              >
-                To Editor Markdown
-              </Button>
+              <TextArea>
+                <Markdown>{markdownText}</Markdown>
+              </TextArea>
             )}
           </Box>
         </Box>
-        <Box
-          sx={{
-            width: "100%",
-            padding: "20px",
-            lineHeight: "30px",
-            overflowY: "scroll",
-            height: `calc(100vh - ${toolBarHeight}px)`,
-          }}
-        >
-          {toggleNotebookDisplay ? (
-            <TextareaRef
-              testContent={
-                notebookData[notebookIdForFunc]?.Chapters[chapterIdForFunc]
-                  .content
-              }
-              notebookData={props.notebookData}
-              notebookDisplay={props.notebookDisplay}
-              markdownText={markdownText}
-              handleInputChange={handleInputChange}
-            />
-          ) : (
-            <TextArea>
-              <Markdown>{markdownText}</Markdown>
-            </TextArea>
-          )}
-        </Box>
-      </Box>
+      </ThemeProvider>
     </Fragment>
   );
 }

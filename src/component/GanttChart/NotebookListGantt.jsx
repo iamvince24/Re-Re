@@ -23,28 +23,8 @@ import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 
-const theme = createTheme({
-  palette: {
-    primary: {
-      main: "#2E4AF3",
-      // light: will be calculated from palette.primary.main,
-      // dark: will be calculated from palette.primary.main,
-      // contrastText: will be calculated to contrast with palette.primary.main
-    },
-    secondary: {
-      main: "#E0C2FF",
-      light: "#F5EBFF",
-      // dark: will be calculated from palette.secondary.main,
-      contrastText: "#47008F",
-    },
-    background: {
-      main: "#F3D9D2",
-    },
-  },
-});
-
 export default function NotebookListGantt(props) {
-  const { ganttUnfoldList, setGanttUnfoldList } = props;
+  const { ganttUnfoldList, setGanttUnfoldList, theme } = props;
   const unfold = ganttUnfoldList.list.includes(props.notebook.id);
   const [open, setOpen] = useState(false);
   // const [open, setOpen] = useState(true);
@@ -83,10 +63,8 @@ export default function NotebookListGantt(props) {
       <List
         sx={{
           width: "100%",
-          bgcolor: "#F3D9D2",
-          color: "#2E4AF3",
-          // py: "3px",
-          // py: 0.5,
+          // bgcolor: "#F3D9D2",
+          color: `${theme.palette.primary.main}`,
           py: 0,
         }}
         component="nav"
@@ -98,10 +76,17 @@ export default function NotebookListGantt(props) {
             height: "40px",
             display: "flex",
             alignContent: "center",
+            color: `${theme.palette.primary.main}`,
+            px: 1,
+            "&:hover": {
+              backgroundColor: "rgb(214, 159, 149, 0.15)",
+            },
           }}
         >
           {open ? <ExpandLess /> : <ExpandMore />}
-          <ImportContactsIcon sx={{ color: "#2E4AF3", mx: "10px" }}>
+          <ImportContactsIcon
+            sx={{ color: `${theme.palette.primary.main}`, mx: "10px" }}
+          >
             <InboxIcon />
           </ImportContactsIcon>
           <ListItemText
@@ -109,6 +94,7 @@ export default function NotebookListGantt(props) {
             primaryTypographyProps={{
               fontWeight: 700,
               whiteSpace: "nowrap",
+              color: `${theme.palette.primary.main}`,
             }}
           />
         </ListItemButton>
@@ -125,14 +111,18 @@ export default function NotebookListGantt(props) {
                   <List component="div" disablePadding sx={{ height: "40px" }}>
                     <ListItemButton
                       sx={{
-                        p: 0,
-                        ml: 6,
+                        pl: 5,
+                        py: 0,
                         height: "40px",
+                        color: `${theme.palette.primary.main}`,
+                        "&:hover": {
+                          backgroundColor: "rgb(214, 159, 149, 0.15)",
+                        },
                       }}
                     >
                       <ArticleOutlinedIcon
                         sx={{
-                          color: "#2E4AF3",
+                          color: `${theme.palette.primary.main}`,
                           marginRight: "10px",
                         }}
                       >

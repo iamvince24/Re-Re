@@ -15,7 +15,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   /* background: #f3d9d2; */
-  background: var(--background-color);
+  background: var(--secondary-color);
   background-image: url("./assets/img/noise_white.png");
 }
 
@@ -27,24 +27,29 @@ code {
 :root {
   /* --cell-height: 24px; */
   /* --primary-color: #2e4af3; */
-  --primary-color: #d69f95;
-  --secondary-color: #144445;
+  --primary-color: #f4f4f3;
+  --secondary-color: #262626;
   /* --background-color: #f3d9d2; */
   --background-color: #144445;
   --buttton-background-color: #d69f95;
   --cell-height: 40px;
-  --color-taskDuration-left: #2e4af3;
-  --color-taskDuration-right: #ebf4f5;
+  /* --color-taskDuration-left: #d69f95;
+  --color-taskDuration-right: #ebf4f5; */
+  --color-taskDuration-left: #f4f4f3;
+  --color-taskDuration-right: #b3b3b3;
+  /* --color-taskDuration: rgb(15, 56, 56, 0.9); */
+  --color-taskDuration: #f4f4f3;
   --color-tertiary: #ececec;
   --color-outline: white;
   --color-SeparationLine: #808080;
   --color-Divider: #f2d4cc;
   --color-Gantt-Outline: #fefcfc;
   --color-Tasks-Border-Bottom: #fefcfc;
-  --color-TimeTable-Border: #fefcfc;
+  --color-TimeTable-Border: #f4f4f3;
   /* --color-TimeTable-TaskRow-BorderRight: #fefcfc; */
   /* --color-Holiday: #f0d2ca; */
-  --color-Holiday: rgb(240, 210, 202, 0.7);
+  /* --color-Holiday: rgb(15, 56, 56, 0.3); */
+  --color-Holiday: #b3b3b3;
   --border-radius: 5px;
   /* --width-Days: 60px; */
   --width-Days: 30px;
@@ -115,6 +120,10 @@ code {
   position: relative;
   z-index: 30000;
 } */
+
+.MuiBox-root .css-1k43qvq text {
+  color: var(--primary-color);
+}
 
 h1 {
   margin: 10px 0px 5px;

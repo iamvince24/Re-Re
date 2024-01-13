@@ -39,6 +39,7 @@ const logInWithEmailAndPassword = async (auth, email, password) => {
   try {
     const res = await signInWithEmailAndPassword(auth, email, password);
     const user = res.user;
+    console.log(user);
     window.localStorage.setItem("uid", user.uid);
   } catch (err) {
     console.error(err);
@@ -68,11 +69,13 @@ const signInWithGoogle = async () => {
   try {
     const res = await signInWithPopup(auth, googleProvider);
     const user = res.user;
+    // console.log(user);
     const uid = user.uid;
     // const q = query(collection(db, "users"), where("uid", "==", user.uid));
     // const docs = await getDocs(q);
 
     window.localStorage.setItem("uid", user.uid);
+    window.localStorage.setItem("username", user.displayName);
 
     const fetchData = async (uid) => {
       try {

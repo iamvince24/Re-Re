@@ -56,8 +56,12 @@ export default function DateRangePicker(props) {
             color: green;
           }
 
+          .anticon .anticon-swap-right {
+            color: var(--secondary-color);
+          }
+
           .custom-range-picker .anticon.anticon-swap-right {
-            color: #2e4af3;
+            color: ${props.theme.palette.secondary.main};
           }
 
           :where(.css-dev-only-do-not-override-1w61365).ant-picker-range {
@@ -71,10 +75,11 @@ export default function DateRangePicker(props) {
             padding: 2.5px;
             border-radius: 4px;
             text-align: center;
+            font-weight: 700;
           }
 
           .custom-range-picker .ant-picker-input input:hover {
-            background: rgb(112, 132, 255, 0.2);
+            background: rgb(214, 159, 149, 0.15);
           }
 
           :where(.css-dev-only-do-not-override-abqk3i).ant-picker {
@@ -92,18 +97,22 @@ export default function DateRangePicker(props) {
           :where(.css-dev-only-do-not-override-1w61365).ant-picker-dropdown {
             z-index: 10000;
           }
+
+          .ant-picker-dropdown-range {
+            z-index: 10000;
+          }
         `}
       </style>
       <ConfigProvider
         theme={{
           token: {
-            colorPrimary: "#2E4AF3",
+            colorPrimary: `${props.theme.palette.secondary.main}`,
             borderRadius: 4,
-            hoverBorderColor: "#2E4AF3",
-            colorBorder: "#2E4AF3",
-            colorText: "#2E4AF3",
-            colorIcon: "#2E4AF3",
-            colorIconHover: "#2E4AF3",
+            hoverBorderColor: `${props.theme.palette.secondary.main}`,
+            colorBorder: `${props.theme.palette.secondary.main}`,
+            colorText: `${props.theme.palette.secondary.main}`,
+            colorIcon: `${props.theme.palette.secondary.main}`,
+            colorIconHover: `${props.theme.palette.secondary.main}`,
             warningActiveShadow: "none",
             colorBgContainer: "#F3D9D2",
             cellActiveWithRangeBg: "#F3D9D2",
@@ -114,7 +123,9 @@ export default function DateRangePicker(props) {
           <RangePicker
             style={{
               border: "none",
-              background: "rgb(112,132,255,0.1)",
+              background: `${props.theme.palette.primary.main}`,
+              zIndex: "10000",
+              height: "42px",
             }}
             picker="month"
             allowClear={false}
@@ -125,7 +136,6 @@ export default function DateRangePicker(props) {
             onChange={(newValue) => {
               const [startValue, endValue] = newValue;
               handleNewDate(startValue, endValue);
-
               setTimeRange((prevState) => ({
                 ...prevState,
                 fromSelectMonth: startValue.$M,

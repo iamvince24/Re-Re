@@ -66,8 +66,7 @@ export default function GanntMode(props) {
             // height: "180px",
             height: "auto",
             padding: "0px 20px 20px",
-            borderBottom: "3px solid #F2D4CC",
-            marginBottom: "25px",
+            borderBottom: `3px solid ${props.theme.palette.dividerBorder.main}`,
           }}
         >
           <Box sx={{ height: "70px", display: "flex", alignItems: "center" }}>
@@ -81,9 +80,10 @@ export default function GanntMode(props) {
                 ...(props.open && { display: "none" }),
               }}
             >
-              <MenuIcon sx={{ color: "#2E4AF3" }} />
+              <MenuIcon sx={{ color: `${props.theme.palette.primary.main}` }} />
             </IconButton>
             <CustomSeparator
+              theme={props.theme}
               notebookData={props.notebookData}
               notebookDisplay={props.notebookDisplay}
               mode={props.mode}
@@ -95,7 +95,7 @@ export default function GanntMode(props) {
               fontWeight: 900,
               // typography: "h1",
               fontSize: "36px",
-              color: "#2E4AF3",
+              color: `${props.theme.palette.primary.main}`,
               textTransform: "capitalize",
               textAlign: "left",
               marginTop: "-12.5px",
@@ -112,23 +112,28 @@ export default function GanntMode(props) {
                 props.isSmallScreen ? "flex-start" : "space-between"
               }`,
               alignItems: `${props.isSmallScreen ? "flex-start" : "center"}`,
+              marginTop: "35px",
             }}
           >
             <DateRangePicker
+              theme={props.theme}
               notebookData={props.notebookData}
               notebookDisplay={props.notebookDisplay}
               timeRange={timeRange}
               setTimeRange={setTimeRange}
             />
             <Button
+              variant="contained"
               sx={{
-                background: "rgb(112, 132, 255, 0.1)",
+                // background: "rgb(112, 132, 255, 0.1)",
                 textTransform: "capitalize",
-                color: "#2E4AF3",
+                color: `${props.theme.palette.secondary.main}`,
                 height: "42px",
                 padding: "0px 20px",
                 marginTop: `${props.isSmallScreen ? "10px" : "0px"}`,
                 letterSpacing: "0.5px",
+                boxShadow: "none",
+                fontWeight: 700,
               }}
               onClick={() => {
                 handleGanttMoveToday();
@@ -140,6 +145,7 @@ export default function GanntMode(props) {
         </Box>
 
         <GanttChart
+          theme={props.theme}
           notebookData={props.notebookData}
           notebookDisplay={props.notebookDisplay}
           timeRange={timeRange}

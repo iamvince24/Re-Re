@@ -21,22 +21,6 @@ import {
   signInWithGoogle,
 } from "../firebase";
 
-// const theme = createTheme({
-//   palette: {
-//     primary: {
-//       main: "#144445",
-//     },
-//     secondary: {
-//       main: "#E0C2FF",
-//       light: "#F5EBFF",
-//       contrastText: "#47008F",
-//     },
-//     background: {
-//       main: "#F3D9D2",
-//     },
-//   },
-// });
-
 export default function Login(props) {
   const [email, setEmail] = useState("test@gmail.com");
   const [password, setPassword] = useState("test123");
@@ -86,11 +70,10 @@ export default function Login(props) {
               flexDirection: "column",
               gap: "20px",
               padding: props.isSmall500 ? "20px 20px 10px" : "40px 40px 20px",
-              backgroundColor: "var(--buttton-background-color)",
+              backgroundColor: `${props.theme.palette.primary.main}`,
             }}
           >
             <Typography
-              // variant="h5"
               color="secondary"
               sx={{
                 fontSize: props.isSmall500 ? 20 : 25,

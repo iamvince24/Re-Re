@@ -5,6 +5,7 @@ import Typography from "@mui/material/Typography";
 import Link from "@mui/material/Link";
 import Stack from "@mui/material/Stack";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
+import { ThemeProvider } from "@mui/material/styles";
 
 function handleClick(event) {
   event.preventDefault();
@@ -58,59 +59,55 @@ export default function CustomSeparator(props) {
   // ];
 
   return (
-    <Stack spacing={2}>
-      <Breadcrumbs
-        separator={<NavigateNextIcon fontSize="small" />}
-        aria-label="breadcrumb"
-      >
-        {mode ? (
-          <Link
-            //   underline="hover"
-            underline="none"
-            key="1"
-            color="inherit"
-          >
-            All Notebooks Gantt
-          </Link>
-        ) : (
-          <Link
-            //   underline="hover"
-            underline="none"
-            key="1"
-            color="inherit"
-          >
-            All
-          </Link>
-        )}
-        {mode ? null : (
-          <Link
-            //   underline="hover"
-            underline="none"
-            key="1"
-            color="inherit"
-          >
-            {
-              // notebookData[notebookDisplay.notebookId - 1].name
-              targetNotebook[0]?.name
-            }
-          </Link>
-        )}
-        {mode ? null : (
-          <Link
-            //   underline="hover"
-            underline="none"
-            key="2"
-            color="inherit"
-          >
-            {
-              // notebookData[notebookDisplay.notebookId - 1].Chapters[
-              //   notebookDisplay.chapterId - 1
-              // ].name
-              chapter[0]?.name
-            }
-          </Link>
-        )}
-      </Breadcrumbs>
-    </Stack>
+    <ThemeProvider theme={props.theme}>
+      <Stack spacing={2}>
+        <Breadcrumbs
+          separator={<NavigateNextIcon fontSize="small" />}
+          aria-label="breadcrumb"
+          color="primary"
+        >
+          {mode ? (
+            <Link
+              //   underline="hover"
+              underline="none"
+              key="1"
+              color="inherit"
+              sx={{ color: `${props.theme.palette.primary.main}` }}
+            >
+              All Notebooks Gantt
+            </Link>
+          ) : (
+            <Link
+              //   underline="hover"
+              underline="none"
+              key="1"
+              color="inherit"
+            >
+              All
+            </Link>
+          )}
+          {mode ? null : (
+            <Link
+              //   underline="hover"
+              underline="none"
+              key="1"
+              color="inherit"
+            >
+              {targetNotebook[0]?.name}
+            </Link>
+          )}
+          {mode ? null : (
+            <Link
+              //   underline="hover"
+              underline="none"
+              key="2"
+              color="inherit"
+            >
+              {chapter[0]?.name}
+            </Link>
+          )}
+        </Breadcrumbs>
+      </Stack>
+    </ThemeProvider>
   );
 }

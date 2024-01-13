@@ -11,6 +11,7 @@ export default function TasksTest(
     notebookData,
     ganttUnfoldList,
     setGanttUnfoldList,
+    theme,
   },
   props
 ) {
@@ -33,6 +34,7 @@ export default function TasksTest(
         {notebookData &&
           notebookData.map((notebook, index) => (
             <NotebookListGantt
+              theme={theme}
               notebook={notebook}
               key={`${notebook.id}-${index}`}
               ganttUnfoldList={ganttUnfoldList}
@@ -52,7 +54,9 @@ export default function TasksTest(
             display: flex;
             text-align: center;
             height: var(--cell-height);
-            border-bottom: 1px solid var(--color-Tasks-Border-Bottom);
+            // border-bottom: 1px solid var(--color-Tasks-Border-Bottom);
+            border-bottom: 1px solid ${theme.palette.primary.main};
+       
           }
 
           .gantt-task-row {

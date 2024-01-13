@@ -17,22 +17,6 @@ import { getDatabase, ref, set, child, push, update } from "firebase/database";
 import Notebook from "./notebook";
 import { logout } from "../firebase";
 
-// const theme = createTheme({
-//   palette: {
-//     primary: {
-//       main: "#2E4AF3",
-//     },
-//     secondary: {
-//       main: "#E0C2FF",
-//       light: "#F5EBFF",
-//       contrastText: "#47008F",
-//     },
-//     background: {
-//       main: "#F3D9D2",
-//     },
-//   },
-// });
-
 function writeNewPost(uid, id) {
   const db = getDatabase();
 
@@ -88,6 +72,7 @@ function formatDate(date) {
 export default function Menu(props) {
   const [notebookList, setNotebookList] = useState(props.notebookData);
   const navigate = useNavigate();
+  const username = window.localStorage.getItem("username");
 
   const handleDrawerClose = () => {
     props.setOpen(false);
@@ -103,6 +88,7 @@ export default function Menu(props) {
   const handleLogOut = () => {
     logout();
     window.localStorage.removeItem("uid");
+    window.localStorage.removeItem("username");
     navigate("/");
   };
 
@@ -119,9 +105,6 @@ export default function Menu(props) {
           minWidth: "300px",
           padding: "0px 20px",
           overflow: "scroll",
-          // bgcolor: "#F3D9D2",
-          // bgcolor: "#144445",
-          // backgroundImage: 'url("../assets/img/noise_white.png")',
         }}
       >
         <Box
@@ -156,18 +139,21 @@ export default function Menu(props) {
               sx={{
                 fontWeight: "900",
                 backgroundColor: `${props.theme.palette.primary.main}`,
-                // color: "white",
+                color: `${props.theme.palette.secondary.main}`,
               }}
             />
+
             <Typography
-              fontSize={"lg"}
               sx={{
+                fontFamily: "inter",
                 fontWeight: 900,
                 color: `${props.theme.palette.primary.main}`,
                 textTransform: "capitalize",
+                fontSize: "22px",
+                marginTop: "2px",
               }}
             >
-              Vince Guo
+              {username ? username : "User"}
             </Typography>
           </Button>
           <IconButton
@@ -189,6 +175,7 @@ export default function Menu(props) {
           sx={{
             width: "100%",
             boxShadow: "none",
+            display: props.isSmallScreen ? "none" : "flex",
           }}
         >
           <Button
@@ -212,8 +199,6 @@ export default function Menu(props) {
             color="primary"
             sx={{
               width: "50%",
-              // color: "#2E4AF3"
-              // color: `${props.theme.palette.primary.main}`,
               color: `${props.theme.palette.secondary.main}`,
               fontWeight: "700",
             }}

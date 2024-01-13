@@ -61,6 +61,7 @@ export default function GanttChart(props) {
 
       <Grid isSmallScreen={props.isSmallScreen}>
         <TasksTest
+          theme={props.theme}
           key={uuidv4()}
           tasks={tasks}
           setTasks={setTasks}
@@ -72,6 +73,7 @@ export default function GanttChart(props) {
           isSmallScreen={props.isSmallScreen}
         />
         <GanttChartTest
+          theme={props.theme}
           key={uuidv4()}
           timeRange={timeRange}
           tasks={tasks}

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Fragment, useState } from "react";
+import { Fragment, useState, useEffect } from "react";
 import {
   monthDiff,
   getDaysInMonth,
@@ -10,9 +10,15 @@ import {
 } from "../../utils/dateFunctions";
 import { v4 as uuidv4 } from "uuid";
 import { months } from "../../utils/constants";
+import Button from "@mui/material/Button";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import Typography from "@mui/joy/Typography";
+import Brightness1Icon from "@mui/icons-material/Brightness1";
 
 export default function NotebookGanttComponent(props) {
   const {
+    theme,
     id,
     notebook,
     timeRange,
@@ -34,6 +40,22 @@ export default function NotebookGanttComponent(props) {
   function handleDragStart(taskDurationId) {
     setTaskDurationElDraggedId(taskDurationId);
   }
+
+  const [contextMenu, setContextMenu] = useState(null);
+  const handleContextMenu = (event, taskId, formattedDate) => {
+    event.preventDefault();
+    const mouseX = event.clientX + 2;
+    const mouseY = event.clientY - 6;
+    setContextMenu({
+      mouseX,
+      mouseY,
+      taskId,
+      formattedDate,
+    });
+  };
+  const handleClose = () => {
+    setContextMenu(null);
+  };
 
   let taskRows = [];
   let notebookTitleRow = [];
@@ -64,7 +86,9 @@ export default function NotebookGanttComponent(props) {
             borderRight:
               "0.5px solid var(--color-TimeTable-TaskRow-BorderRight)",
             backgroundColor:
-              dayOfTheWeek === "S" ? "var(--color-Holiday)" : "none",
+              dayOfTheWeek === "S"
+                ? `${theme.palette.ganttHoliday.main}`
+                : "none",
           }}
           data-task={notebook.id}
           data-date={formattedDate}
@@ -106,7 +130,7 @@ export default function NotebookGanttComponent(props) {
           height: "calc(var(--cell-height) - 10px)",
           zIndex: "5",
           background:
-            "linear-gradient(90deg, var(--color-taskDuration-left) 10%, var(--color-taskDuration-right) 100%)",
+            "linear-gradient(90deg, var(--color-taskDuration-left) 30%, var(--color-taskDuration-right) 100%)",
           borderRadius: "var(--border-radius)",
           boxShadow: "3px 3px 3px rgba(0, 0, 0, 0.05)",
           cursor: "move",
@@ -119,9 +143,7 @@ export default function NotebookGanttComponent(props) {
           opacity: taskDurationElDraggedId === notebook.id ? "0.5" : "1",
         }}
         onKeyDown={(e) => deleteTaskDuration(e, notebook.id)}
-        // onContextMenu={(e) =>
-        //   handleContextMenu(e, notebook.id, formattedDate)
-        // }
+        onContextMenu={(e) => handleContextMenu(e, notebook.id)}
       ></div>
     </div>
   );
@@ -164,7 +186,9 @@ export default function NotebookGanttComponent(props) {
               borderRight:
                 "0.5px solid var(--color-TimeTable-TaskRow-BorderRight)",
               backgroundColor:
-                dayOfTheWeek === "S" ? "var(--color-Holiday)" : "none",
+                dayOfTheWeek === "S"
+                  ? `${theme.palette.ganttHoliday.main}`
+                  : "none",
             }}
             data-task={chapter.id}
             data-date={formattedDateInner}
@@ -267,6 +291,36 @@ export default function NotebookGanttComponent(props) {
           }
         `}
       </style>
+      {contextMenu && (
+        <Menu
+          open={true}
+          onClose={handleClose}
+          anchorReference="anchorPosition"
+          anchorPosition={{ top: contextMenu.mouseY, left: contextMenu.mouseX }}
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "space-between",
+          }}
+        >
+          <MenuItem
+            onClick={handleClose}
+            sx={{ gap: "5px", color: "var(--primary-color)" }}
+          >
+            <Brightness1Icon />
+            <Typography sx={{ color: "var(--primary-color)" }}>Blue</Typography>
+          </MenuItem>
+          <MenuItem onClick={handleClose} sx={{ gap: "5px", color: "#fbd07c" }}>
+            <Brightness1Icon />
+            <Typography sx={{ color: "#fbd07c" }}>Yellow</Typography>
+          </MenuItem>
+          <MenuItem onClick={handleClose} sx={{ gap: "5px", color: "#43b692" }}>
+            <Brightness1Icon />
+            <Typography sx={{ color: "#43b692" }}>Green</Typography>
+          </MenuItem>
+        </Menu>
+      )}
     </Fragment>
   );
 }
