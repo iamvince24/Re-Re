@@ -47,11 +47,41 @@ const theme = createTheme({
     dividerBorder: {
       main: "#F4F4F3",
     },
-    iconColor: {
+    colorOption: {
       white: {
         solid: "#F4F4F3",
-        gradientLeft: "#F4F4F3",
-        gradientRight: "#F4F4F3",
+        gradient: {
+          gradientLeft: "#b3b3b3",
+          gradientRight: "#F4F4F3",
+        },
+      },
+      blue: {
+        solid: "#2E4AF3",
+        gradient: {
+          gradientLeft: "#2E4AF3",
+          gradientRight: "#469EFF",
+        },
+      },
+      yellow: {
+        solid: "#FEB902",
+        gradient: {
+          gradientLeft: "#FEB902",
+          gradientRight: "#FFE49D",
+        },
+      },
+      red: {
+        solid: "#FE0000",
+        gradient: {
+          gradientLeft: "#FE0000",
+          gradientRight: "#FF6363",
+        },
+      },
+      green: {
+        solid: "#008D8B",
+        gradient: {
+          gradientLeft: "#008D8B",
+          gradientRight: "#00E3E0",
+        },
       },
     },
   },

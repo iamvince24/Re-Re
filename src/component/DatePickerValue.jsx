@@ -23,13 +23,13 @@ const dateFormat = "YYYY-MM-DD";
 export default function DatePickerValue(props) {
   const { notebookData, notebookDisplay } = props;
 
-  const targetNotebook = notebookData.filter((notebook) => {
+  let targetNotebook = notebookData.filter((notebook) => {
     if (notebook.id === notebookDisplay.notebookId) {
       return notebook;
     }
   });
 
-  const chapter = targetNotebook[0].Chapters.filter((chapter) => {
+  let chapter = targetNotebook[0].Chapters.filter((chapter) => {
     if (chapter.id === notebookDisplay.chapterId) {
       return chapter;
     }
@@ -39,14 +39,33 @@ export default function DatePickerValue(props) {
   let notebookIdForFunc = 0;
   let chapterIdForFunc = 0;
 
+  // for (var i = 0; i < props.notebookData.length; i++) {
+  //   if (props.notebookData[i]?.id === props.id) {
+  //     notebookIdForFunc = i;
+  //     if (props.chapterId !== undefined) {
+  //       for (var j = 0; j < props.notebookData[i].Chapters.length; j++) {
+  //         if (
+  //           props.notebookData[notebookIdForFunc].Chapters[j]?.id ===
+  //           props.chapterId
+  //         ) {
+  //           chapterIdForFunc = j;
+  //           break;
+  //         }
+  //       }
+  //     } else {
+  //       break;
+  //     }
+  //   }
+  // }
+
   for (var i = 0; i < props.notebookData.length; i++) {
-    if (props.notebookData[i]?.id === props.id) {
+    if (props.notebookData[i]?.id === notebookDisplay.notebookId) {
       notebookIdForFunc = i;
       if (props.chapterId !== undefined) {
         for (var j = 0; j < props.notebookData[i].Chapters.length; j++) {
           if (
             props.notebookData[notebookIdForFunc].Chapters[j]?.id ===
-            props.chapterId
+            notebookDisplay.chapterId
           ) {
             chapterIdForFunc = j;
             break;
@@ -58,12 +77,17 @@ export default function DatePickerValue(props) {
     }
   }
 
-  const [startvalue, setStartValue] = useState(
-    notebookData[notebookIdForFunc].Chapters[chapterIdForFunc].start
-  );
-  const [endvalue, setEndValue] = useState(
-    notebookData[notebookIdForFunc].Chapters[chapterIdForFunc].end
-  );
+  // console.log(notebookIdForFunc, chapterIdForFunc);
+
+  // const [startvalue, setStartValue] = useState(
+  //   notebookData[notebookIdForFunc]?.Chapters[chapterIdForFunc].start
+  // );
+  // const [endvalue, setEndValue] = useState(
+  //   notebookData[notebookIdForFunc]?.Chapters[chapterIdForFunc].end
+  // );
+
+  const [startvalue, setStartValue] = useState(dayjs(chapter[0]?.start));
+  const [endvalue, setEndValue] = useState(dayjs(chapter[0]?.end));
 
   const handleNewDate = (startValue, endValue) => {
     setStartValue(startValue);
@@ -91,8 +115,27 @@ export default function DatePickerValue(props) {
   };
 
   useEffect(() => {
-    setStartValue(dayjs(chapter[0]?.start));
-    setEndValue(dayjs(chapter[0]?.end));
+    for (var i = 0; i < props.notebookData.length; i++) {
+      if (props.notebookData[i]?.id === notebookDisplay.notebookId) {
+        notebookIdForFunc = i;
+        for (var j = 0; j < props.notebookData[i].Chapters.length; j++) {
+          if (
+            props.notebookData[notebookIdForFunc].Chapters[j]?.id ===
+            notebookDisplay.chapterId
+          ) {
+            chapterIdForFunc = j;
+            break;
+          }
+        }
+      }
+    }
+
+    setStartValue(
+      notebookData[notebookIdForFunc]?.Chapters[chapterIdForFunc].start
+    );
+    setEndValue(
+      notebookData[notebookIdForFunc]?.Chapters[chapterIdForFunc].end
+    );
   }, [notebookData, notebookDisplay]);
 
   return (
@@ -115,12 +158,8 @@ export default function DatePickerValue(props) {
             color: green;
           }
 
-          .custom-range-picker .anticon.anticon-swap-right {
-            color: var(--secondary-color);
-          }
-
-          .anticon .anticon-swap-right {
-            color: ${props.theme.palette.secondary.main};
+          .custom-range-picker .ant-picker-input input:hover {
+            background: rgb(198, 198, 198, 0.3);
           }
 
           :where(.css-dev-only-do-not-override-1w61365).ant-picker-range {
@@ -135,14 +174,6 @@ export default function DatePickerValue(props) {
             border-radius: 4px;
             text-align: center;
             font-weight: 700;
-          }
-
-          .custom-range-picker .anticon.anticon-swap-right {
-            color: ${props.theme.palette.secondary.main};
-          }
-
-          .custom-range-picker .ant-picker-input input:hover {
-            background: rgb(214, 159, 149, 0.15);
           }
 
           :where(.css-dev-only-do-not-override-abqk3i).ant-picker {
@@ -187,7 +218,6 @@ export default function DatePickerValue(props) {
             style={{
               border: "none",
               background: `${props.theme.palette.primary.main}`,
-              marginTop: "-10px",
               zIndex: "10000",
               height: props.isSmallScreen ? "35px" : "42px",
             }}

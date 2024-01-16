@@ -18,17 +18,11 @@ import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
 import StarBorder from "@mui/icons-material/StarBorder";
 import ArticleOutlinedIcon from "@mui/icons-material/ArticleOutlined";
-import LongMenu from "../LongMenu";
-import MenuIcon from "@mui/icons-material/Menu";
-import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 
 export default function NotebookListGantt(props) {
   const { ganttUnfoldList, setGanttUnfoldList, theme } = props;
   const unfold = ganttUnfoldList.list.includes(props.notebook.id);
   const [open, setOpen] = useState(false);
-  // const [open, setOpen] = useState(true);
-  // console.log(open);
 
   const handleClick = (event) => {
     event.stopPropagation();
@@ -79,7 +73,7 @@ export default function NotebookListGantt(props) {
             color: `${theme.palette.primary.main}`,
             px: 1,
             "&:hover": {
-              backgroundColor: "rgb(214, 159, 149, 0.15)",
+              backgroundColor: "rgba(155, 155, 155, 0.2)",
             },
           }}
         >
@@ -116,7 +110,7 @@ export default function NotebookListGantt(props) {
                         height: "40px",
                         color: `${theme.palette.primary.main}`,
                         "&:hover": {
-                          backgroundColor: "rgb(214, 159, 149, 0.15)",
+                          backgroundColor: "rgba(155, 155, 155, 0.2)",
                         },
                       }}
                     >

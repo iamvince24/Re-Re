@@ -21,7 +21,7 @@ export default function Navigation(props) {
             alignItems: "center",
             color: "white",
             padding: props.isSmall500 ? "7.5px 15px" : "15px 50px",
-            borderBottom: "1.5px solid #F0D2CA",
+            borderBottom: "1.5px solid var(--primary-color)",
           }}
         >
           <Link
@@ -56,10 +56,18 @@ export default function Navigation(props) {
               paddingTop: "5px",
             }}
           >
-            <LinkButton to="/login" isSmall500={props.isSmall500}>
+            <LinkButton
+              to="/login"
+              isSmall500={props.isSmall500}
+              theme={props.theme}
+            >
               Log In
             </LinkButton>
-            <LinkButton to="/" isSmall500={props.isSmall500}>
+            <LinkButton
+              to="/"
+              isSmall500={props.isSmall500}
+              theme={props.theme}
+            >
               Start for free
             </LinkButton>
           </Box>

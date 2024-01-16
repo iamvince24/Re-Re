@@ -1,4 +1,5 @@
 import * as React from "react";
+import { Fragment } from "react";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Dialog from "@mui/material/Dialog";
@@ -6,10 +7,9 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-
 import MenuItem from "@mui/material/MenuItem";
-
 import styled from "styled-components";
+import { ThemeProvider } from "@mui/material/styles";
 
 import {
   getDatabase,
@@ -116,46 +116,50 @@ export default function FormDialog(props) {
   };
 
   return (
-    <React.Fragment>
-      <MenuItem variant="outlined" onClick={handleClickOpen}>
-        Rename
-      </MenuItem>
-      <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Rename</DialogTitle>
-        <DialogContent sx={{ width: "500px" }}>
-          <DialogContentText>
-            Please fill in the name you want to rename.
-          </DialogContentText>
+    <Fragment>
+      <ThemeProvider theme={props.theme}>
+        <MenuItem variant="outlined" onClick={handleClickOpen}>
+          Rename
+        </MenuItem>
+        <Dialog open={open} onClose={handleClose}>
+          <DialogTitle>Rename</DialogTitle>
+          <DialogContent sx={{ width: "500px" }}>
+            <DialogContentText>
+              Please fill in the name you want to rename.
+            </DialogContentText>
 
-          <TextInput
-            placeholder="New Notebook Name"
-            value={newName}
-            onChange={(e) => setNewName(e.target.value)}
-            onClick={handleClick}
-          />
-        </DialogContent>
-        <DialogActions onClick={handleClose}>
-          <Button>Cancel</Button>
-          {props.num ? (
-            <Button
-              onClick={() => {
-                handleConfirm();
-              }}
-            >
-              Confirm
-            </Button>
-          ) : null}
-          {props?.id ? (
-            <Button
-              onClick={() => {
-                handleRename(newName);
-              }}
-            >
-              Confirm
-            </Button>
-          ) : null}
-        </DialogActions>
-      </Dialog>
-    </React.Fragment>
+            <TextInput
+              placeholder="New Notebook Name"
+              value={newName}
+              onChange={(e) => setNewName(e.target.value)}
+              onClick={handleClick}
+            />
+          </DialogContent>
+          <DialogActions onClick={handleClose}>
+            <Button color="secondary">Cancel</Button>
+            {props.num ? (
+              <Button
+                color="secondary"
+                onClick={() => {
+                  handleConfirm();
+                }}
+              >
+                Confirm
+              </Button>
+            ) : null}
+            {props?.id ? (
+              <Button
+                color="secondary"
+                onClick={() => {
+                  handleRename(newName);
+                }}
+              >
+                Confirm
+              </Button>
+            ) : null}
+          </DialogActions>
+        </Dialog>
+      </ThemeProvider>
+    </Fragment>
   );
 }

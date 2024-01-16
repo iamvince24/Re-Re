@@ -28,13 +28,27 @@ const barHeight = 70;
 const drawerWidth = 350;
 const toolBarHeight = 180;
 
-const TextArea = styled("text")(() => ({
+const TextEditor = styled.textarea.attrs(() => ({
+  placeholder: "Type something...",
+}))`
+  resize: none;
+  all: unset;
+  width: 100%;
+  height: calc(100vh - ${toolBarHeight}px);
+  text-align: left;
+  color: #f4f4f3;
+  overflow-y: scroll;
+  letter-spacing: 0.5px;
+  line-height: 22px;
+`;
+
+const TextArea = styled("div")(() => ({
   resize: "none",
   all: "unset",
   width: "100%",
   height: `calc(100vh - ${toolBarHeight}px)`,
   textAlign: "left",
-  color: "#2E4AF3",
+  color: "#F4F4F3",
   letterSpacing: "0.5px",
   lineHeight: "30px",
   display: "flex",
@@ -112,7 +126,7 @@ export default function NotebookMode(props) {
   useEffect(() => {
     setChapterName(chapter[0]?.name);
     setMarkdownText(chapter[0]?.content);
-  }, [props.notebookData, props.notebookDisplay]);
+  }, [notebookData, notebookDisplay]);
 
   return (
     <Fragment>
@@ -175,7 +189,7 @@ export default function NotebookMode(props) {
                 flexDirection: props.isSmallScreen ? "column" : "row",
                 justifyContent: "space-between",
                 alignItems: props.isSmallScreen ? "flex-start" : "center",
-                marginTop: "35px",
+                // marginTop: "35px",
                 gap: props.isSmallScreen ? "20px" : "none",
               }}
             >
@@ -194,7 +208,6 @@ export default function NotebookMode(props) {
                     color: `${props.theme.palette.secondary.main}`,
                     height: props.isSmallScreen ? "35px" : "42px",
                     padding: "0px 15px",
-                    // marginTop: "-10px",
                     letterSpacing: "0.5px",
                     boxShadow: "none",
                     fontWeight: 700,
@@ -213,7 +226,6 @@ export default function NotebookMode(props) {
                     color: `${props.theme.palette.secondary.main}`,
                     height: props.isSmallScreen ? "35px" : "42px",
                     padding: "0px 15px",
-                    marginTop: "-10px",
                     letterSpacing: "0.5px",
                     boxShadow: "none",
                     fontWeight: 700,
@@ -235,16 +247,10 @@ export default function NotebookMode(props) {
             }}
           >
             {toggleNotebookDisplay ? (
-              <TextareaRef
-                theme={props.theme}
-                testContent={
-                  notebookData[notebookIdForFunc]?.Chapters[chapterIdForFunc]
-                    .content
-                }
-                notebookData={props.notebookData}
-                notebookDisplay={props.notebookDisplay}
-                markdownText={markdownText}
-                handleInputChange={handleInputChange}
+              <TextEditor
+                value={markdownText}
+                onChange={handleInputChange}
+                className="textEditor"
               />
             ) : (
               <TextArea>

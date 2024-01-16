@@ -140,6 +140,7 @@ export default function LongMenu(props) {
           <MenuItem onClick={handleAddNewChapter}>Add Chapter</MenuItem>
         ) : null}
         <FormDialog
+          theme={props.theme}
           handleClose={handleClose}
           handleCloseBtn={handleClose}
           id={props.id}
@@ -148,6 +149,7 @@ export default function LongMenu(props) {
           notebookData={props.notebookData}
         />
         <AlertDeleteDialog
+          theme={props.theme}
           handleCloseBtn={handleClose}
           id={props.id}
           chapterId={props.chapterId}

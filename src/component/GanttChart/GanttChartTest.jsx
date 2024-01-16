@@ -154,6 +154,7 @@ export default function GanttChartTest({
                 theme={theme}
                 id={notebook.id}
                 key={index}
+                notebookData={notebookData}
                 notebook={notebook}
                 timeRange={timeRange}
                 startMonth={startMonth}

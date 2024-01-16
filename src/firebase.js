@@ -51,11 +51,6 @@ const registerWithEmailAndPassword = async (email, password) => {
   try {
     const res = await createUserWithEmailAndPassword(auth, email, password);
     const user = res.user;
-    // await addDoc(collection(db, "users"), {
-    //   uid: user.uid,
-    //   authProvider: "local",
-    //   email,
-    // });
     window.localStorage.setItem("uid", user.uid);
     await handleNewUserData(user.uid);
     window.localStorage.setItem("uid", user.uid);
@@ -69,24 +64,12 @@ const signInWithGoogle = async () => {
   try {
     const res = await signInWithPopup(auth, googleProvider);
     const user = res.user;
-    // console.log(user);
     const uid = user.uid;
-    // const q = query(collection(db, "users"), where("uid", "==", user.uid));
-    // const docs = await getDocs(q);
-
     window.localStorage.setItem("uid", user.uid);
     window.localStorage.setItem("username", user.displayName);
 
     const fetchData = async (uid) => {
       try {
-        // const db = getDatabase();
-        // const starCountRef = ref(db, `users`);
-        // const snapshot = await get(starCountRef);
-        // const data = snapshot.val();
-        // if (data.uid === undefined) {
-        //   console.log("data undefined");
-        //   await handleNewUserData(user.uid);
-        // }
         const db = getDatabase();
         const starCountRef = ref(db, `users/${uid}`);
         const snapshot = await get(starCountRef);
@@ -102,16 +85,6 @@ const signInWithGoogle = async () => {
 
     await fetchData(uid);
     window.localStorage.setItem("uid", uid);
-    // console.log(docs);
-    // console.log(docs.docs.length);
-    // if (docs.docs.length === 0) {
-    //   await addDoc(collection(db, "users"), {
-    //     uid: user.uid,
-    //     name: user.displayName,
-    //     authProvider: "google",
-    //     email: user.email,
-    //   });
-    // }
   } catch (err) {
     console.error(err);
     alert(err.message);
@@ -147,25 +120,7 @@ async function handleNewUserData(uid) {
     },
   ];
 
-  // A post entry.
-  // const postData = {
-  //   id: id,
-  //   name: "Default Notebook",
-  //   start: defaultStartDate,
-  //   end: defaultEndDate,
-  //   Chapters: [
-  //     {
-  //       id: id,
-  //       name: "Default Chapter",
-  //       start: defaultStartDate,
-  //       end: defaultEndDate,
-  //       content: "Type something",
-  //     },
-  //   ],
-  // };
-
   // Get a key for a new Post.
-  // const newPostKey = id;
   const updates = {};
   updates["/users/" + uid + "/notebooks"] = postData;
 

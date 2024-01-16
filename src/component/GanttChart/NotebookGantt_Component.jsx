@@ -15,11 +15,14 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Typography from "@mui/joy/Typography";
 import Brightness1Icon from "@mui/icons-material/Brightness1";
+import { getDatabase, ref, set, child, push, update } from "firebase/database";
+import dayjs from "dayjs";
 
 export default function NotebookGanttComponent(props) {
   const {
     theme,
     id,
+    notebookData,
     notebook,
     timeRange,
     startMonth,
@@ -35,22 +38,59 @@ export default function NotebookGanttComponent(props) {
   const startDate = `${timeRange.fromSelectYear}-${
     months[timeRange.fromSelectMonth]
   }-01`;
-
   const [taskDurationElDraggedId, setTaskDurationElDraggedId] = useState(null);
+  const [contextMenu, setContextMenu] = useState(null);
+  const [targetType, setTargetType] = useState(null);
+
+  let earliestDate = new Date(notebook?.Chapters[0]?.start);
+  let latestDate = new Date(notebook?.Chapters[0]?.end);
+
+  // 遍歷資料
+  notebook.Chapters.forEach((chapter) => {
+    const startDate = new Date(chapter.start);
+    const endDate = new Date(chapter.end);
+
+    // 檢查最早的日期
+    if (startDate < earliestDate) {
+      earliestDate = startDate;
+    }
+
+    // 檢查最晚的日期
+    if (endDate > latestDate) {
+      latestDate = endDate;
+    }
+  });
+
+  // 將日期轉換為字串格式
+  // const earliestDateString = earliestDate.toISOString().split("T")[0];
+  // const latestDateString = latestDate.toISOString().split("T")[0];
+
+  // 輸出結果
+  // console.log("最早的時間:", earliestDateString);
+  // console.log("最晚的時間:", latestDateString);
+  const dateFormat = "YYYY-MM-DD";
+  const [notebookStart, notebookEnd] = [
+    dayjs(earliestDate).format(dateFormat),
+    dayjs(latestDate).format(dateFormat),
+  ];
+  // console.log("最早的時間:", dayjs(earliestDate).format(dateFormat));
+  // console.log("最晚的時間:", dayjs(latestDate).format(dateFormat));
+
+  // console.log("最早的時間:", earliestDate);
+  // console.log("最晚的時間:", latestDate);
+
   function handleDragStart(taskDurationId) {
     setTaskDurationElDraggedId(taskDurationId);
   }
 
-  const [contextMenu, setContextMenu] = useState(null);
-  const handleContextMenu = (event, taskId, formattedDate) => {
+  const handleContextMenu = (event, target) => {
     event.preventDefault();
+    setTargetType(target);
     const mouseX = event.clientX + 2;
     const mouseY = event.clientY - 6;
     setContextMenu({
       mouseX,
       mouseY,
-      taskId,
-      formattedDate,
     });
   };
   const handleClose = () => {
@@ -62,6 +102,8 @@ export default function NotebookGanttComponent(props) {
   let chapterRows = [];
   let chapterRow = [];
   let mnth = new Date(startMonth);
+
+  const noteBookColor = notebook.color;
 
   for (let i = 0; i < numMonths; i++) {
     const curYear = mnth.getFullYear();
@@ -129,28 +171,30 @@ export default function NotebookGanttComponent(props) {
           position: "relative",
           height: "calc(var(--cell-height) - 10px)",
           zIndex: "5",
-          background:
-            "linear-gradient(90deg, var(--color-taskDuration-left) 30%, var(--color-taskDuration-right) 100%)",
+          // background:
+          //   "linear-gradient(90deg, var(--color-taskDuration-left) 30%, var(--color-taskDuration-right) 100%)",
+          background: `linear-gradient(90deg, ${theme.palette.colorOption[noteBookColor]?.gradient.gradientLeft} 10%, ${theme.palette.colorOption[noteBookColor]?.gradient.gradientRight} 100%)`,
           borderRadius: "var(--border-radius)",
           boxShadow: "3px 3px 3px rgba(0, 0, 0, 0.05)",
           cursor: "move",
           alignSelf: "center",
           justifyItems: "center",
           width: `calc(${dayDiff(
-            notebook.start,
-            notebook.end
+            // notebook.start,
+            // notebook.end
+            notebookStart,
+            notebookEnd
           )} * var(--width-Days))`,
           opacity: taskDurationElDraggedId === notebook.id ? "0.5" : "1",
         }}
         onKeyDown={(e) => deleteTaskDuration(e, notebook.id)}
-        onContextMenu={(e) => handleContextMenu(e, notebook.id)}
+        onContextMenu={(e) => handleContextMenu(e, "notebook")}
       ></div>
     </div>
   );
 
   taskRows.push(
     <div
-      // key={`${index}-${notebook.id}`}
       key={uuidv4()}
       className="taskRow"
       style={{
@@ -163,6 +207,7 @@ export default function NotebookGanttComponent(props) {
   notebookTitleRow = [];
 
   notebook.Chapters?.map((chapter) => {
+    const chapterColor = chapter.color;
     let chapterMnth = new Date(startMonth);
     for (let i = 0; i < numMonths; i++) {
       const curYear = chapterMnth.getFullYear();
@@ -219,6 +264,7 @@ export default function NotebookGanttComponent(props) {
         data-task={notebook.id}
       >
         <div
+          handletype={"chapter"}
           key={uuidv4()}
           className="taskDuration"
           draggable="true"
@@ -229,8 +275,9 @@ export default function NotebookGanttComponent(props) {
             position: "relative",
             height: "calc(var(--cell-height) - 10px)",
             zIndex: "5",
-            background:
-              "linear-gradient(90deg, var(--color-taskDuration-left) 10%, var(--color-taskDuration-right) 100%)",
+            // background:
+            //   "linear-gradient(90deg, var(--color-taskDuration-left) 10%, var(--color-taskDuration-right) 100%)",
+            background: `linear-gradient(90deg, ${theme.palette.colorOption[chapterColor]?.gradient.gradientLeft} 10%, ${theme.palette.colorOption[chapterColor]?.gradient.gradientRight} 100%)`,
             borderRadius: "var(--border-radius)",
             boxShadow: "3px 3px 3px rgba(0, 0, 0, 0.05)",
             cursor: "move",
@@ -242,6 +289,7 @@ export default function NotebookGanttComponent(props) {
             )} * var(--width-Days))`,
             opacity: taskDurationElDraggedId === notebook.id ? "0.5" : "1",
           }}
+          onContextMenu={(e) => handleContextMenu(e, "chapter")}
         ></div>
       </div>
     );
@@ -281,16 +329,62 @@ export default function NotebookGanttComponent(props) {
     }
   }
 
+  const handleColorChange = (target, color) => {
+    const db = getDatabase();
+
+    const uid = window.localStorage.getItem("uid");
+    let notebookIdForFunc = 0;
+    let chapterIdForFunc = 0;
+
+    for (var i = 0; i < props.notebookData.length; i++) {
+      if (props.notebookData[i]?.id === props.id) {
+        notebookIdForFunc = i;
+        if (props.chapterId !== undefined) {
+          for (var j = 0; j < props.notebookData[i].Chapters.length; j++) {
+            if (
+              props.notebookData[notebookIdForFunc].Chapters[j]?.id ===
+              props.chapterId
+            ) {
+              chapterIdForFunc = j;
+              break;
+            }
+          }
+        } else {
+          break;
+        }
+      }
+    }
+
+    // A post entry.
+    let postData = {};
+    if (target === "chapter") {
+      postData = {
+        ...props.notebookData[notebookIdForFunc].Chapters[chapterIdForFunc],
+        color: color,
+      };
+    } else {
+      postData = {
+        ...props.notebookData[notebookIdForFunc],
+        color: color,
+      };
+    }
+
+    let dataPath = "";
+    if (target === "chapter") {
+      dataPath = `/users/${uid}/notebooks/${notebookIdForFunc}/Chapters/${chapterIdForFunc}`;
+    } else {
+      dataPath = `/users/${uid}/notebooks/${notebookIdForFunc}`;
+    }
+
+    const updates = {};
+    updates[dataPath] = postData;
+
+    return update(ref(db), updates);
+  };
+
   return (
     <Fragment>
       {taskRows}
-      <style>
-        {`
-          .taskDuration {
-            // background-image: url("./assets/img/noise_white.png");
-          }
-        `}
-      </style>
       {contextMenu && (
         <Menu
           open={true}
@@ -305,19 +399,82 @@ export default function NotebookGanttComponent(props) {
           }}
         >
           <MenuItem
-            onClick={handleClose}
-            sx={{ gap: "5px", color: "var(--primary-color)" }}
+            onClick={(e) => {
+              handleColorChange(targetType, "white");
+              handleClose();
+            }}
+            sx={{
+              gap: "5px",
+              color: `${theme.palette.colorOption.white.solid}`,
+            }}
           >
             <Brightness1Icon />
-            <Typography sx={{ color: "var(--primary-color)" }}>Blue</Typography>
+            <Typography sx={{ color: "#979797" }}>White</Typography>
           </MenuItem>
-          <MenuItem onClick={handleClose} sx={{ gap: "5px", color: "#fbd07c" }}>
+          <MenuItem
+            onClick={(e) => {
+              handleColorChange(targetType, "blue");
+              handleClose();
+            }}
+            sx={{
+              gap: "5px",
+              color: `${theme.palette.colorOption.blue.solid}`,
+            }}
+          >
             <Brightness1Icon />
-            <Typography sx={{ color: "#fbd07c" }}>Yellow</Typography>
+            <Typography
+              sx={{ color: `${theme.palette.colorOption.blue.solid}` }}
+            >
+              Blue
+            </Typography>
           </MenuItem>
-          <MenuItem onClick={handleClose} sx={{ gap: "5px", color: "#43b692" }}>
+          <MenuItem
+            onClick={(e) => {
+              handleColorChange(targetType, "yellow");
+              handleClose();
+            }}
+            sx={{
+              gap: "5px",
+              color: `${theme.palette.colorOption.yellow.solid}`,
+            }}
+          >
             <Brightness1Icon />
-            <Typography sx={{ color: "#43b692" }}>Green</Typography>
+            <Typography
+              sx={{ color: `${theme.palette.colorOption.yellow.solid}` }}
+            >
+              Yellow
+            </Typography>
+          </MenuItem>
+          <MenuItem
+            onClick={(e) => {
+              handleColorChange(targetType, "red");
+              handleClose();
+            }}
+            sx={{ gap: "5px", color: `${theme.palette.colorOption.red.solid}` }}
+          >
+            <Brightness1Icon />
+            <Typography
+              sx={{ color: `${theme.palette.colorOption.red.solid}` }}
+            >
+              Red
+            </Typography>
+          </MenuItem>
+          <MenuItem
+            onClick={(e) => {
+              handleColorChange(targetType, "green");
+              handleClose();
+            }}
+            sx={{
+              gap: "5px",
+              color: `${theme.palette.colorOption.green.solid}`,
+            }}
+          >
+            <Brightness1Icon />
+            <Typography
+              sx={{ color: `${theme.palette.colorOption.green.solid}` }}
+            >
+              Green
+            </Typography>
           </MenuItem>
         </Menu>
       )}

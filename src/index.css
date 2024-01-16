@@ -125,6 +125,10 @@ code {
   color: var(--primary-color);
 }
 
+.custom-range-picker .anticon.anticon-swap-right {
+  color: var(--secondary-color);
+}
+
 h1 {
   margin: 10px 0px 5px;
   font-weight: 900;
@@ -135,9 +139,11 @@ h2 {
   font-weight: bold;
 }
 
-p {
-  line-height: 22px;
-  margin: 2.5px 0px;
+.textEditor p {
+  line-height: 30px;
+  /* line-height: 1.9rem; */
+  /* margin: 2.5px 0px; */
+  margin-top: 1.5em;
 }
 
 img {
@@ -146,18 +152,15 @@ img {
 }
 
 a {
-  /* color: #f3304d; */
   color: var(--primary-color);
-  /* background-image: linear-gradient(
-    90deg,
-    var(--color-taskDuration-left) 10%,
-    var(--color-taskDuration-right) 50%,
-    var(--color-taskDuration-left) 100%
-  );
-  color: rgb(137, 218, 227);
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  -webkit-box-decoration-break: clone; */
+}
+
+ul {
+  margin-left: 20px;
+}
+
+ol {
+  margin-left: 20px;
 }
 
 /* @media (min-width: 1300) and (max-width: 1023px)  {

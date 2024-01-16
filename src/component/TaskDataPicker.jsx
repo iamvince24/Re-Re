@@ -21,58 +21,58 @@ export default function TaskDataPicker(props) {
     <Fragment>
       <style>
         {`
-          .custom-range-picker .ant-picker-suffix {
-            display: none;
-          }
+          // .custom-range-picker .ant-picker-suffix {
+          //   display: none;
+          // }
 
-          .custom-range-picker .ant-picker-clear {
-            display: none;
-          }
+          // .custom-range-picker .ant-picker-clear {
+          //   display: none;
+          // }
 
-          .custom-range-picker .ant-picker-suffix:hover {
-            display: none;
-          }
+          // .custom-range-picker .ant-picker-suffix:hover {
+          //   display: none;
+          // }
 
-          .custom-range-picker .ant-picker-icon {
-            color: green;
-          }
+          // .custom-range-picker .ant-picker-icon {
+          //   color: green;
+          // }
 
-          .custom-range-picker .anticon.anticon-swap-right {
-            color: #2e4af3;
-          }
+          // .custom-range-picker .anticon.anticon-swap-right {
+          //   // color: #2e4af3;
+          // }
 
-          :where(.css-dev-only-do-not-override-1w61365).ant-picker-range {
-            padding: 7.5px 7.5px;
-          }
+          // :where(.css-dev-only-do-not-override-1w61365).ant-picker-range {
+          //   padding: 7.5px 7.5px;
+          // }
 
-          .custom-range-picker .ant-picker-input input {
-            width: 100px;
-            cursor: pointer;
-            letter-spacing: 1px;
-            padding: 2.5px;
-            border-radius: 4px;
-            text-align: center;
-          }
+          // .custom-range-picker .ant-picker-input input {
+          //   width: 100px;
+          //   cursor: pointer;
+          //   letter-spacing: 1px;
+          //   padding: 2.5px;
+          //   border-radius: 4px;
+          //   text-align: center;
+          // }
 
-          .custom-range-picker .ant-picker-input input:hover {
-            background: rgb(112, 132, 255, 0.2);
-          }
+          // .custom-range-picker .ant-picker-input input:hover {
+          //   background: rgb(112, 132, 255, 0.2);
+          // }
 
-          :where(.css-dev-only-do-not-override-abqk3i).ant-picker {
-            padding: 2px;
-          }
+          // :where(.css-dev-only-do-not-override-abqk3i).ant-picker {
+          //   padding: 2px;
+          // }
 
-          :where(.css-dev-only-do-not-override-abqk3i).ant-picker-focused.ant-picker {
-            box-shadow: none;
-          }
+          // :where(.css-dev-only-do-not-override-abqk3i).ant-picker-focused.ant-picker {
+          //   box-shadow: none;
+          // }
 
-          :where(.css-dev-only-do-not-override-abqk3i).ant-picker-range .ant-picker-active-bar {
-            margin-inline-start: 0px;
-          }
+          // :where(.css-dev-only-do-not-override-abqk3i).ant-picker-range .ant-picker-active-bar {
+          //   margin-inline-start: 0px;
+          // }
 
-          :where(.css-dev-only-do-not-override-1w61365).ant-picker-dropdown {
-            z-index: 10000;
-          }
+          // :where(.css-dev-only-do-not-override-1w61365).ant-picker-dropdown {
+          //   z-index: 10000;
+          // }
         `}
       </style>
       <ConfigProvider

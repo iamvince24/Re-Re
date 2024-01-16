@@ -21,7 +21,7 @@ export default function GanttChart(props) {
   const [taskDurations, setTaskDurations] = useState(null);
   // const [timeRange, setTimeRange] = useState(props.timeRange);
   const [ganttUnfoldList, setGanttUnfoldList] = useState({
-    list: [],
+    list: [1, 2, 3],
   });
 
   useEffect(() => {

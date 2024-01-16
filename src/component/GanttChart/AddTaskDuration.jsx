@@ -91,7 +91,7 @@ export default function AddTaskDuration({ tasks, setTaskDurations }) {
           sx={{
             background: "rgb(112, 132, 255, 0.1)",
             textTransform: "capitalize",
-            color: "#2E4AF3",
+            // color: "#2E4AF3",
             height: "42px",
             padding: "0px 15px",
             letterSpacing: "0.5px",

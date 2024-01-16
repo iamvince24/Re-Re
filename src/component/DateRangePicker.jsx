@@ -52,17 +52,17 @@ export default function DateRangePicker(props) {
             display: none;
           }
 
-          .custom-range-picker .ant-picker-icon {
-            color: green;
-          }
+          // .custom-range-picker .ant-picker-icon {
+          //   color: green;
+          // }
 
-          .anticon .anticon-swap-right {
-            color: var(--secondary-color);
-          }
+          // .anticon .anticon-swap-right {
+          //   color: var(--secondary-color);
+          // }
 
-          .custom-range-picker .anticon.anticon-swap-right {
-            color: ${props.theme.palette.secondary.main};
-          }
+          // .custom-range-picker .anticon.anticon-swap-right {
+          //   color: ${props.theme.palette.secondary.main};
+          // }
 
           :where(.css-dev-only-do-not-override-1w61365).ant-picker-range {
             padding: 7.5px 7.5px;
@@ -79,7 +79,7 @@ export default function DateRangePicker(props) {
           }
 
           .custom-range-picker .ant-picker-input input:hover {
-            background: rgb(214, 159, 149, 0.15);
+            background: rgb(198, 198, 198, 0.3);
           }
 
           :where(.css-dev-only-do-not-override-abqk3i).ant-picker {
@@ -114,8 +114,10 @@ export default function DateRangePicker(props) {
             colorIcon: `${props.theme.palette.secondary.main}`,
             colorIconHover: `${props.theme.palette.secondary.main}`,
             warningActiveShadow: "none",
-            colorBgContainer: "#F3D9D2",
-            cellActiveWithRangeBg: "#F3D9D2",
+            // colorBgContainer: "#F3D9D2",
+            // cellActiveWithRangeBg: "#F3D9D2",
+            colorBgContainer: "red",
+            cellActiveWithRangeBg: "red",
           },
         }}
       >
