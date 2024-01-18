@@ -148,7 +148,9 @@ export default function NotebookMode(props) {
                 marginTop: "-12.5px",
               }}
             >
-              {allNotebookData[notebookIndex]?.chapters[chapterIndex].name}
+              {allNotebookData[notebookIndex]?.chapters[chapterIndex]?.name
+                ? allNotebookData[notebookIndex]?.chapters[chapterIndex]?.name
+                : ""}
             </Typography>
             <Box
               sx={{
