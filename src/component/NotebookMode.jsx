@@ -67,10 +67,8 @@ export default function NotebookMode(props) {
 
   const [toggleNotebookDisplay, setToggleNotebookDisplay] = useState(false);
 
-  const [markdownText, setMarkdownText] = useState(
-    // allNotebookData[notebookIndex]?.chapters[chapterIndex]?.content
-    ""
-  );
+  const [chapterName, setChapterName] = useState("");
+  const [markdownText, setMarkdownText] = useState("");
 
   const uid = window.localStorage.getItem("uid");
 
@@ -100,9 +98,12 @@ export default function NotebookMode(props) {
 
   useEffect(() => {
     setMarkdownText(
-      allNotebookData[notebookIndex]?.chapters[chapterIndex].content
+      allNotebookData[notebookIndex]?.chapters[chapterIndex]?.content
     );
-  }, [notebookIndex, chapterIndex]);
+    setChapterName(
+      allNotebookData[notebookIndex]?.chapters[chapterIndex]?.name
+    );
+  }, [allNotebookData, notebookIndex, chapterIndex]);
 
   return (
     <Fragment>
@@ -148,9 +149,7 @@ export default function NotebookMode(props) {
                 marginTop: "-12.5px",
               }}
             >
-              {allNotebookData[notebookIndex]?.chapters[chapterIndex]?.name
-                ? allNotebookData[notebookIndex]?.chapters[chapterIndex]?.name
-                : ""}
+              {chapterName}
             </Typography>
             <Box
               sx={{
