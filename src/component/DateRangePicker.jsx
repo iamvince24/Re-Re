@@ -23,7 +23,7 @@ const { RangePicker } = DatePicker;
 const dateFormat = "YYYY-MM";
 
 export default function DateRangePicker(props) {
-  const { notebookData, notebookDisplay, timeRange, setTimeRange } = props;
+  const { timeRange, setTimeRange, theme } = props;
   const [startvalue, setStartValue] = useState(
     `${timeRange.fromSelectYear}-${months[timeRange.fromSelectMonth]}`
   );
@@ -106,13 +106,13 @@ export default function DateRangePicker(props) {
       <ConfigProvider
         theme={{
           token: {
-            colorPrimary: `${props.theme.palette.secondary.main}`,
+            colorPrimary: `${theme.palette.secondary.main}`,
             borderRadius: 4,
-            hoverBorderColor: `${props.theme.palette.secondary.main}`,
-            colorBorder: `${props.theme.palette.secondary.main}`,
-            colorText: `${props.theme.palette.secondary.main}`,
-            colorIcon: `${props.theme.palette.secondary.main}`,
-            colorIconHover: `${props.theme.palette.secondary.main}`,
+            hoverBorderColor: `${theme.palette.secondary.main}`,
+            colorBorder: `${theme.palette.secondary.main}`,
+            colorText: `${theme.palette.secondary.main}`,
+            colorIcon: `${theme.palette.secondary.main}`,
+            colorIconHover: `${theme.palette.secondary.main}`,
             warningActiveShadow: "none",
             // colorBgContainer: "#F3D9D2",
             // cellActiveWithRangeBg: "#F3D9D2",
@@ -125,7 +125,7 @@ export default function DateRangePicker(props) {
           <RangePicker
             style={{
               border: "none",
-              background: `${props.theme.palette.primary.main}`,
+              background: `${theme.palette.primary.main}`,
               zIndex: "10000",
               height: "42px",
             }}

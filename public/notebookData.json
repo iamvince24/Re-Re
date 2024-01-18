@@ -3,12 +3,12 @@
     "VjbWechgPjeVLnunOUcq87c3dVx1": {
       "notebooks": [
         {
-          "Chapters": [
+          "chapters": [
             {
               "color": "white",
               "content": "# Introduction to Data Structure\n\nWe  study  data  structures  to  learn  to  write  more  efficient  programs.  But  what  is  the  point  of programs being efficient when new computers are faster day by day?  Because the more we are capable  of  excellence,  the  more  our  ambition  grows.  And  to  tackle  that,  we  need  to  learn  to represent and operate data more efficiently. By studying data structures, we will be able to store and use data more efficiently. In this chapter, we are going to explore the meaning of data structure as well as learn what different types of data structures there are.\n\n\nReference: https://www.studocu.com/row/document/american-international-university-bangladesh/data-structure/chapter-1-introduction-to-data-structure/10166774",
               "end": "2024-01-05",
-              "id": 1,
+              "id": 11111,
               "name": "Introduction",
               "start": "2024-01-02"
             },
@@ -16,7 +16,7 @@
               "color": "white",
               "content": "# Introduction\n\nAlgorithms are sets of instructions for solving a specific problem. They can be implemented using one or more data structures, and the efficiency of an algorithm depends on the chosen data structures and the steps taken to solve the problem. Some common algorithms include search algorithms, sorting algorithms, and graph algorithms.\n\n\nData structures and algorithms are important because they provide the foundation for many of the things we do on computers. Whether you are working on a small project or a large-scale software system, understanding data structures and algorithms can help you make the most of your resources and achieve the best possible performance.",
               "end": "2024-01-10",
-              "id": 2,
+              "id": 22222,
               "name": "Algorithms",
               "start": "2024-01-04"
             },
@@ -24,7 +24,7 @@
               "color": "yellow",
               "content": "# Introduction\n\nIn this chapter, we continue to study implementations of the List interface, this time using pointer-based data structures rather than arrays. The structures in this chapter are made up of nodes that contain the list items. Using references (pointers), the nodes are linked together into a sequence. We first study singly-linked lists, which can implement Stack and (FIFO) Queue operations in constant time per operation and then move on to doubly-linked lists, which can implement Deque operations in constant time.",
               "end": "2024-01-15",
-              "id": 3,
+              "id": 33333,
               "name": "Linked Lists",
               "start": "2024-01-08"
             },
@@ -32,7 +32,7 @@
               "color": "blue",
               "content": "# Introduction\n\nA tree is a non-linear abstract data type with a hierarchy-based structure. It consists of nodes (where the data is stored) that are connected via links. The tree data structure stems from a single node called a root node and has subtrees connected to the root.",
               "end": "2024-01-20",
-              "id": 4,
+              "id": 44444,
               "name": "Tree",
               "start": "2024-01-11"
             },
@@ -40,24 +40,24 @@
               "color": "white",
               "content": "# Introduction\n\nA graph is an abstract data type (ADT) that consists of a set of objects that are connected to each other via links. These objects are called vertices and the links are called edges.",
               "end": "2024-01-25",
-              "id": 5,
+              "id": 55555,
               "name": "Graphs",
               "start": "2024-01-18"
             }
           ],
           "color": "green",
           "end": "2024-01-08",
-          "id": 1,
+          "id": 11232,
           "name": "Data Structures",
           "start": "2024-01-02"
         },
         {
-          "Chapters": [
+          "chapters": [
             {
               "color": "red",
               "content": "## 前言\n\n這系列是課程 [JavaScript Web Projects: 20 Projects to Build Your Portfolio](https://www.udemy.com/course/javascript-web-projects-to-build-your-portfolio-resume/) 的筆記，學習利用Javascript 做出各種互動網站。## 目標要做一個名言產生器，利用提供的json檔，搭配按鈕隨機抽選句子，並實作分享到twitter的按鈕。下面是這次要實作的畫面。範例的[連結](https://iamvince24.github.io/Quote-generator/)。![Image.png](https://res.craft.do/user/full/6e51b78d-bb10-9598-78bc-b1dd033f3f34/doc/5F39F35D-609F-4D23-B802-B043FB73FEDB/01895266-3920-45E1-BE25-980DE64FE9D1_2/AdzD9xZHxSyHb8pDmxGn1h52LVRXpWYurrfNnQBX3s8z/Image.png)",
               "end": "2024-01-20",
-              "id": 1,
+              "id": 14324,
               "name": "Project 1",
               "start": "2024-01-15"
             },
@@ -65,7 +65,7 @@
               "color": "yellow",
               "content": "## 前言\n\n這系列是課程 [JavaScript Web Projects: 20 Projects to Build Your Portfolio](https://www.udemy.com/course/javascript-web-projects-to-build-your-portfolio-resume/) 的筆記，學習利用 Javascript 做出各種互動網站。## 目標要實作出一個可以無限往下滑的網頁。\n\n下面是這次要實作的畫面。範例的[連結](https://iamvince24.github.io/infinity-scroll/)。![Image.png](https://res.craft.do/user/full/6e51b78d-bb10-9598-78bc-b1dd033f3f34/doc/5F39F35D-609F-4D23-B802-B043FB73FEDB/D890E200-C45B-440B-83AE-0E51138D5179_2/Dfq7h8xExuyNsiRYMEP0w7Td0ZPz76ui1mU8HbY2Utwz/Image.png)",
               "end": "2024-01-28",
-              "id": 2,
+              "id": 24344,
               "name": "Project 2",
               "start": "2024-01-21"
             },
@@ -73,7 +73,7 @@
               "color": "yellow",
               "content": "## 前言\n\n\n這系列是課程 [JavaScript Web Projects: 20 Projects to Build Your Portfolio](https://www.udemy.com/course/javascript-web-projects-to-build-your-portfolio-resume/) 的筆記，學習利用 Javascript 做出各種互動網站。\n\n## 目標\n\n要實作出子母畫面的功能。\n\n下面是這次要實作的畫面。範例的[連結](https://iamvince24.github.io/Picture-In-Picture/)。\n\n![Picture-In-Picture.png](https://res.craft.do/user/full/6e51b78d-bb10-9598-78bc-b1dd033f3f34/doc/5F39F35D-609F-4D23-B802-B043FB73FEDB/286BCB87-C8D1-4C70-B588-82CEE36D293E_2/GhkDgNxq6VKJxPC29D38J49gfwdHsmK6MzYuM80zXDkz/Picture-In-Picture.png)",
               "end": "2024-02-04",
-              "id": 3,
+              "id": 34343,
               "name": "Project 3",
               "start": "2024-01-29"
             },
@@ -81,7 +81,7 @@
               "color": "yellow",
               "content": "## 前言\n\n這系列是課程 [JavaScript Web Projects: 20 Projects to Build Your Portfolio](https://www.udemy.com/course/javascript-web-projects-to-build-your-portfolio-resume/) 的筆記，學習利用 Javascript 做出各種互動網站。\n\n\n## 目標\n\n這次會利用語音 API (Text-to-speech API) 跟 JokeAPI ，來實作讓電腦隨機說笑話。\n\n下面是這次要實作的畫面。範例的[連結](https://iamvince24.github.io/Joke-Teller/)。\n\n![Image.png](https://res.craft.do/user/full/6e51b78d-bb10-9598-78bc-b1dd033f3f34/doc/5F39F35D-609F-4D23-B802-B043FB73FEDB/10D5E0CE-1911-471D-8446-B33B00D57A63_2/OvkTp7pWi6EfoH0fG4mDJFYsPCyLIOC2rWKXpFQLYg8z/Image.png)\n",
               "end": "2024-02-10",
-              "id": 4,
+              "id": 44345,
               "name": "Project 4",
               "start": "2024-02-05"
             },
@@ -89,24 +89,24 @@
               "color": "yellow",
               "content": "## 前言\n​\n這系列是課程 [JavaScript Web Projects: 20 Projects to Build Your Portfolio](https://www.udemy.com/course/javascript-web-projects-to-build-your-portfolio-resume/) 的筆記，學習利用 Javascript 做出各種互動網站。\n​\n​\n## 目標\n​\n實作 Light Dark Mode。\n​\n下面是這次要實作的畫面。範例的[連結](https://iamvince24.github.io/Light-Dark-Mode/)。\n​\n![截圖 2023-08-19 下午9.45.51.png](https://res.craft.do/user/full/6e51b78d-bb10-9598-78bc-b1dd033f3f34/doc/5F39F35D-609F-4D23-B802-B043FB73FEDB/A34DA9D4-9C24-4A03-AB67-14B737B028D0_2/Rp762XjZR9WNQiD3xwvd0FM4cY2OQ6ksZl2OcW0Oxt4z/%202023-08-19%209.45.51.png)\n​\n![截圖 2023-08-19 下午9.45.54.png](https://res.craft.do/user/full/6e51b78d-bb10-9598-78bc-b1dd033f3f34/doc/5F39F35D-609F-4D23-B802-B043FB73FEDB/DE4F8045-BE0B-4309-8509-9B97109948C1_2/NC3EkyzusyKLbZ0lvywX8g3y3cAacZeQEmrYRi44Sk4z/%202023-08-19%209.45.54.png)",
               "end": "2024-02-20",
-              "id": 5,
+              "id": 55454,
               "name": "Project 5",
               "start": "2024-02-11"
             }
           ],
           "color": "green",
           "end": "2024-01-25",
-          "id": 2,
+          "id": 25435,
           "name": "JavaScript Project",
           "start": "2024-01-15"
         },
         {
-          "Chapters": [
+          "chapters": [
             {
               "color": "white",
               "content": "在大多數的應用程式中，可以分為以下三個部分。\n\n- State – the current data used in the app\n- View – the user interface displayed to users\n- Actions – events that a user can take to change the state\n\n而資料流的方式可以像是：\n\n1. State 會儲存 component 當下的資料。\n2. View 會顯示 component 當下的資料。\n3. 當使用者與 view 互動的時候，可能像是點擊按鈕之類的，state 將會以某種方式來更新。\n4. View 也會更新新的 state。\n\n若只以純粹的 React 來執行以上的流程，同時間會需要做很多事，不僅要渲染畫面，也要管理自己的 state，且當 action 改變 state 時，component 也需要彼此溝通這些變動，會讓以上這三種動作變得相當重疊且複雜。\n\n而 Redux 會藉由要求單一來源管理的 state 來協助分離這三個動作。更改 state 的請求以 action 的形式透過 component 傳送到某個單一來源。受這些變化影響的任何 component 都由這個單一來源來告知。而透過強加這種結構，Redux 讓程式更具可讀性、可靠性和可維護性。",
               "end": "2024-02-05",
-              "id": 1,
+              "id": 15853,
               "name": "Data Flow",
               "start": "2024-01-25"
             },
@@ -114,7 +114,7 @@
               "color": "white",
               "content": "## 前言與介紹什麼是 **Redux API ?**\n\n文章內容為 codecademy 的學習筆記。\n\nRedux 的應用程式是建立在 one-way flow 的資料模型之上，並由 store 管理。這邊會介紹一些內部功能：\n\n- State 是可以描述應用程式的資料集合，它用來渲染 UI。\n- 當使用者與 UI 互動的時候會發送 action 到 store。Action 是一個會把預計要做的事情傳送到 state 的一個物件。\n- **Store 會利用 reducer function，reducer function 會接收 action 以及 state 當作輸入 ，來產生下一個 state。**\n- 最後 UI 會基於新 store 的 state 來重新渲染，整個過程會再重新開始。\n\n這邊會專注在利用 Redux API 的 `createStore()` 以及相關的 `store` 來建立基礎的 Redux 應用程式。\n\n- `store.getState()`\n- `store.dispatch(action)`\n- `store.subscribe(listener)`\n\n而 `store.replaceReducer(nextReducer)` 是一個比較進階的方法，之後有機會再介紹。",
               "end": "2024-02-10",
-              "id": 2,
+              "id": 21239,
               "name": "Redux 的 API",
               "start": "2024-02-04"
             },
@@ -122,7 +122,7 @@
               "color": "white",
               "content": "建立 Redux Store 的過程包括以下步驟：\n\n安裝 Redux 庫，使用指令 npm install redux。\n\n創建 Reducer，它是一個純函數，定義應用程式狀態的修改邏輯。可以有多個 Reducer，通常組合成一個根 Reducer。\n\n如果有多個 Reducer，使用 Redux 的 combineReducers 函數將它們組合成一個根 Reducer。\n\n使用 createStore 函數建立 Store，將根 Reducer 傳遞給它。也可以設定 Redux DevTools 擴充套件。\n\n在 React 應用程式中整合 Store，使用 Redux 的 Provider 包裹最外層組件，並將 Store 作為屬性傳遞給 Provider。\n\n現在，應用程式已經整合了 Redux Store，可以使用 React-Redux 提供的 connect 函數將 React 組件連接到 Redux Store，實現對應用程式狀態的存取和更新。",
               "end": "2024-02-15",
-              "id": 3,
+              "id": 34238,
               "name": "建立 Redux Store",
               "start": "2024-02-09"
             },
@@ -130,7 +130,7 @@
               "color": "white",
               "content": "1. **單一資料來源：**\n   Redux 強調應用程式的整體狀態應該被保存在一個單一的資料來源，也就是Redux Store中。這有助於簡化狀態的管理和追蹤。\n\n2. **不可變性（Immutability）：**\n   Redux 鼓勵使用不可變的數據結構，這表示一旦狀態被設定，就不能直接修改它。每次狀態發生變化時，都會返回一個新的狀態對象，而不是修改現有的狀態對象。這有助於追蹤狀態的變化，使得時間旅行除錯（Time Travel Debugging）成為可能。\n\n3. **純函數的Reducers：**\n   Redux 的Reducer必須是純函數。純函數是指在相同輸入下總是產生相同輸出，而且不會有任何副作用。Reducers接收一個先前的狀態和一個action，返回一個新的狀態，這種設計讓狀態的修改變得可預測和容易理解。\n\n4. **單向數據流：**\n   在Redux中，數據的流動是單向的。應用程式狀態只能通過發送action來進行修改，Reducers處理這些action並返回新的狀態。這種單向數據流的架構使得應用程式的行為更可控，容易追蹤和理解。\n\n5. **中央化管理：**\n   Redux Store提供了一個中央化的地方來管理整個應用程式的狀態。這使得不同組件能夠輕鬆共享和存取應用程式的狀態，而不需要透過繁瑣的層層傳遞。\n",
               "end": "2024-02-21",
-              "id": 4,
+              "id": 44329,
               "name": "對 State 的策略",
               "start": "2024-02-15"
             },
@@ -138,21 +138,21 @@
               "color": "white",
               "content": "現在可以想想使用者要如何透過 actions 的觸發機制，去改變 slices of state。\n\n> 提醒一下，actions 在 Redux 中常被表示為擁有 type property 的 JavaScript objects，也常使用 `store.dispatch()` 來發送給 store。\n\n當一個 application state 有很多 slices，每一個 actions 通常一次只改變一個 slice。因此會建議每個 action's type 可以 follow  `'sliceName / actionDescriptor'` 這樣的格式，來確認說哪一個 slice of state 應該要更新。\n\n舉例來說，todo app 有一個 `state.todo` slice，那它用來新增事項的 action type 就可以設為 `'todos/addTodo’`。\n\n#### 設定 Recipes action：\n\n   1. `'allRecipes/loadData'` : 當 application 啟動時，此 action 會被派去從 API 抓取所需的資料。\n   2. `'favoriteRecipes/addRecipe'` : 當使用者點擊 ❤️ icon 時，會把食譜加入最愛。\n   3. `'favoriteRecipes/removeRecipe'` : 當使用者點擊 💔  icon 時，會把食譜從最愛中移出。\n   4. `'searchTerm/setSearchTerm'` : 當使用者透過改變搜尋框內的文字去篩選食譜時觸發。\n   5. `'searchTerm/clearSearchTerm'` : 當使用者點擊在搜尋框旁的 ‘X’ 按鈕時觸發。",
               "end": "2024-02-25",
-              "id": 5,
+              "id": 54329,
               "name": "For Complex State",
               "start": "2024-02-20"
             },
             {
               "content": "Redux 很適合處理多功能的複雜 application，且它的功能都有一些與狀態相關的資料需要管理。在這種狀況下，通常會用 object 來代表整個 store's state 的資料型別。\n\n舉例一個 todo app，它可以讓使用者做以下的動作：\n\n   1. 增加 todo list。\n   2. 為每個 todo 事項標記完成或未完成。\n   3. 可以選擇只顯示完成事項、未完成事項或是全部顯示。",
               "end": "2024-03-01",
-              "id": 6,
+              "id": 64329,
               "name": "Slices",
               "start": "2024-02-24"
             }
           ],
           "color": "white",
           "end": "2024-01-08",
-          "id": 3,
+          "id": 32343,
           "name": "Redux",
           "start": "2024-01-02"
         }

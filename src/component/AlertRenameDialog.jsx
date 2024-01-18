@@ -53,7 +53,7 @@ export default function AlertRenameDialog(props) {
     // 要刪除數據的路徑
     let dataPath = "";
     if (props.chapterId !== undefined) {
-      dataPath = `/notebooks/${props.id - 1}/Chapters/${props.chapterId - 1}`;
+      dataPath = `/notebooks/${props.id - 1}/chapters/${props.chapterId - 1}`;
     } else {
       dataPath = `/notebooks/${props.id - 1}`;
     }

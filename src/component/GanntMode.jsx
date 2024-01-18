@@ -15,11 +15,19 @@ import { dayDiff } from "../utils/dateFunctions";
 import { useSpring, animated } from "react-spring";
 import GanttChart from "./GanttChart/GanttChart";
 import DateRangePicker from "./DateRangePicker";
+import { handleSidebarOpen } from "../redux/action";
+import { useSelector } from "react-redux";
 
 const barHeight = 70;
 const drawerWidth = 350;
 
 export default function GanntMode(props) {
+  const { dispatch, theme } = props;
+  const isSidebarOpen = useSelector((state) => state.viewListener.sidebarOpen);
+  const screenSmall767 = useSelector(
+    (state) => state.viewListener.screenWidth767
+  );
+
   const [timeRange, setTimeRange] = useState({
     fromSelectMonth: 0,
     fromSelectYear: "2024",
@@ -28,7 +36,7 @@ export default function GanntMode(props) {
   });
 
   const handleDrawerOpen = () => {
-    props.setOpen(true);
+    dispatch(handleSidebarOpen(true));
   };
 
   const handleGanttMoveToday = () => {
@@ -66,7 +74,7 @@ export default function GanntMode(props) {
             // height: "180px",
             height: "auto",
             padding: "0px 20px 20px",
-            borderBottom: `3px solid ${props.theme.palette.dividerBorder.main}`,
+            borderBottom: `3px solid ${theme.palette.dividerBorder.main}`,
           }}
         >
           <Box sx={{ height: "70px", display: "flex", alignItems: "center" }}>
@@ -77,25 +85,19 @@ export default function GanntMode(props) {
               edge="start"
               sx={{
                 mr: 2,
-                ...(props.open && { display: "none" }),
+                ...(isSidebarOpen && { display: "none" }),
               }}
             >
-              <MenuIcon sx={{ color: `${props.theme.palette.primary.main}` }} />
+              <MenuIcon sx={{ color: `${theme.palette.primary.main}` }} />
             </IconButton>
-            <CustomSeparator
-              theme={props.theme}
-              notebookData={props.notebookData}
-              notebookDisplay={props.notebookDisplay}
-              mode={props.mode}
-            />
+            <CustomSeparator theme={theme} />
           </Box>
           <Typography
             gutterBottom
             sx={{
               fontWeight: 900,
-              // typography: "h1",
               fontSize: "36px",
-              color: `${props.theme.palette.primary.main}`,
+              color: `${theme.palette.primary.main}`,
               textTransform: "capitalize",
               textAlign: "left",
               marginTop: "-12.5px",
@@ -107,18 +109,16 @@ export default function GanntMode(props) {
             sx={{
               textAlign: "left",
               display: "flex",
-              flexDirection: `${props.isSmallScreen ? "column" : "row"}`,
+              flexDirection: `${screenSmall767 ? "column" : "row"}`,
               justifyContent: `${
-                props.isSmallScreen ? "flex-start" : "space-between"
+                screenSmall767 ? "flex-start" : "space-between"
               }`,
-              alignItems: `${props.isSmallScreen ? "flex-start" : "center"}`,
+              alignItems: `${screenSmall767 ? "flex-start" : "center"}`,
               marginTop: "35px",
             }}
           >
             <DateRangePicker
-              theme={props.theme}
-              notebookData={props.notebookData}
-              notebookDisplay={props.notebookDisplay}
+              theme={theme}
               timeRange={timeRange}
               setTimeRange={setTimeRange}
             />
@@ -127,10 +127,10 @@ export default function GanntMode(props) {
               sx={{
                 // background: "rgb(112, 132, 255, 0.1)",
                 textTransform: "capitalize",
-                color: `${props.theme.palette.secondary.main}`,
+                color: `${theme.palette.secondary.main}`,
                 height: "42px",
                 padding: "0px 20px",
-                marginTop: `${props.isSmallScreen ? "10px" : "0px"}`,
+                marginTop: `${screenSmall767 ? "10px" : "0px"}`,
                 letterSpacing: "0.5px",
                 boxShadow: "none",
                 fontWeight: 700,
@@ -145,11 +145,9 @@ export default function GanntMode(props) {
         </Box>
 
         <GanttChart
-          theme={props.theme}
+          theme={theme}
           notebookData={props.notebookData}
-          notebookDisplay={props.notebookDisplay}
           timeRange={timeRange}
-          isSmallScreen={props.isSmallScreen}
         />
       </Box>
     </Fragment>

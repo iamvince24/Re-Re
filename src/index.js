@@ -5,14 +5,11 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
-// const websocketUrl =
-//   process.env.REACT_APP_WEBSOCKET_URL || "ws://127.0.0.1:55178/";
+import { Provider } from "react-redux";
+import store from "./redux/store";
+
 const websocketUrl = "ws://localhost:3000";
-
-// Create WebSocket connection
 const socket = new WebSocket(websocketUrl);
-
-// Listen for possible errors
 socket.addEventListener("error", (event) => {
   console.log("WebSocket error: ", event);
 });
@@ -90,9 +87,11 @@ const theme = createTheme({
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <ThemeProvider theme={theme}>
-      <App theme={theme} />
-    </ThemeProvider>
+    <Provider store={store}>
+      <ThemeProvider theme={theme}>
+        <App state={store.getState()} dispatch={store.dispatch} theme={theme} />
+      </ThemeProvider>
+    </Provider>
   </React.StrictMode>
 );
 

@@ -2,20 +2,10 @@ import * as React from "react";
 import { Fragment } from "react";
 import { useEffect, useRef } from "react";
 import NotebookListGantt from "./NotebookListGantt";
+import { useSelector, useDispatch } from "react-redux";
 
-export default function TasksTest(
-  {
-    tasks,
-    setTasks,
-    setTaskDurations,
-    notebookData,
-    ganttUnfoldList,
-    setGanttUnfoldList,
-    theme,
-  },
-  props
-) {
-  const [open, setOpen] = React.useState(true);
+export default function TasksTest({ theme }) {
+  const allNotebookData = useSelector((state) => state.notebookData.notebooks);
 
   const inputRef = useRef([]);
   const indexRef = useRef(null);
@@ -31,15 +21,13 @@ export default function TasksTest(
       <div id="gantt-grid-container__tasks">
         <div className="gantt-task-row-empty"></div>
         <div className="gantt-task-row-empty"></div>
-        {notebookData &&
-          notebookData.map((notebook, index) => (
+        {allNotebookData &&
+          allNotebookData?.map((notebook, index) => (
             <NotebookListGantt
               theme={theme}
               notebook={notebook}
+              index={index}
               key={`${notebook.id}-${index}`}
-              ganttUnfoldList={ganttUnfoldList}
-              setGanttUnfoldList={setGanttUnfoldList}
-              isSmallScreen={props.isSmallScreen}
             />
           ))}
       </div>

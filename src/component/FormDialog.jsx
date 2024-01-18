@@ -11,15 +11,7 @@ import MenuItem from "@mui/material/MenuItem";
 import styled from "styled-components";
 import { ThemeProvider } from "@mui/material/styles";
 
-import {
-  getDatabase,
-  set,
-  remove,
-  update,
-  ref,
-  push,
-  child,
-} from "firebase/database";
+import { getDatabase, update, ref } from "firebase/database";
 
 const TextInput = styled("input")(() => ({
   height: "30px",
@@ -28,7 +20,7 @@ const TextInput = styled("input")(() => ({
   borderTop: "none",
   borderRight: "none",
   borderLeft: "none",
-  color: "var(--primary-color)",
+  color: "var(--secondary-color)",
   width: "100%",
   letterSpacing: "1px",
   "&:focus": {
@@ -37,6 +29,8 @@ const TextInput = styled("input")(() => ({
 }));
 
 export default function FormDialog(props) {
+  const { notebookIndex, chapterIndex } = props;
+
   const [open, setOpen] = React.useState(false);
   const [newName, setNewName] = React.useState("");
 
@@ -64,49 +58,26 @@ export default function FormDialog(props) {
 
   const handleRename = (name) => {
     const db = getDatabase();
-
     const uid = window.localStorage.getItem("uid");
-    let notebookIdForFunc = 0;
-    let chapterIdForFunc = 0;
 
-    for (var i = 0; i < props.notebookData.length; i++) {
-      if (props.notebookData[i]?.id === props.id) {
-        notebookIdForFunc = i;
-        if (props.chapterId !== undefined) {
-          for (var j = 0; j < props.notebookData[i].Chapters.length; j++) {
-            if (
-              props.notebookData[notebookIdForFunc].Chapters[j]?.id ===
-              props.chapterId
-            ) {
-              chapterIdForFunc = j;
-              break;
-            }
-          }
-        } else {
-          break;
-        }
-      }
-    }
-
-    // A post entry.
     let postData = {};
-    if (props.chapterId !== undefined) {
+    if (chapterIndex !== undefined) {
       postData = {
-        ...props.notebookData[notebookIdForFunc].Chapters[chapterIdForFunc],
+        ...props.notebookData[notebookIndex].chapters[chapterIndex],
         name: name,
       };
     } else {
       postData = {
-        ...props.notebookData[notebookIdForFunc],
+        ...props.notebookData[notebookIndex],
         name: name,
       };
     }
 
     let dataPath = "";
-    if (props.chapterId !== undefined) {
-      dataPath = `/users/${uid}/notebooks/${notebookIdForFunc}/Chapters/${chapterIdForFunc}`;
+    if (chapterIndex !== undefined) {
+      dataPath = `/users/${uid}/notebooks/${notebookIndex}/chapters/${chapterIndex}`;
     } else {
-      dataPath = `/users/${uid}/notebooks/${notebookIdForFunc}`;
+      dataPath = `/users/${uid}/notebooks/${notebookIndex}`;
     }
 
     const updates = {};

@@ -13,19 +13,26 @@ import { Button } from "@mui/material";
 
 import { getDatabase, ref, set, child, push, update } from "firebase/database";
 import { ThemeProvider } from "@mui/material/styles";
+import { useSelector } from "react-redux";
+import { v4 as uuidv4 } from "uuid";
 
-const options = ["Rename", "Delete"];
+// const options = ["Rename", "Delete"];
+function generateNumericId() {
+  const fullId = uuidv4();
+  const numericId = fullId.replace(/\D/g, "").substring(0, 5);
+  return parseInt(numericId, 10);
+}
 
 const ITEM_HEIGHT = 48;
 
-function AddNewChapter(uid, notebookId, chapterId) {
+function AddNewChapter(uid, notebookIndex, chaptersLength) {
   const db = getDatabase();
 
   const { formattedStartDate, formattedEndDate } = getFormattedDates();
 
   // A post entry.
   const postData = {
-    id: chapterId,
+    id: generateNumericId(),
     name: "Default Chapter",
     start: formattedStartDate,
     end: formattedEndDate,
@@ -34,10 +41,10 @@ function AddNewChapter(uid, notebookId, chapterId) {
 
   // Get a key for a new Post.
 
-  const newPostKey = chapterId - 1;
+  const newPostKey = chaptersLength;
   const updates = {};
   updates[
-    "/users/" + uid + "/notebooks/" + notebookId + "/Chapters/" + newPostKey
+    "/users/" + uid + "/notebooks/" + notebookIndex + "/chapters/" + newPostKey
   ] = postData;
 
   return update(ref(db), updates);
@@ -73,6 +80,8 @@ function formatDate(date) {
 }
 
 export default function LongMenu(props) {
+  const { notebookIndex, chapterIndex, notebookId, chapterId } = props;
+  const allNotebookData = useSelector((state) => state.notebookData.notebooks);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
 
@@ -95,11 +104,12 @@ export default function LongMenu(props) {
         break;
       }
     }
-    const chapterId =
-      props.notebookData[notebookId].Chapters[
-        props.notebookData[notebookId].Chapters.length - 1
-      ].id + 1;
-    AddNewChapter(uid, notebookId, chapterId);
+    // const chapterId =
+    //   props.notebookData[notebookId].chapters[
+    //     props.notebookData[notebookId].chapters.length - 1
+    //   ].id + 1;
+    const chaptersLength = allNotebookData[notebookIndex]?.chapters.length;
+    AddNewChapter(uid, notebookIndex, chaptersLength);
   };
 
   return (
@@ -143,18 +153,24 @@ export default function LongMenu(props) {
           theme={props.theme}
           handleClose={handleClose}
           handleCloseBtn={handleClose}
-          id={props.id}
-          chapterId={props.chapterId}
           notebook={props.notebook}
           notebookData={props.notebookData}
+          id={props.id}
+          notebookId={notebookId}
+          chapterId={chapterId}
+          notebookIndex={notebookIndex}
+          chapterIndex={chapterIndex}
         />
         <AlertDeleteDialog
           theme={props.theme}
           handleCloseBtn={handleClose}
           id={props.id}
-          chapterId={props.chapterId}
+          notebookId={notebookId}
+          chapterId={chapterId}
           notebookData={props.notebookData}
           deleteMessage={props.deleteMessage}
+          notebookIndex={notebookIndex}
+          chapterIndex={chapterIndex}
         />
       </Menu>
     </Fragment>

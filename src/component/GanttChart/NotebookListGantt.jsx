@@ -1,13 +1,5 @@
 import { Fragment, useState, useEffect } from "react";
 import * as React from "react";
-import { Box, Container } from "@mui/system";
-import Avatar from "@mui/joy/Avatar";
-import Typography from "@mui/joy/Typography";
-import ControlPointIcon from "@mui/icons-material/ControlPoint";
-import Button from "@mui/material/Button";
-import { IconButton } from "@mui/material";
-import ButtonGroup from "@mui/material/ButtonGroup";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
 import ImportContactsIcon from "@mui/icons-material/ImportContacts";
 import List from "@mui/material/List";
 import ListItemButton from "@mui/material/ListItemButton";
@@ -18,46 +10,27 @@ import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
 import StarBorder from "@mui/icons-material/StarBorder";
 import ArticleOutlinedIcon from "@mui/icons-material/ArticleOutlined";
+import { useSelector, useDispatch } from "react-redux";
+import { handleGanttUnfold } from "../../redux/action";
 
 export default function NotebookListGantt(props) {
-  const { ganttUnfoldList, setGanttUnfoldList, theme } = props;
-  const unfold = ganttUnfoldList.list.includes(props.notebook.id);
-  const [open, setOpen] = useState(false);
+  const { theme, notebook, index } = props;
+  const dispatch = useDispatch();
+
+  const isUnfold = useSelector(
+    (state) => state.viewListener.ganttUnfold[index]
+  );
 
   const handleClick = (event) => {
     event.stopPropagation();
-    // setOpen(!open);
-    handleGanttUnfoldAction(open);
+    dispatch(handleGanttUnfold(index, !isUnfold));
   };
-
-  const handleGanttUnfoldAction = (open) => {
-    if (open) {
-      setGanttUnfoldList((prevList) => ({
-        ...prevList,
-        list: prevList.list.filter((value) => value !== props.notebook.id),
-      }));
-    } else {
-      setGanttUnfoldList((prevList) => ({
-        ...prevList,
-        list: [...prevList.list, props.notebook.id],
-      }));
-    }
-  };
-
-  useEffect(() => {
-    if (unfold) {
-      setOpen(true);
-    } else {
-      setOpen(false);
-    }
-  }, [unfold]);
 
   return (
     <Fragment>
       <List
         sx={{
           width: "100%",
-          // bgcolor: "#F3D9D2",
           color: `${theme.palette.primary.main}`,
           py: 0,
         }}
@@ -77,14 +50,14 @@ export default function NotebookListGantt(props) {
             },
           }}
         >
-          {open ? <ExpandLess /> : <ExpandMore />}
+          {isUnfold ? <ExpandLess /> : <ExpandMore />}
           <ImportContactsIcon
             sx={{ color: `${theme.palette.primary.main}`, mx: "10px" }}
           >
             <InboxIcon />
           </ImportContactsIcon>
           <ListItemText
-            primary={props.notebook?.name}
+            primary={notebook?.name}
             primaryTypographyProps={{
               fontWeight: 700,
               whiteSpace: "nowrap",
@@ -92,14 +65,14 @@ export default function NotebookListGantt(props) {
             }}
           />
         </ListItemButton>
-        {props.notebook?.Chapters
-          ? props.notebook?.Chapters.map((chapters, index) => {
+        {notebook?.chapters
+          ? notebook?.chapters.map((chapter, index) => {
               return (
                 <Collapse
-                  in={open}
+                  in={isUnfold}
                   timeout="auto"
                   unmountOnExit
-                  key={`${chapters.id}-${index}`}
+                  key={`${chapter.id}-${index}`}
                   sx={{ height: "40px", padding: 0 }}
                 >
                   <List component="div" disablePadding sx={{ height: "40px" }}>
@@ -123,7 +96,7 @@ export default function NotebookListGantt(props) {
                         <StarBorder />
                       </ArticleOutlinedIcon>
                       <ListItemText
-                        primary={chapters.name}
+                        primary={chapter.name}
                         primaryTypographyProps={{ pt: "1px" }}
                       />
                     </ListItemButton>

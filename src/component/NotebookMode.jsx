@@ -1,31 +1,21 @@
-import { Fragment, useState, useEffect, useCallback, useMemo } from "react";
+import { Fragment, useState, useEffect } from "react";
 import * as React from "react";
 import { Box } from "@mui/system";
 import Typography from "@mui/joy/Typography";
-import Divider from "@mui/material/Divider";
 import Button from "@mui/material/Button";
 import CustomSeparator from "./CustomSeparator";
 import DatePickerValue from "./DatePickerValue";
-import TextareaRef from "./TextareaRef";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import styled from "styled-components";
 import { ThemeProvider } from "@mui/material/styles";
-
-import { useSpring, animated } from "react-spring";
 import Markdown from "react-markdown";
-import {
-  getDatabase,
-  set,
-  remove,
-  update,
-  ref,
-  push,
-  child,
-} from "firebase/database";
+import { getDatabase, update, ref } from "firebase/database";
+import { useSelector } from "react-redux";
+import { handleSidebarOpen } from "../redux/action";
 
-const barHeight = 70;
-const drawerWidth = 350;
+// const barHeight = 70;
+// const drawerWidth = 350;
 const toolBarHeight = 180;
 
 const TextEditor = styled.textarea.attrs(() => ({
@@ -57,50 +47,34 @@ const TextArea = styled("div")(() => ({
 }));
 
 export default function NotebookMode(props) {
+  const { dispatch, theme } = props;
+
+  const allNotebookData = useSelector((state) => state.notebookData.notebooks);
+  const screenSmall767 = useSelector(
+    (state) => state.viewListener.screenWidth767
+  );
+  const isNotebookMode = useSelector(
+    (state) => state.viewListener.viewModeisNotebook
+  );
+  const isSidebarOpen = useSelector((state) => state.viewListener.sidebarOpen);
+
+  const notebookIndex = useSelector(
+    (state) => state.notebookData.focusNotebookAndChapterIndex.notebookIndex
+  );
+  const chapterIndex = useSelector(
+    (state) => state.notebookData.focusNotebookAndChapterIndex.chapterIndex
+  );
+
   const [toggleNotebookDisplay, setToggleNotebookDisplay] = useState(false);
 
-  const { notebookData, notebookDisplay } = props;
-
-  const targetNotebook = notebookData.filter((notebook) => {
-    if (notebook.id === notebookDisplay.notebookId) {
-      return notebook;
-    }
-  });
-
-  const chapter = targetNotebook[0].Chapters.filter((chapter) => {
-    if (chapter.id === notebookDisplay.chapterId) {
-      return chapter;
-    }
-  });
-
-  const [chapterName, setChapterName] = useState(chapter[0]?.name);
-  const [markdownText, setMarkdownText] = useState(chapter[0]?.content);
+  const [markdownText, setMarkdownText] = useState(
+    allNotebookData[notebookIndex]?.chapters[chapterIndex].content
+  );
 
   const uid = window.localStorage.getItem("uid");
-  let notebookIdForFunc = 0;
-  let chapterIdForFunc = 0;
-
-  for (var i = 0; i < props.notebookData.length; i++) {
-    if (notebookData[i]?.id === notebookDisplay.notebookId) {
-      notebookIdForFunc = i;
-      if (notebookDisplay.chapterId !== undefined) {
-        for (var j = 0; j < props.notebookData[i].Chapters.length; j++) {
-          if (
-            notebookData[notebookIdForFunc].Chapters[j]?.id ===
-            notebookDisplay.chapterId
-          ) {
-            chapterIdForFunc = j;
-            break;
-          }
-        }
-      } else {
-        break;
-      }
-    }
-  }
 
   const handleDrawerOpen = () => {
-    props.setOpen(true);
+    dispatch(handleSidebarOpen(true));
   };
 
   const handleInputChange = (e) => {
@@ -112,11 +86,11 @@ export default function NotebookMode(props) {
 
     const db = getDatabase();
     const postData = {
-      ...chapter[0],
+      ...allNotebookData[notebookIndex]?.chapters[chapterIndex],
       content: content,
     };
 
-    const dataPath = `/users/${uid}/notebooks/${notebookIdForFunc}/Chapters/${chapterIdForFunc}`;
+    const dataPath = `/users/${uid}/notebooks/${notebookIndex}/chapters/${chapterIndex}`;
     const updates = {};
     updates[dataPath] = postData;
 
@@ -124,13 +98,14 @@ export default function NotebookMode(props) {
   };
 
   useEffect(() => {
-    setChapterName(chapter[0]?.name);
-    setMarkdownText(chapter[0]?.content);
-  }, [notebookData, notebookDisplay]);
+    setMarkdownText(
+      allNotebookData[notebookIndex]?.chapters[chapterIndex].content
+    );
+  }, [notebookIndex, chapterIndex]);
 
   return (
     <Fragment>
-      <ThemeProvider theme={props.theme}>
+      <ThemeProvider theme={theme}>
         <Box
           sx={{
             height: "100vh",
@@ -139,11 +114,11 @@ export default function NotebookMode(props) {
         >
           <Box
             sx={{
-              height: props.isSmallScreen ? "auto" : "180px",
+              height: screenSmall767 ? "auto" : "180px",
               padding: "0px 20px 20px",
-              borderBottom: props.isSmallScreen
-                ? `1.5px solid ${props.theme.palette.dividerBorder.main}`
-                : `3px solid ${props.theme.palette.dividerBorder.main}`,
+              borderBottom: screenSmall767
+                ? `1.5px solid ${theme.palette.dividerBorder.main}`
+                : `3px solid ${theme.palette.dividerBorder.main}`,
             }}
           >
             <Box sx={{ height: "70px", display: "flex", alignItems: "center" }}>
@@ -154,59 +129,45 @@ export default function NotebookMode(props) {
                 edge="start"
                 sx={{
                   mr: 2,
-                  ...(props.open && { display: "none" }),
+                  ...(isSidebarOpen && { display: "none" }),
                 }}
               >
-                <MenuIcon
-                  sx={{ color: `${props.theme.palette.primary.main}` }}
-                />
+                <MenuIcon sx={{ color: `${theme.palette.primary.main}` }} />
               </IconButton>
-              <CustomSeparator
-                theme={props.theme}
-                notebookData={notebookData}
-                notebookDisplay={notebookDisplay}
-                mode={props.mode}
-              />
+              <CustomSeparator theme={theme} />
             </Box>
             <Typography
               gutterBottom
               sx={{
                 fontWeight: 900,
                 fontSize: "36px",
-                // color: "#2E4AF3",
-                color: `${props.theme.palette.primary.main}`,
+                color: `${theme.palette.primary.main}`,
                 textTransform: "capitalize",
                 textAlign: "left",
                 marginTop: "-12.5px",
               }}
             >
-              {chapterName}
+              {allNotebookData[notebookIndex]?.chapters[chapterIndex].name}
             </Typography>
             <Box
               sx={{
                 textAlign: "left",
                 display: "flex",
-                flexDirection: props.isSmallScreen ? "column" : "row",
+                flexDirection: screenSmall767 ? "column" : "row",
                 justifyContent: "space-between",
-                alignItems: props.isSmallScreen ? "flex-start" : "center",
-                // marginTop: "35px",
-                gap: props.isSmallScreen ? "20px" : "none",
+                alignItems: screenSmall767 ? "flex-start" : "center",
+                gap: screenSmall767 ? "20px" : "none",
               }}
             >
-              <DatePickerValue
-                theme={props.theme}
-                notebookData={notebookData}
-                notebookDisplay={notebookDisplay}
-                isSmallScreen={props.isSmallScreen}
-              />
+              <DatePickerValue theme={theme} />
               {toggleNotebookDisplay ? (
                 <Button
                   color="primary"
                   variant="contained"
                   sx={{
                     textTransform: "capitalize",
-                    color: `${props.theme.palette.secondary.main}`,
-                    height: props.isSmallScreen ? "35px" : "42px",
+                    color: `${theme.palette.secondary.main}`,
+                    height: screenSmall767 ? "35px" : "42px",
                     padding: "0px 15px",
                     letterSpacing: "0.5px",
                     boxShadow: "none",
@@ -221,10 +182,9 @@ export default function NotebookMode(props) {
                   color="primary"
                   variant="contained"
                   sx={{
-                    // background: "rgb(112, 132, 255, 0.1)",
                     textTransform: "capitalize",
-                    color: `${props.theme.palette.secondary.main}`,
-                    height: props.isSmallScreen ? "35px" : "42px",
+                    color: `${theme.palette.secondary.main}`,
+                    height: screenSmall767 ? "35px" : "42px",
                     padding: "0px 15px",
                     letterSpacing: "0.5px",
                     boxShadow: "none",

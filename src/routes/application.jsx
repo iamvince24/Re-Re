@@ -7,55 +7,77 @@ import GanntMode from "../component/GanntMode";
 import { styled } from "@mui/material/styles";
 import MuiAppBar from "@mui/material/AppBar";
 import Drawer from "@mui/material/Drawer";
-import { useMediaQuery } from "@mui/material";
-import { getDatabase, ref, onValue } from "firebase/database";
+import { getDatabase, ref, onValue, get } from "firebase/database";
 import { ThemeProvider } from "@mui/material/styles";
+import { useSelector } from "react-redux";
+import { fetchNotebookData } from "../redux/action";
+import { handleModeUpdate } from "../redux/action";
+import { handleUpdateIndex } from "../redux/action";
+import { handleUpdatedGanttUnfoldList } from "../redux/action";
+
+const AppBar = styled(MuiAppBar, {
+  shouldForwardProp: (prop) => prop !== "open",
+})(({ theme, open, drawerwidth }) => ({
+  transition: theme.transitions.create(["margin", "width"], {
+    easing: theme.transitions.easing.sharp,
+    duration: theme.transitions.duration.leavingScreen,
+  }),
+  ...(open && {
+    width: `calc(100% - ${drawerwidth}px)`,
+    marginLeft: `${drawerwidth}px`,
+    transition: theme.transitions.create(["margin", "width"], {
+      easing: theme.transitions.easing.easeOut,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+  }),
+}));
+
+const ApplicationContainer = styled(Box)`
+  display: flex;
+  flex-direction: row;
+  background-color: black;
+`;
 
 export default function Application(props) {
-  const isSmallScreen = useMediaQuery("(max-width:767px)");
-  const [mode, setMode] = useState(isSmallScreen ? false : true);
-  const [open, setOpen] = useState(isSmallScreen ? false : true);
-  const [notebookData, setNotebookData] = useState([
-    {
-      id: 1,
-      name: "Loading",
-      start: "YYYY-MM-DD",
-      end: "YYYY-MM-DD",
-      Chapters: [
-        {
-          id: "1",
-          name: "Loading",
-          start: "YYYY-MM-DD",
-          end: "YYYY-MM-DD",
-          content: "",
-        },
-      ],
-    },
-  ]);
+  const { theme, dispatch } = props;
+  const allNotebookData = useSelector((state) => state.notebookData.notebooks);
 
-  const [notebookDisplay, setNotebookDisplay] = useState({
-    notebookId: 1,
-    chapterId: 1,
-  });
+  const screenSmall767 = useSelector(
+    (state) => state.viewListener.screenWidth767
+  );
+  const isNotebookMode = useSelector(
+    (state) => state.viewListener.viewModeisNotebook
+  );
+  const isSidebarOpen = useSelector((state) => state.viewListener.sidebarOpen);
 
-  let drawerWidth = isSmallScreen ? "100vw" : 350;
+  const drawerwidth = screenSmall767 ? "100vw" : 350;
 
-  const AppBar = styled(MuiAppBar, {
-    shouldForwardProp: (prop) => prop !== "open",
-  })(({ theme, open }) => ({
-    transition: theme.transitions.create(["margin", "width"], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-    ...(open && {
-      width: `calc(100% - ${drawerWidth}px)`,
-      marginLeft: `${drawerWidth}px`,
-      transition: theme.transitions.create(["margin", "width"], {
-        easing: theme.transitions.easing.easeOut,
-        duration: theme.transitions.duration.enteringScreen,
-      }),
-    }),
-  }));
+  function getInitNotebookAndChapterId(allData) {
+    let notebookIdList = [];
+    let chapterIdList = [];
+    allData?.forEach((notebook, index) => {
+      notebookIdList.push(index);
+      notebook.chapters?.forEach((chapter, index) => {
+        chapterIdList.push(index);
+      });
+    });
+    dispatch(handleUpdateIndex(notebookIdList[0], chapterIdList[0]));
+  }
+
+  function handleSetGanttUnfoldList(allData) {
+    let indexList = [];
+    let ganttUnfoldList = {};
+    allData?.forEach((notebook, index) => {
+      indexList.push(index);
+    });
+    indexList?.forEach((element, index) => {
+      ganttUnfoldList = {
+        ...ganttUnfoldList,
+        [`${element}`]: "false",
+      };
+    });
+    dispatch(handleUpdatedGanttUnfoldList(ganttUnfoldList));
+  }
 
   const uid = window.localStorage.getItem("uid");
   useEffect(() => {
@@ -63,9 +85,26 @@ export default function Application(props) {
       try {
         const db = getDatabase();
         const starCountRef = await ref(db, `users/${uid}/notebooks`);
-        onValue(starCountRef, (snapshot) => {
-          const data = snapshot.val();
-          setNotebookData(data);
+        onValue(starCountRef, async (snapshot) => {
+          const snapshotValue = snapshot.val();
+          if (snapshotValue !== null && typeof snapshotValue === "object") {
+            const data = Object.values(snapshotValue);
+            await dispatch(fetchNotebookData(data));
+            await handleSetGanttUnfoldList(data);
+          } else {
+            console.error("沒有資料了");
+            dispatch(
+              fetchNotebookData([
+                {
+                  id: 12312,
+                  name: "Please Add Notebook",
+                  start: "2024-01-01",
+                  end: "2024-01-02",
+                  chapters: [],
+                },
+              ])
+            );
+          }
         });
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -75,90 +114,72 @@ export default function Application(props) {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    if (screenSmall767) {
+      dispatch(handleModeUpdate(false));
+    }
+  });
+
   return (
     <Fragment>
       <style>
         {`
-        .css-12i7wg6-MuiPaper-root-MuiDrawer-paper {
-          border: none;
-        }
+        // .css-12i7wg6-MuiPaper-root-MuiDrawer-paper {
+        //   border: none;
+        // }
 
-         .css-nhf7i1 {
-          background: 'black';
-        }
+        //  .css-nhf7i1 {
+        //   background: 'black';
+        // }
       `}
       </style>
-      <ThemeProvider theme={props.theme}>
-        <Box
-          component="section"
-          sx={{
-            display: "flex",
-            flexDirection: "row",
-            backgroundColor: "black",
-          }}
-        >
+      <ThemeProvider theme={theme}>
+        <ApplicationContainer component="section">
           <Drawer
             sx={{
-              width: drawerWidth,
-              // width: isSmallScreen ? "100vw" : drawerWidth,
+              width: drawerwidth,
               flexShrink: 0,
               border: "none",
               "& .MuiDrawer-paper": {
-                width: drawerWidth,
-                // width: isSmallScreen ? "100vw" : drawerWidth,
+                width: drawerwidth,
                 boxSizing: "border-box",
               },
             }}
-            // variant="persistent"
-            variant={isSmallScreen ? "temporary" : "persistent"}
+            variant={screenSmall767 ? "temporary" : "persistent"}
             anchor="left"
-            open={open}
+            open={isSidebarOpen}
           >
             <Menu
-              theme={props.theme}
+              dispatch={dispatch}
+              theme={theme}
               sx={{ border: "none" }}
-              setMode={setMode}
-              setOpen={setOpen}
-              notebookData={notebookData}
-              setNotebookDisplay={setNotebookDisplay}
+              notebookData={allNotebookData}
               uid={uid}
-              isSmallScreen={isSmallScreen}
             />
           </Drawer>
 
           <AppBar
+            drawerwidth={drawerwidth}
             position="fixed"
-            open={open}
-            sx={{
+            open={isSidebarOpen}
+            style={{
               bgcolor: "#F3D9D2",
-              borderLeft: open
-                ? `3px solid ${props.theme.palette.dividerBorder.main}`
+              borderLeft: isSidebarOpen
+                ? `3px solid ${theme.palette.dividerBorder.main}`
                 : "none",
             }}
           >
-            {mode ? (
+            {isNotebookMode ? (
               <GanntMode
-                theme={props.theme}
-                setOpen={setOpen}
-                open={open}
-                notebookData={notebookData}
-                notebookDisplay={notebookDisplay}
-                mode={mode}
-                isSmallScreen={isSmallScreen}
+                dispatch={dispatch}
+                theme={theme}
+                notebookData={allNotebookData}
               />
             ) : (
-              <NotebookMode
-                theme={props.theme}
-                setOpen={setOpen}
-                open={open}
-                notebookData={notebookData}
-                notebookDisplay={notebookDisplay}
-                mode={mode}
-                isSmallScreen={isSmallScreen}
-              />
+              <NotebookMode dispatch={dispatch} theme={theme} />
             )}
           </AppBar>
-        </Box>
+        </ApplicationContainer>
       </ThemeProvider>
     </Fragment>
   );

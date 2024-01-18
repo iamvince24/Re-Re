@@ -101,7 +101,7 @@ async function handleNewUserData(uid) {
       name: "Sample",
       start: "2024-01-02",
       end: "2024-01-08",
-      Chapters: [
+      chapters: [
         {
           id: "1",
           name: "Ch1 Sample 1",

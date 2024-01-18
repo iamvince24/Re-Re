@@ -1,59 +1,56 @@
 import { Fragment, useState, useEffect } from "react";
-import * as React from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { Box, Container } from "@mui/system";
+import { useNavigate } from "react-router-dom";
+import { Box } from "@mui/system";
 import Avatar from "@mui/material/Avatar";
 import Typography from "@mui/material/Typography";
 import ControlPointIcon from "@mui/icons-material/ControlPoint";
 import Button from "@mui/material/Button";
 import { IconButton } from "@mui/material";
 import ButtonGroup from "@mui/material/ButtonGroup";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { ThemeProvider } from "@mui/material/styles";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-
-import { getDatabase, ref, set, child, push, update } from "firebase/database";
-
+import { handleModeUpdate } from "../redux/action";
+import { handleSidebarOpen } from "../redux/action";
+import { v4 as uuidv4 } from "uuid";
+import { getDatabase, ref, update } from "firebase/database";
 import Notebook from "./notebook";
 import { logout } from "../firebase";
+import { useSelector } from "react-redux";
 
-function writeNewPost(uid, id) {
+function writeNewPost(uid, index) {
   const db = getDatabase();
 
   const currentDate = new Date();
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth() + 1;
   const day = currentDate.getDate();
-
-  // Create a Date object for the current date
   const defaultStartDate = new Date(year, month - 1, day);
-
-  // Create a Date object for the end date and add one day
   const defaultEndDate = new Date(year, month - 1, day);
   defaultEndDate.setDate(defaultEndDate.getDate() + 1);
-
-  // Format dates as strings
   const formattedStartDate = formatDate(defaultStartDate);
   const formattedEndDate = formatDate(defaultEndDate);
 
-  // A post entry.
+  const id = generateNumericId();
   const postData = {
     id: id,
     name: "Default Notebook",
     start: formattedStartDate,
     end: formattedEndDate,
-    Chapters: [
+    color: "white",
+    chapters: [
       {
         id: id,
         name: "Default Chapter",
         start: formattedStartDate,
         end: formattedEndDate,
         content: "Type something",
+        color: "white",
       },
     ],
   };
 
-  const newPostKey = id;
+  const newPostKey = index;
   const updates = {};
   updates["/users/" + uid + "/notebooks/" + newPostKey] = postData;
 
@@ -69,20 +66,28 @@ function formatDate(date) {
   }`;
 }
 
+function generateNumericId() {
+  const fullId = uuidv4();
+  const numericId = fullId.replace(/\D/g, "").substring(0, 5);
+  return parseInt(numericId, 10);
+}
+
 export default function Menu(props) {
-  const [notebookList, setNotebookList] = useState(props.notebookData);
+  const { dispatch, theme, uid } = props;
+  const allNotebookData = useSelector((state) => state.notebookData.notebooks);
+  const screenSmall767 = useSelector(
+    (state) => state.viewListener.screenWidth767
+  );
+
   const navigate = useNavigate();
   const username = window.localStorage.getItem("username");
 
   const handleDrawerClose = () => {
-    props.setOpen(false);
+    dispatch(handleSidebarOpen(false));
   };
 
   const handleAddNotebook = () => {
-    writeNewPost(
-      props.uid,
-      props.notebookData[props.notebookData.length - 1].id + 1
-    );
+    writeNewPost(uid, allNotebookData.length);
   };
 
   const handleLogOut = () => {
@@ -92,12 +97,8 @@ export default function Menu(props) {
     navigate("/");
   };
 
-  useEffect(() => {
-    setNotebookList(props.notebookData);
-  }, [props.notebookData]);
-
   return (
-    <ThemeProvider theme={props.theme}>
+    <ThemeProvider theme={theme}>
       <Box
         sx={{
           height: "100vh",
@@ -138,8 +139,8 @@ export default function Menu(props) {
               size="sm"
               sx={{
                 fontWeight: "900",
-                backgroundColor: `${props.theme.palette.primary.main}`,
-                color: `${props.theme.palette.secondary.main}`,
+                backgroundColor: `${theme.palette.primary.main}`,
+                color: `${theme.palette.secondary.main}`,
               }}
             />
 
@@ -147,7 +148,7 @@ export default function Menu(props) {
               sx={{
                 fontFamily: "inter",
                 fontWeight: 900,
-                color: `${props.theme.palette.primary.main}`,
+                color: `${theme.palette.primary.main}`,
                 textTransform: "capitalize",
                 fontSize: "22px",
                 marginTop: "2px",
@@ -175,21 +176,22 @@ export default function Menu(props) {
           sx={{
             width: "100%",
             boxShadow: "none",
-            display: props.isSmallScreen ? "none" : "flex",
+            display: screenSmall767 ? "none" : "flex",
           }}
         >
           <Button
             color="primary"
             sx={{
               width: "50%",
-              color: `${props.theme.palette.secondary.main}`,
+              color: `${theme.palette.secondary.main}`,
               fontWeight: "700",
             }}
             onClick={() => {
-              props.setMode(false);
-              if (props.isSmallScreen) {
-                props.setMode(false);
-                props.setOpen(false);
+              dispatch(handleModeUpdate(false));
+              if (screenSmall767) {
+                dispatch(handleModeUpdate(false));
+                // setOpen(false);
+                dispatch(handleSidebarOpen(false));
               }
             }}
           >
@@ -199,14 +201,15 @@ export default function Menu(props) {
             color="primary"
             sx={{
               width: "50%",
-              color: `${props.theme.palette.secondary.main}`,
+              color: `${theme.palette.secondary.main}`,
               fontWeight: "700",
             }}
             onClick={() => {
-              props.setMode(true);
-              if (props.isSmallScreen) {
-                props.setMode(true);
-                props.setOpen(false);
+              dispatch(handleModeUpdate(true));
+              if (screenSmall767) {
+                dispatch(handleModeUpdate(true));
+                // setOpen(false);
+                dispatch(handleSidebarOpen(false));
               }
             }}
           >
@@ -226,8 +229,7 @@ export default function Menu(props) {
             fontSize={"md"}
             sx={{
               fontWeight: 700,
-              // color: "#7084FF",
-              color: `${props.theme.palette.primary.main}`,
+              color: `${theme.palette.primary.main}`,
               p: "0px 6px 0px 8px",
             }}
           >
@@ -236,24 +238,24 @@ export default function Menu(props) {
           <IconButton aria-label="delete" onClick={handleAddNotebook}>
             <ControlPointIcon
               fontSize="small"
-              sx={{ color: `${props.theme.palette.primary.main}` }}
+              sx={{ color: `${theme.palette.primary.main}` }}
             />
           </IconButton>
         </Box>
 
         <Box sx={{ marginBottom: "50px" }}>
-          {notebookList
-            ? notebookList?.map((notebook, index) => {
+          {allNotebookData
+            ? allNotebookData?.map((notebook, index) => {
                 return (
                   <Notebook
-                    theme={props.theme}
-                    notebookData={notebookList}
+                    theme={theme}
+                    dispatch={dispatch}
+                    notebookData={allNotebookData}
                     notebook={notebook}
                     key={`${notebook.id}-${index}`}
-                    setNotebookDisplay={props.setNotebookDisplay}
-                    isSmallScreen={props.isSmallScreen}
-                    setMode={props.setMode}
-                    setOpen={props.setOpen}
+                    // setNotebookDisplay={setNotebookDisplay}
+                    // isSmallScreen={screenSmall767}
+                    notebookIndex={index}
                   />
                 );
               })
@@ -263,7 +265,7 @@ export default function Menu(props) {
           variant="contained"
           sx={{
             width: "100%",
-            color: `${props.theme.palette.secondary.main}`,
+            color: `${theme.palette.secondary.main}`,
             fontWeight: "700",
             marginBottom: "20px",
             boxShadow: "none",

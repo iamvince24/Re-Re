@@ -153,6 +153,7 @@ export default function GanttChartTest({
               <NotebookGanttComponent
                 theme={theme}
                 id={notebook.id}
+                index={index}
                 key={index}
                 notebookData={notebookData}
                 notebook={notebook}
@@ -163,7 +164,7 @@ export default function GanttChartTest({
                 setTaskDurations={setTaskDurations}
                 ganttTimePeriod={ganttTimePeriod}
                 ganttTimePeriodCell={ganttTimePeriodCell}
-                ganttUnfoldList={ganttUnfoldList}
+                // ganttUnfoldList={ganttUnfoldList}
               />
             );
           })}

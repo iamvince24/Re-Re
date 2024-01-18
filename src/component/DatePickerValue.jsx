@@ -2,92 +2,36 @@ import * as React from "react";
 import { Fragment, useState, useEffect } from "react";
 import dayjs from "dayjs";
 import { ConfigProvider, Space } from "antd";
-
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import { DatePicker } from "antd";
-
-import {
-  getDatabase,
-  set,
-  remove,
-  update,
-  ref,
-  push,
-  child,
-} from "firebase/database";
+import { useSelector } from "react-redux";
+import { getDatabase, update, ref } from "firebase/database";
 dayjs.extend(customParseFormat);
 
 const { RangePicker } = DatePicker;
 const dateFormat = "YYYY-MM-DD";
 
 export default function DatePickerValue(props) {
-  const { notebookData, notebookDisplay } = props;
+  const { theme } = props;
+  const screenSmall767 = useSelector(
+    (state) => state.viewListener.screenWidth767
+  );
 
-  let targetNotebook = notebookData.filter((notebook) => {
-    if (notebook.id === notebookDisplay.notebookId) {
-      return notebook;
-    }
-  });
+  const allNotebookData = useSelector((state) => state.notebookData.notebooks);
 
-  let chapter = targetNotebook[0].Chapters.filter((chapter) => {
-    if (chapter.id === notebookDisplay.chapterId) {
-      return chapter;
-    }
-  });
+  const focusNotebookAndChapterIndex = useSelector(
+    (state) => state.notebookData.focusNotebookAndChapterIndex
+  );
+  const notebookIndex = focusNotebookAndChapterIndex.notebookIndex;
+  const chapterIndex = focusNotebookAndChapterIndex.chapterIndex;
 
   const uid = window.localStorage.getItem("uid");
-  let notebookIdForFunc = 0;
-  let chapterIdForFunc = 0;
-
-  // for (var i = 0; i < props.notebookData.length; i++) {
-  //   if (props.notebookData[i]?.id === props.id) {
-  //     notebookIdForFunc = i;
-  //     if (props.chapterId !== undefined) {
-  //       for (var j = 0; j < props.notebookData[i].Chapters.length; j++) {
-  //         if (
-  //           props.notebookData[notebookIdForFunc].Chapters[j]?.id ===
-  //           props.chapterId
-  //         ) {
-  //           chapterIdForFunc = j;
-  //           break;
-  //         }
-  //       }
-  //     } else {
-  //       break;
-  //     }
-  //   }
-  // }
-
-  for (var i = 0; i < props.notebookData.length; i++) {
-    if (props.notebookData[i]?.id === notebookDisplay.notebookId) {
-      notebookIdForFunc = i;
-      if (props.chapterId !== undefined) {
-        for (var j = 0; j < props.notebookData[i].Chapters.length; j++) {
-          if (
-            props.notebookData[notebookIdForFunc].Chapters[j]?.id ===
-            notebookDisplay.chapterId
-          ) {
-            chapterIdForFunc = j;
-            break;
-          }
-        }
-      } else {
-        break;
-      }
-    }
-  }
-
-  // console.log(notebookIdForFunc, chapterIdForFunc);
-
-  // const [startvalue, setStartValue] = useState(
-  //   notebookData[notebookIdForFunc]?.Chapters[chapterIdForFunc].start
-  // );
-  // const [endvalue, setEndValue] = useState(
-  //   notebookData[notebookIdForFunc]?.Chapters[chapterIdForFunc].end
-  // );
-
-  const [startvalue, setStartValue] = useState(dayjs(chapter[0]?.start));
-  const [endvalue, setEndValue] = useState(dayjs(chapter[0]?.end));
+  const [startvalue, setStartValue] = useState(
+    allNotebookData[notebookIndex]?.chapters[chapterIndex].start
+  );
+  const [endvalue, setEndValue] = useState(
+    allNotebookData[notebookIndex]?.chapters[chapterIndex].end
+  );
 
   const handleNewDate = (startValue, endValue) => {
     setStartValue(startValue);
@@ -101,12 +45,12 @@ export default function DatePickerValue(props) {
   const handleUpdateNewDate = (startValue, endValue) => {
     const db = getDatabase();
     const postData = {
-      ...chapter[0],
+      ...allNotebookData[notebookIndex]?.chapters[chapterIndex],
       start: startValue,
       end: endValue,
     };
 
-    const dataPath = `/users/${uid}/notebooks/${notebookIdForFunc}/Chapters/${chapterIdForFunc}`;
+    const dataPath = `/users/${uid}/notebooks/${notebookIndex}/chapters/${chapterIndex}`;
 
     const updates = {};
     updates[dataPath] = postData;
@@ -115,28 +59,9 @@ export default function DatePickerValue(props) {
   };
 
   useEffect(() => {
-    for (var i = 0; i < props.notebookData.length; i++) {
-      if (props.notebookData[i]?.id === notebookDisplay.notebookId) {
-        notebookIdForFunc = i;
-        for (var j = 0; j < props.notebookData[i].Chapters.length; j++) {
-          if (
-            props.notebookData[notebookIdForFunc].Chapters[j]?.id ===
-            notebookDisplay.chapterId
-          ) {
-            chapterIdForFunc = j;
-            break;
-          }
-        }
-      }
-    }
-
-    setStartValue(
-      notebookData[notebookIdForFunc]?.Chapters[chapterIdForFunc].start
-    );
-    setEndValue(
-      notebookData[notebookIdForFunc]?.Chapters[chapterIdForFunc].end
-    );
-  }, [notebookData, notebookDisplay]);
+    setStartValue(allNotebookData[notebookIndex]?.chapters[chapterIndex].start);
+    setEndValue(allNotebookData[notebookIndex]?.chapters[chapterIndex].end);
+  }, [focusNotebookAndChapterIndex]);
 
   return (
     <Fragment>
@@ -200,13 +125,13 @@ export default function DatePickerValue(props) {
       <ConfigProvider
         theme={{
           token: {
-            colorPrimary: `${props.theme.palette.secondary.main}`,
+            colorPrimary: `${theme.palette.secondary.main}`,
             borderRadius: 4,
-            hoverBorderColor: `${props.theme.palette.secondary.main}`,
-            colorBorder: `${props.theme.palette.secondary.main}`,
-            colorText: `${props.theme.palette.secondary.main}`,
-            colorIcon: `${props.theme.palette.secondary.main}`,
-            colorIconHover: `${props.theme.palette.secondary.main}`,
+            hoverBorderColor: `${theme.palette.secondary.main}`,
+            colorBorder: `${theme.palette.secondary.main}`,
+            colorText: `${theme.palette.secondary.main}`,
+            colorIcon: `${theme.palette.secondary.main}`,
+            colorIconHover: `${theme.palette.secondary.main}`,
             warningActiveShadow: "none",
             // colorBgContainer: "#F3D9D2",
             // cellActiveWithRangeBg: "#F3D9D2",
@@ -217,9 +142,9 @@ export default function DatePickerValue(props) {
           <RangePicker
             style={{
               border: "none",
-              background: `${props.theme.palette.primary.main}`,
+              background: `${theme.palette.primary.main}`,
               zIndex: "10000",
-              height: props.isSmallScreen ? "35px" : "42px",
+              height: screenSmall767 ? "35px" : "42px",
             }}
             allowClear={false}
             allowEmpty={[false, false]}

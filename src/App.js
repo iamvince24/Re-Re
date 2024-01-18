@@ -11,33 +11,38 @@ import Application from "./routes/application";
 import Navigation from "./routes/navigation";
 import Home from "./routes/home";
 import Login from "./routes/login";
-import { green, purple } from "@mui/material/colors";
-import { Box } from "@mui/system";
-import { Fragment, useState } from "react";
+import { Fragment } from "react";
 import { useMediaQuery } from "@mui/material";
+import { handleScreenWidth500 } from "./redux/action";
+import { handleScreenWidth767 } from "./redux/action";
 
 function App(props) {
+  const { state, dispatch, theme } = props;
   const loginStatus = false;
-  const isSmall500 = useMediaQuery("(max-width:500px)");
+
+  const isSmallscreenWidth500 = useMediaQuery("(max-width:500px)");
+  const isSmallscreenWidth767 = useMediaQuery("(max-width:767px)");
+  dispatch(handleScreenWidth500(isSmallscreenWidth500));
+  dispatch(handleScreenWidth767(isSmallscreenWidth767));
 
   return (
     <Fragment>
       <Router>
         {loginStatus ? null : (
-          <Navigation theme={props.theme} isSmall500={isSmall500} />
+          <Navigation theme={theme} isSmall500={isSmallscreenWidth500} />
         )}
         <Routes>
           <Route
             path="/"
-            element={<Home theme={props.theme} isSmall500={isSmall500} />}
+            element={<Home theme={theme} isSmall500={isSmallscreenWidth500} />}
           />
           <Route
             path="/login"
-            element={<Login theme={props.theme} isSmall500={isSmall500} />}
+            element={<Login theme={theme} isSmall500={isSmallscreenWidth500} />}
           />
           <Route
             path="/application"
-            element={<Application theme={props.theme} />}
+            element={<Application theme={theme} dispatch={dispatch} />}
           />
         </Routes>
       </Router>

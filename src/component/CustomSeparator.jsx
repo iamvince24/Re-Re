@@ -6,6 +6,7 @@ import Link from "@mui/material/Link";
 import Stack from "@mui/material/Stack";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import { ThemeProvider } from "@mui/material/styles";
+import { useSelector } from "react-redux";
 
 function handleClick(event) {
   event.preventDefault();
@@ -13,66 +14,35 @@ function handleClick(event) {
 }
 
 export default function CustomSeparator(props) {
-  const { notebookData, notebookDisplay, mode } = props;
+  const { theme } = props;
 
-  const targetNotebook = notebookData.filter((notebook) => {
-    if (notebook.id === notebookDisplay.notebookId) {
-      return notebook;
-    }
-  });
+  const allNotebookData = useSelector((state) => state.notebookData.notebooks);
+  const notebookIndex = useSelector(
+    (state) => state.notebookData.focusNotebookAndChapterIndex.notebookIndex
+  );
+  const chapterIndex = useSelector(
+    (state) => state.notebookData.focusNotebookAndChapterIndex.chapterIndex
+  );
 
-  const chapter = targetNotebook[0].Chapters.filter((chapter) => {
-    if (chapter.id === notebookDisplay.chapterId) {
-      return chapter;
-    }
-  });
-
-  // const breadcrumbs = [
-  //   <Link
-  //     //   underline="hover"
-  //     underline="none"
-  //     key="1"
-  //     color="inherit"
-  //   >
-  //     All
-  //   </Link>,
-  //   <Link
-  //     //   underline="hover"
-  //     underline="none"
-  //     key="1"
-  //     color="inherit"
-  //   >
-  //     {notebookData[notebookDisplay.notebookId - 1].name}
-  //   </Link>,
-  //   <Link
-  //     //   underline="hover"
-  //     underline="none"
-  //     key="2"
-  //     color="inherit"
-  //   >
-  //     {
-  //       notebookData[notebookDisplay.notebookId - 1].Chapters[
-  //         notebookDisplay.chapterId - 1
-  //       ].name
-  //     }
-  //   </Link>,
-  // ];
+  const isNotebookMode = useSelector(
+    (state) => state.viewListener.viewModeisNotebook
+  );
 
   return (
-    <ThemeProvider theme={props.theme}>
+    <ThemeProvider theme={theme}>
       <Stack spacing={2}>
         <Breadcrumbs
           separator={<NavigateNextIcon fontSize="small" />}
           aria-label="breadcrumb"
           color="primary"
         >
-          {mode ? (
+          {isNotebookMode ? (
             <Link
               //   underline="hover"
               underline="none"
               key="1"
               color="inherit"
-              sx={{ color: `${props.theme.palette.primary.main}` }}
+              sx={{ color: `${theme.palette.primary.main}` }}
             >
               All Notebooks Gantt
             </Link>
@@ -86,24 +56,24 @@ export default function CustomSeparator(props) {
               All
             </Link>
           )}
-          {mode ? null : (
+          {isNotebookMode ? null : (
             <Link
               //   underline="hover"
               underline="none"
               key="1"
               color="inherit"
             >
-              {targetNotebook[0]?.name}
+              {allNotebookData[notebookIndex]?.name}
             </Link>
           )}
-          {mode ? null : (
+          {isNotebookMode ? null : (
             <Link
               //   underline="hover"
               underline="none"
               key="2"
               color="inherit"
             >
-              {chapter[0]?.name}
+              {allNotebookData[notebookIndex]?.chapters[chapterIndex].name}
             </Link>
           )}
         </Breadcrumbs>

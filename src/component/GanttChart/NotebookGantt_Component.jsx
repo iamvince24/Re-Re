@@ -17,11 +17,13 @@ import Typography from "@mui/joy/Typography";
 import Brightness1Icon from "@mui/icons-material/Brightness1";
 import { getDatabase, ref, set, child, push, update } from "firebase/database";
 import dayjs from "dayjs";
+import { useSelector, useDispatch } from "react-redux";
 
 export default function NotebookGanttComponent(props) {
   const {
     theme,
     id,
+    index,
     notebookData,
     notebook,
     timeRange,
@@ -31,10 +33,13 @@ export default function NotebookGanttComponent(props) {
     setTaskDurations,
     ganttTimePeriod,
     ganttTimePeriodCell,
-    ganttUnfoldList,
+    // ganttUnfoldList,
   } = props;
 
-  const unfold = ganttUnfoldList.list.includes(id) ? "block" : "none";
+  const isUnfold = useSelector((state) =>
+    state.viewListener.ganttUnfold[index] ? "block" : "none"
+  );
+
   const startDate = `${timeRange.fromSelectYear}-${
     months[timeRange.fromSelectMonth]
   }-01`;
@@ -42,11 +47,11 @@ export default function NotebookGanttComponent(props) {
   const [contextMenu, setContextMenu] = useState(null);
   const [targetType, setTargetType] = useState(null);
 
-  let earliestDate = new Date(notebook?.Chapters[0]?.start);
-  let latestDate = new Date(notebook?.Chapters[0]?.end);
+  let earliestDate = new Date("2024-01-01");
+  let latestDate = new Date("2024-01-02");
 
   // 遍歷資料
-  notebook.Chapters.forEach((chapter) => {
+  notebook.chapters?.forEach((chapter) => {
     const startDate = new Date(chapter.start);
     const endDate = new Date(chapter.end);
 
@@ -61,23 +66,11 @@ export default function NotebookGanttComponent(props) {
     }
   });
 
-  // 將日期轉換為字串格式
-  // const earliestDateString = earliestDate.toISOString().split("T")[0];
-  // const latestDateString = latestDate.toISOString().split("T")[0];
-
-  // 輸出結果
-  // console.log("最早的時間:", earliestDateString);
-  // console.log("最晚的時間:", latestDateString);
   const dateFormat = "YYYY-MM-DD";
   const [notebookStart, notebookEnd] = [
     dayjs(earliestDate).format(dateFormat),
     dayjs(latestDate).format(dateFormat),
   ];
-  // console.log("最早的時間:", dayjs(earliestDate).format(dateFormat));
-  // console.log("最晚的時間:", dayjs(latestDate).format(dateFormat));
-
-  // console.log("最早的時間:", earliestDate);
-  // console.log("最晚的時間:", latestDate);
 
   function handleDragStart(taskDurationId) {
     setTaskDurationElDraggedId(taskDurationId);
@@ -206,7 +199,7 @@ export default function NotebookGanttComponent(props) {
   );
   notebookTitleRow = [];
 
-  notebook.Chapters?.map((chapter) => {
+  notebook.chapters?.map((chapter) => {
     const chapterColor = chapter.color;
     let chapterMnth = new Date(startMonth);
     for (let i = 0; i < numMonths; i++) {
@@ -310,7 +303,11 @@ export default function NotebookGanttComponent(props) {
     );
 
     taskRows.push(
-      <div key={uuidv4()} className="taskRow" style={{ display: `${unfold}` }}>
+      <div
+        key={uuidv4()}
+        className="taskRow"
+        style={{ display: `${isUnfold}` }}
+      >
         {chapterRows}
       </div>
     );
@@ -340,9 +337,9 @@ export default function NotebookGanttComponent(props) {
       if (props.notebookData[i]?.id === props.id) {
         notebookIdForFunc = i;
         if (props.chapterId !== undefined) {
-          for (var j = 0; j < props.notebookData[i].Chapters.length; j++) {
+          for (var j = 0; j < props.notebookData[i].chapters.length; j++) {
             if (
-              props.notebookData[notebookIdForFunc].Chapters[j]?.id ===
+              props.notebookData[notebookIdForFunc].chapters[j]?.id ===
               props.chapterId
             ) {
               chapterIdForFunc = j;
@@ -359,7 +356,7 @@ export default function NotebookGanttComponent(props) {
     let postData = {};
     if (target === "chapter") {
       postData = {
-        ...props.notebookData[notebookIdForFunc].Chapters[chapterIdForFunc],
+        ...props.notebookData[notebookIdForFunc].chapters[chapterIdForFunc],
         color: color,
       };
     } else {
@@ -371,7 +368,7 @@ export default function NotebookGanttComponent(props) {
 
     let dataPath = "";
     if (target === "chapter") {
-      dataPath = `/users/${uid}/notebooks/${notebookIdForFunc}/Chapters/${chapterIdForFunc}`;
+      dataPath = `/users/${uid}/notebooks/${notebookIdForFunc}/chapters/${chapterIdForFunc}`;
     } else {
       dataPath = `/users/${uid}/notebooks/${notebookIdForFunc}`;
     }
