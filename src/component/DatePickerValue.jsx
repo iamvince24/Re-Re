@@ -26,12 +26,9 @@ export default function DatePickerValue(props) {
   const chapterIndex = focusNotebookAndChapterIndex.chapterIndex;
 
   const uid = window.localStorage.getItem("uid");
-  const [startvalue, setStartValue] = useState(
-    allNotebookData[notebookIndex]?.chapters[chapterIndex].start
-  );
-  const [endvalue, setEndValue] = useState(
-    allNotebookData[notebookIndex]?.chapters[chapterIndex].end
-  );
+
+  const [startvalue, setStartValue] = useState("2024-01-01");
+  const [endvalue, setEndValue] = useState("2024-01-02");
 
   const handleNewDate = (startValue, endValue) => {
     setStartValue(startValue);

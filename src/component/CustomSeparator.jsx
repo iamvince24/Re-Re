@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Fragment } from "react";
+import { Fragment, useState, useEffect } from "react";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
 import Typography from "@mui/material/Typography";
 import Link from "@mui/material/Link";
@@ -16,6 +16,9 @@ function handleClick(event) {
 export default function CustomSeparator(props) {
   const { theme } = props;
 
+  const [notebookName, setNotebookName] = useState("");
+  const [chapterName, setChapterName] = useState("");
+
   const allNotebookData = useSelector((state) => state.notebookData.notebooks);
   const notebookIndex = useSelector(
     (state) => state.notebookData.focusNotebookAndChapterIndex.notebookIndex
@@ -27,6 +30,13 @@ export default function CustomSeparator(props) {
   const isNotebookMode = useSelector(
     (state) => state.viewListener.viewModeisNotebook
   );
+
+  useEffect(() => {
+    setNotebookName(allNotebookData[notebookIndex]?.name);
+    setChapterName(
+      allNotebookData[notebookIndex]?.chapters[chapterIndex]?.name
+    );
+  }, [allNotebookData, notebookIndex, chapterIndex]);
 
   return (
     <ThemeProvider theme={theme}>
@@ -63,7 +73,7 @@ export default function CustomSeparator(props) {
               key="1"
               color="inherit"
             >
-              {allNotebookData[notebookIndex]?.name}
+              {notebookName}
             </Link>
           )}
           {isNotebookMode ? null : (
@@ -73,7 +83,7 @@ export default function CustomSeparator(props) {
               key="2"
               color="inherit"
             >
-              {allNotebookData[notebookIndex]?.chapters[chapterIndex].name}
+              {chapterName}
             </Link>
           )}
         </Breadcrumbs>
