@@ -37,6 +37,7 @@ function AddNewChapter(uid, notebookIndex, chaptersLength) {
     start: formattedStartDate,
     end: formattedEndDate,
     content: "Type something",
+    color: "white",
   };
 
   // Get a key for a new Post.

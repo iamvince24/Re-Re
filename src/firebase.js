@@ -95,24 +95,27 @@ async function handleNewUserData(uid) {
 
   const postData = [
     {
-      id: 1,
+      id: 11232,
       name: "Sample",
       start: "2024-01-02",
       end: "2024-01-08",
+      color: "white",
       chapters: [
         {
-          id: "1",
+          id: 12312,
           name: "Ch1 Sample 1",
           start: "2024-01-02",
           end: "2024-01-08",
           content: "sdfgdsf",
+          color: "white",
         },
         {
-          id: "2",
+          id: 12335,
           name: "Ch2 Sample 2",
           start: "2024-01-09",
           end: "2024-01-28",
           content: "RRRR",
+          color: "white",
         },
       ],
     },

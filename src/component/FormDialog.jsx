@@ -31,8 +31,16 @@ const TextInput = styled("input")(() => ({
 export default function FormDialog(props) {
   const { notebookIndex, chapterIndex } = props;
 
+  let defaultName = "";
+  if (chapterIndex !== undefined) {
+    defaultName = props.notebookData[notebookIndex].chapters[chapterIndex].name;
+  } else {
+    defaultName = props.notebookData[notebookIndex].name;
+  }
+  console.log(defaultName);
+
   const [open, setOpen] = React.useState(false);
-  const [newName, setNewName] = React.useState("");
+  const [newName, setNewName] = React.useState(defaultName);
 
   const handleClick = (event) => {
     event.stopPropagation();
@@ -104,6 +112,8 @@ export default function FormDialog(props) {
               value={newName}
               onChange={(e) => setNewName(e.target.value)}
               onClick={handleClick}
+              defaultValue={"dsfsd"}
+              autoFocus
             />
           </DialogContent>
           <DialogActions onClick={handleClose}>

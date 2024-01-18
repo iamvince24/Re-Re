@@ -194,7 +194,7 @@ export default function NotebookMode(props) {
                   }}
                   onClick={() => setToggleNotebookDisplay(true)}
                 >
-                  To Editor Markdown
+                  To Markdown Editor
                 </Button>
               )}
             </Box>
