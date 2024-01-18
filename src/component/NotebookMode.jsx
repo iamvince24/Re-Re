@@ -68,7 +68,7 @@ export default function NotebookMode(props) {
   const [toggleNotebookDisplay, setToggleNotebookDisplay] = useState(false);
 
   const [markdownText, setMarkdownText] = useState(
-    allNotebookData[notebookIndex]?.chapters[chapterIndex].content
+    allNotebookData[notebookIndex]?.chapters[chapterIndex]?.content
   );
 
   const uid = window.localStorage.getItem("uid");

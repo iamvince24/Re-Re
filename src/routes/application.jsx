@@ -100,7 +100,16 @@ export default function Application(props) {
                   name: "Please Add Notebook",
                   start: "2024-01-01",
                   end: "2024-01-02",
-                  chapters: [],
+                  chapters: [
+                    {
+                      id: "15433",
+                      name: "Please Add Notebook",
+                      start: "YYYY-MM-DD",
+                      end: "YYYY-MM-DD",
+                      content: "",
+                      color: "white",
+                    },
+                  ],
                 },
               ])
             );

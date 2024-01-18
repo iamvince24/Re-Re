@@ -39,7 +39,6 @@ const logInWithEmailAndPassword = async (auth, email, password) => {
   try {
     const res = await signInWithEmailAndPassword(auth, email, password);
     const user = res.user;
-    console.log(user);
     window.localStorage.setItem("uid", user.uid);
   } catch (err) {
     console.error(err);
@@ -92,7 +91,6 @@ const signInWithGoogle = async () => {
 };
 
 async function handleNewUserData(uid) {
-  console.log("handleNewUserData");
   const db = getDatabase();
 
   const postData = [
