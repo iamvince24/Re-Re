@@ -1,11 +1,9 @@
 import * as React from "react";
 import { Fragment, useState, useEffect } from "react";
 import {
-  monthDiff,
   getDaysInMonth,
   getDayOfWeek,
   createFormattedDateFromStr,
-  createFormattedDateFromDate,
   dayDiff,
 } from "../../utils/dateFunctions";
 import { v4 as uuidv4 } from "uuid";
@@ -15,16 +13,14 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Typography from "@mui/joy/Typography";
 import Brightness1Icon from "@mui/icons-material/Brightness1";
-import { getDatabase, ref, set, child, push, update } from "firebase/database";
+import { getDatabase, ref, update } from "firebase/database";
 import dayjs from "dayjs";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 
 export default function NotebookGanttComponent(props) {
   const {
     theme,
-    id,
-    index,
-    notebookData,
+    notebookIndex,
     notebook,
     timeRange,
     startMonth,
@@ -33,11 +29,10 @@ export default function NotebookGanttComponent(props) {
     setTaskDurations,
     ganttTimePeriod,
     ganttTimePeriodCell,
-    // ganttUnfoldList,
   } = props;
 
   const isUnfold = useSelector((state) =>
-    state.viewListener.ganttUnfold[index] ? "block" : "none"
+    state.viewListener.ganttUnfold[notebookIndex] ? "block" : "none"
   );
 
   const startDate = `${timeRange.fromSelectYear}-${
@@ -46,6 +41,7 @@ export default function NotebookGanttComponent(props) {
   const [taskDurationElDraggedId, setTaskDurationElDraggedId] = useState(null);
   const [contextMenu, setContextMenu] = useState(null);
   const [targetType, setTargetType] = useState(null);
+  const [chapterIndex, setChapterIndex] = useState(null);
 
   let earliestDate = new Date("2024-01-01");
   let latestDate = new Date("2024-01-02");
@@ -76,9 +72,10 @@ export default function NotebookGanttComponent(props) {
     setTaskDurationElDraggedId(taskDurationId);
   }
 
-  const handleContextMenu = (event, target) => {
+  const handleContextMenu = (event, target, index) => {
     event.preventDefault();
     setTargetType(target);
+    setChapterIndex(index);
     const mouseX = event.clientX + 2;
     const mouseY = event.clientY - 6;
     setContextMenu({
@@ -164,24 +161,20 @@ export default function NotebookGanttComponent(props) {
           position: "relative",
           height: "calc(var(--cell-height) - 10px)",
           zIndex: "5",
-          // background:
-          //   "linear-gradient(90deg, var(--color-taskDuration-left) 30%, var(--color-taskDuration-right) 100%)",
           background: `linear-gradient(90deg, ${theme.palette.colorOption[noteBookColor]?.gradient.gradientLeft} 10%, ${theme.palette.colorOption[noteBookColor]?.gradient.gradientRight} 100%)`,
           borderRadius: "var(--border-radius)",
           boxShadow: "3px 3px 3px rgba(0, 0, 0, 0.05)",
-          cursor: "move",
+          cursor: "context-menu",
           alignSelf: "center",
           justifyItems: "center",
           width: `calc(${dayDiff(
-            // notebook.start,
-            // notebook.end
             notebookStart,
             notebookEnd
           )} * var(--width-Days))`,
           opacity: taskDurationElDraggedId === notebook.id ? "0.5" : "1",
         }}
         onKeyDown={(e) => deleteTaskDuration(e, notebook.id)}
-        onContextMenu={(e) => handleContextMenu(e, "notebook")}
+        onContextMenu={(e) => handleContextMenu(e, "notebook", null)}
       ></div>
     </div>
   );
@@ -199,7 +192,7 @@ export default function NotebookGanttComponent(props) {
   );
   notebookTitleRow = [];
 
-  notebook.chapters?.map((chapter) => {
+  notebook.chapters?.map((chapter, index) => {
     const chapterColor = chapter.color;
     let chapterMnth = new Date(startMonth);
     for (let i = 0; i < numMonths; i++) {
@@ -273,7 +266,7 @@ export default function NotebookGanttComponent(props) {
             background: `linear-gradient(90deg, ${theme.palette.colorOption[chapterColor]?.gradient.gradientLeft} 10%, ${theme.palette.colorOption[chapterColor]?.gradient.gradientRight} 100%)`,
             borderRadius: "var(--border-radius)",
             boxShadow: "3px 3px 3px rgba(0, 0, 0, 0.05)",
-            cursor: "move",
+            cursor: "context-menu",
             alignSelf: "center",
             justifyItems: "center",
             width: `calc(${dayDiff(
@@ -282,7 +275,7 @@ export default function NotebookGanttComponent(props) {
             )} * var(--width-Days))`,
             opacity: taskDurationElDraggedId === notebook.id ? "0.5" : "1",
           }}
-          onContextMenu={(e) => handleContextMenu(e, "chapter")}
+          onContextMenu={(e) => handleContextMenu(e, "chapter", index)}
         ></div>
       </div>
     );
@@ -326,51 +319,29 @@ export default function NotebookGanttComponent(props) {
     }
   }
 
-  const handleColorChange = (target, color) => {
+  const handleColorChange = (target, color, chapterIndex) => {
     const db = getDatabase();
 
     const uid = window.localStorage.getItem("uid");
-    let notebookIdForFunc = 0;
-    let chapterIdForFunc = 0;
 
-    for (var i = 0; i < props.notebookData.length; i++) {
-      if (props.notebookData[i]?.id === props.id) {
-        notebookIdForFunc = i;
-        if (props.chapterId !== undefined) {
-          for (var j = 0; j < props.notebookData[i].chapters.length; j++) {
-            if (
-              props.notebookData[notebookIdForFunc].chapters[j]?.id ===
-              props.chapterId
-            ) {
-              chapterIdForFunc = j;
-              break;
-            }
-          }
-        } else {
-          break;
-        }
-      }
-    }
-
-    // A post entry.
     let postData = {};
     if (target === "chapter") {
       postData = {
-        ...props.notebookData[notebookIdForFunc].chapters[chapterIdForFunc],
+        ...props.notebookData[notebookIndex].chapters[chapterIndex],
         color: color,
       };
     } else {
       postData = {
-        ...props.notebookData[notebookIdForFunc],
+        ...props.notebookData[notebookIndex],
         color: color,
       };
     }
 
     let dataPath = "";
     if (target === "chapter") {
-      dataPath = `/users/${uid}/notebooks/${notebookIdForFunc}/chapters/${chapterIdForFunc}`;
+      dataPath = `/users/${uid}/notebooks/${notebookIndex}/chapters/${chapterIndex}`;
     } else {
-      dataPath = `/users/${uid}/notebooks/${notebookIdForFunc}`;
+      dataPath = `/users/${uid}/notebooks/${notebookIndex}`;
     }
 
     const updates = {};
@@ -397,7 +368,7 @@ export default function NotebookGanttComponent(props) {
         >
           <MenuItem
             onClick={(e) => {
-              handleColorChange(targetType, "white");
+              handleColorChange(targetType, "white", chapterIndex);
               handleClose();
             }}
             sx={{
@@ -410,7 +381,7 @@ export default function NotebookGanttComponent(props) {
           </MenuItem>
           <MenuItem
             onClick={(e) => {
-              handleColorChange(targetType, "blue");
+              handleColorChange(targetType, "blue", chapterIndex);
               handleClose();
             }}
             sx={{
@@ -427,7 +398,7 @@ export default function NotebookGanttComponent(props) {
           </MenuItem>
           <MenuItem
             onClick={(e) => {
-              handleColorChange(targetType, "yellow");
+              handleColorChange(targetType, "yellow", chapterIndex);
               handleClose();
             }}
             sx={{
@@ -444,7 +415,7 @@ export default function NotebookGanttComponent(props) {
           </MenuItem>
           <MenuItem
             onClick={(e) => {
-              handleColorChange(targetType, "red");
+              handleColorChange(targetType, "red", chapterIndex);
               handleClose();
             }}
             sx={{ gap: "5px", color: `${theme.palette.colorOption.red.solid}` }}
@@ -458,7 +429,7 @@ export default function NotebookGanttComponent(props) {
           </MenuItem>
           <MenuItem
             onClick={(e) => {
-              handleColorChange(targetType, "green");
+              handleColorChange(targetType, "green", chapterIndex);
               handleClose();
             }}
             sx={{
