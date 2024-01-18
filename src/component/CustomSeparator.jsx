@@ -20,6 +20,7 @@ export default function CustomSeparator(props) {
   const [chapterName, setChapterName] = useState("");
 
   const allNotebookData = useSelector((state) => state.notebookData.notebooks);
+  console.log(allNotebookData);
   const notebookIndex = useSelector(
     (state) => state.notebookData.focusNotebookAndChapterIndex.notebookIndex
   );

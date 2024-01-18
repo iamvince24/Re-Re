@@ -6,7 +6,7 @@ const initialstate = {
       start: "YYYY-MM-DD",
       end: "YYYY-MM-DD",
       color: "white",
-      Chapters: [
+      chapters: [
         {
           id: "15433",
           name: "Loading",
