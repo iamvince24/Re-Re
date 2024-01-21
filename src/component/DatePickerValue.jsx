@@ -102,7 +102,7 @@ export default function DatePickerValue(props) {
             padding: 2px;
           }
 
-          :where(.css-dev-only-do-not-override-abqk3i).ant-picker-focused.ant-picker {
+          :where(.css-dev-only-do-not-override-abqk3i).ant-picker-focused.ant-picker    {
             box-shadow: none;
           }
 

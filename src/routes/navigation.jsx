@@ -1,11 +1,7 @@
 import React, { Fragment } from "react";
 import { Link } from "react-router-dom";
-import logo2 from "../assets/img/logo2.svg";
 import { Box } from "@mui/system";
-import Button from "@mui/material/Button";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
-import Typography from "@mui/material/Typography";
-import SvgIcon from "@mui/material/SvgIcon";
+import { ThemeProvider } from "@mui/material/styles";
 import Logo from "../assets/img/logo";
 import IconButton from "@mui/material/IconButton";
 import { LinkButton } from "../component/Button";
@@ -68,7 +64,7 @@ export default function Navigation(props) {
               isSmall500={props.isSmall500}
               theme={props.theme}
             >
-              Start for free
+              Try on Website
             </LinkButton>
           </Box>
         </Box>

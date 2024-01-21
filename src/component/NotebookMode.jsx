@@ -14,6 +14,11 @@ import { getDatabase, update, ref } from "firebase/database";
 import { useSelector } from "react-redux";
 import { handleSidebarOpen } from "../redux/action";
 
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { materialLight } from "react-syntax-highlighter/dist/esm/styles/prism";
+import { nightOwl } from "react-syntax-highlighter/dist/esm/styles/prism";
+import ReactMarkdown from "react-markdown";
+
 // const barHeight = 70;
 // const drawerWidth = 350;
 const toolBarHeight = 180;
@@ -94,6 +99,13 @@ export default function NotebookMode(props) {
     updates[dataPath] = postData;
 
     return update(ref(db), updates);
+  };
+
+  const customCodeStyle = {
+    backgroundColor: "#1F2937",
+    borderRadius: "8px", // Adjust the radius according to your preference
+    padding: "12px", // Adjust the padding according to your preference
+    margin: "0",
   };
 
   useEffect(() => {
@@ -216,12 +228,43 @@ export default function NotebookMode(props) {
               />
             ) : (
               <TextArea>
-                <Markdown>{markdownText}</Markdown>
+                <ReactMarkdown
+                  components={{
+                    code: ({ node, inline, className, children, ...props }) => {
+                      const match = /language-(\w+)/.exec(className || "");
+                      return !inline && match ? (
+                        <SyntaxHighlighter
+                          className="MarkdownStyle"
+                          style={{ ...nightOwl, ...customCodeStyle }}
+                          language={match[1]}
+                          PreTag="div"
+                          {...props}
+                        >
+                          {String(children).replace(/\n$/, "")}
+                        </SyntaxHighlighter>
+                      ) : (
+                        <code className={className} {...props}>
+                          {children}
+                        </code>
+                      );
+                    },
+                  }}
+                >
+                  {markdownText}
+                </ReactMarkdown>
               </TextArea>
             )}
           </Box>
         </Box>
       </ThemeProvider>
+      <style>
+        {`
+        .MarkdownStyle {
+overflow: auto;
+border-radius: 5px;
+        }
+        `}
+      </style>
     </Fragment>
   );
 }
