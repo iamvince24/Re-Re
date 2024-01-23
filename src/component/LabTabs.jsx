@@ -30,13 +30,25 @@ export default function LabTabs(props) {
             flexDirection: "column",
             justifyContent: "center",
             alignItems: "center",
-            margin: "150px 0px 50px",
+            margin: "150px 0px 0px",
           }}
         >
           <Typography
             textAlign={"center"}
-            sx={{ fontSize: "50px", fontWeight: 900, margin: "10px 0px 20px" }}
-          ></Typography>
+            sx={{
+              fontSize: "50px",
+              fontWeight: 900,
+              margin: "10px 0px 20px",
+              fontFamily: "Montserrat",
+              background:
+                "linear-gradient(151deg, #F4F4F3 1.35%, rgba(244, 244, 243, 0.00) 220.28%)",
+              backgroundClip: "text",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+            }}
+          >
+            Two modes can be chosen.
+          </Typography>
           <TabContext value={value}>
             <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
               <TabList
@@ -46,7 +58,7 @@ export default function LabTabs(props) {
               >
                 <Tab
                   className="tab1"
-                  label="Gantt Mode"
+                  label="Gantt"
                   value="1"
                   sx={{
                     bgcolor: `${theme.palette.primary.main}`,
@@ -55,7 +67,7 @@ export default function LabTabs(props) {
                 />
                 <Tab
                   className="tab2"
-                  label="Notebook Mode"
+                  label="Notebook"
                   value="2"
                   sx={{
                     bgcolor: `${theme.palette.primary.main}`,

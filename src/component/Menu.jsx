@@ -124,9 +124,7 @@ export default function Menu(props) {
               display: "flex",
               alignItems: "center",
               gap: "15px",
-              // border: `1px solid ${props.theme.palette.primary.main}`,
               "&:hover": {
-                // backgroundColor: "rgba(112, 132, 255, 0.15)",
                 backgroundColor: "rgb(214, 159, 149, 0.1)",
               },
             }}

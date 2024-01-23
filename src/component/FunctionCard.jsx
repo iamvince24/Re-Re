@@ -52,15 +52,40 @@ export default function SmallFunction(props) {
             flexDirection: "column",
             justifyContent: "center",
             alignItems: "center",
-            margin: "150px 0px 300px",
+            margin: "150px 0px 0px",
           }}
           id="targetHeading"
         >
           <Typography
-            color="primary"
             textAlign={"center"}
-            sx={{ fontSize: "50px", fontWeight: 900, margin: "10px 0px 0px" }}
-          ></Typography>
+            sx={{
+              fontSize: "50px",
+              fontWeight: 900,
+              fontFamily: "Montserrat",
+              background:
+                "linear-gradient(151deg, #F4F4F3 1.35%, rgba(244, 244, 243, 0.00) 220.28%)",
+              backgroundClip: "text",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+            }}
+          >
+            Convenient little tool
+          </Typography>
+          <Typography
+            color="primary"
+            sx={{
+              margin: props.isSmall500 ? "10px 0px 20px" : "20px 0px 40px",
+              fontWeight: 400,
+              textAlign: "center",
+              letterSpacing: "0.5px",
+              lineHeight: props.isSmall500 ? "20px" : "30px",
+              fontSize: props.isSmall500 ? "14px" : "1.25rem",
+              color: "rgba(200, 200, 200,.6)",
+            }}
+          >
+            The following small functions can help you adjust <br />
+            and view various progress of Gantt more conveniently and clearly.
+          </Typography>
           <Box
             sx={{
               width: "75vw",

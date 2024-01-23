@@ -52,7 +52,8 @@ const LinkButton = ({ to, children, isSmall500, theme }) => {
           border: "none",
           transition: "all 0.1s ease",
           whiteSpace: "nowrap",
-          fontSize: isSmall500 ? "10px" : "small",
+          // fontSize: isSmall500 ? "10px" : "small",
+          fontSize: isSmall500 ? "8px" : "10px",
         }}
         color="primary"
       >

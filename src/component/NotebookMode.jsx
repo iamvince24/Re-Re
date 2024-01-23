@@ -131,8 +131,8 @@ export default function NotebookMode(props) {
               height: screenSmall767 ? "auto" : "180px",
               padding: "0px 20px 20px",
               borderBottom: screenSmall767
-                ? `1.5px solid ${theme.palette.dividerBorder.main}`
-                : `3px solid ${theme.palette.dividerBorder.main}`,
+                ? `1px solid ${theme.palette.dividerBorder.main}`
+                : `1px solid ${theme.palette.dividerBorder.main}`,
             }}
           >
             <Box sx={{ height: "70px", display: "flex", alignItems: "center" }}>

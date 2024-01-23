@@ -131,17 +131,6 @@ export default function Application(props) {
 
   return (
     <Fragment>
-      <style>
-        {`
-        // .css-12i7wg6-MuiPaper-root-MuiDrawer-paper {
-        //   border: none;
-        // }
-
-        //  .css-nhf7i1 {
-        //   background: 'black';
-        // }
-      `}
-      </style>
       <ThemeProvider theme={theme}>
         <ApplicationContainer component="section">
           <Drawer
@@ -174,7 +163,7 @@ export default function Application(props) {
             style={{
               bgcolor: "#F3D9D2",
               borderLeft: isSidebarOpen
-                ? `3px solid ${theme.palette.dividerBorder.main}`
+                ? `0.5px solid ${theme.palette.dividerBorder.main}`
                 : "none",
             }}
           >

@@ -74,7 +74,7 @@ export default function GanntMode(props) {
             // height: "180px",
             height: "auto",
             padding: "0px 20px 20px",
-            borderBottom: `3px solid ${theme.palette.dividerBorder.main}`,
+            borderBottom: `1px solid ${theme.palette.dividerBorder.main}`,
           }}
         >
           <Box sx={{ height: "70px", display: "flex", alignItems: "center" }}>

@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import { initializeApp } from "firebase/app";
 import { getDatabase, ref, update, get } from "firebase/database";
 import {
@@ -96,25 +97,27 @@ async function handleNewUserData(uid) {
   const postData = [
     {
       id: 11232,
-      name: "Sample",
+      name: "Sample Notebook",
       start: "2024-01-02",
       end: "2024-01-08",
       color: "white",
       chapters: [
         {
           id: 12312,
-          name: "Ch1 Sample 1",
+          name: "Ch1 Sample-1",
           start: "2024-01-02",
           end: "2024-01-08",
-          content: "sdfgdsf",
+          content:
+            "Re-Re is a tool for recording and reviewing your learning, the ultimate solution for effortless note tracking.",
           color: "white",
         },
         {
           id: 12335,
-          name: "Ch2 Sample 2",
+          name: "Ch2 Sample-2",
           start: "2024-01-09",
           end: "2024-01-28",
-          content: "RRRR",
+          content:
+            "Re-Re is a tool for recording and reviewing your learning, the ultimate solution for effortless note tracking.",
           color: "white",
         },
       ],
@@ -140,4 +143,5 @@ export {
   logInWithEmailAndPassword,
   registerWithEmailAndPassword,
   logout,
+  handleNewUserData,
 };

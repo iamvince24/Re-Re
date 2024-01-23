@@ -7,11 +7,15 @@ export default function Logo(props) {
   return (
     <SvgIcon>
       <svg
-        width="237"
-        height="183"
-        viewBox="0 0 237 183"
+        // width="237"
+        // height="183"
+        // viewBox="0 0 237 183"
+        width={`${props.width}`}
+        height={`${props.height}`}
+        viewBox={`0 0 ${props.width} ${props.height}`}
         fill={`${props.theme.palette.primary.main}`}
-        color="primary"
+        // color="primary"
+        color={`${props.color}`}
         xmlns="http://www.w3.org/2000/svg"
         sx={{
           fontSize: props.isSmall500 ? "30px" : "45px",
