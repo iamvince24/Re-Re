@@ -71,7 +71,8 @@ export default function LabTabs(props) {
                 textAlign={"center"}
                 sx={{ margin: "10px 0px 20px" }}
               >
-                這裡放簡單的功能介紹
+                Using Gantt's presentation, the past learning process can be
+                clearly understood.
               </Typography>
               <Box
                 sx={{
@@ -89,8 +90,6 @@ export default function LabTabs(props) {
                     backgroundRepeat: "no-repeat",
                     backgroundPosition: "center",
                     backgroundColor: "transparent",
-                    // borderLeft: "3px solid rgba(255, 255, 255, 0.2)",
-                    // borderTop: "3px solid rgba(255, 255, 255, 0.2)",
                   }}
                 />
               </Box>
@@ -101,7 +100,8 @@ export default function LabTabs(props) {
                 textAlign={"center"}
                 sx={{ margin: "10px 0px 20px" }}
               >
-                這裡放簡單的功能介紹
+                Using markdown syntax can make your notes more visually
+                appealing.
               </Typography>
               <Box
                 sx={{
@@ -119,8 +119,6 @@ export default function LabTabs(props) {
                     backgroundRepeat: "no-repeat",
                     backgroundPosition: "center",
                     backgroundColor: "transparent",
-                    // borderLeft: "3px solid rgba(255, 255, 255, 0.2)",
-                    // borderTop: "3px solid rgba(255, 255, 255, 0.2)",
                   }}
                 />
               </Box>

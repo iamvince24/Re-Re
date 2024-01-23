@@ -25,11 +25,25 @@ function App(props) {
   dispatch(handleScreenWidth500(isSmallscreenWidth500));
   dispatch(handleScreenWidth767(isSmallscreenWidth767));
 
+  const scrollToHeading = () => {
+    // 滚动到目标 h1 标签
+    const targetHeading = document.getElementById("targetHeading");
+    if (targetHeading) {
+      // targetHeading.scrollIntoView({ behavior: "smooth" });
+      console.log("ffsdf");
+    }
+    console.log(targetHeading);
+  };
+
   return (
     <Fragment>
       <Router>
         {loginStatus ? null : (
-          <Navigation theme={theme} isSmall500={isSmallscreenWidth500} />
+          <Navigation
+            theme={theme}
+            isSmall500={isSmallscreenWidth500}
+            scrollToHeading={scrollToHeading}
+          />
         )}
         <Routes>
           <Route

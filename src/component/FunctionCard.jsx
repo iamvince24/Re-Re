@@ -16,26 +16,29 @@ export default function SmallFunction(props) {
     {
       name: "Mode Change",
       url: `${ModeChange}`,
+      introduction:
+        "By using the Notebook and Gantt buttons, you can switch between Notebook mode and Gantt mode.",
       position: "bottom",
     },
     {
-      name: "Date Picker",
+      name: "Notebook Date Picker",
       url: `${DatePicker}`,
+      introduction:
+        "By using the Date Picker in Notebook Mode, you can change the time range of Durations in the Gantt.",
       position: "bottom",
     },
     {
-      name: "Change Timeline Color",
+      name: "Change Durations Color",
       url: `${TimelineColor}`,
+      introduction:
+        "You can change the color of Durations by right-clicking on it in Gantt.",
       position: "bottom",
     },
     {
-      name: "TimeRangePicker",
+      name: "Change Time Range",
       url: `${TimeRangePicker}`,
-      position: "bottom",
-    },
-    {
-      name: "NoteBook Structure",
-      url: `${NoteBookStructure}`,
+      introduction:
+        "You can change the time display range of the Gantt chart by using the TimeRange Picker in Gantt Mode.",
       position: "bottom",
     },
   ];
@@ -51,6 +54,7 @@ export default function SmallFunction(props) {
             alignItems: "center",
             margin: "150px 0px 300px",
           }}
+          id="targetHeading"
         >
           <Typography
             color="primary"
@@ -87,9 +91,8 @@ export default function SmallFunction(props) {
                     color="primary"
                     textAlign={"left"}
                     sx={{
-                      fontSize: "25px",
+                      fontSize: "22.5px",
                       fontWeight: 700,
-                      marginBottom: "5px",
                     }}
                   >
                     {card.name}
@@ -98,13 +101,12 @@ export default function SmallFunction(props) {
                     color="primary"
                     textAlign={"left"}
                     sx={{
-                      fontSize: "15px",
+                      fontSize: "14px",
                       fontWeight: 500,
-                      margin: "10px 0px",
+                      margin: "5px 0px 10px",
                     }}
                   >
-                    Introducing the app, the ultimate solution for effortless
-                    Note Tracking.
+                    {card.introduction}
                   </Typography>
                   <Box
                     sx={{
@@ -115,6 +117,7 @@ export default function SmallFunction(props) {
                       backgroundSize: "80%",
                       backgroundRepeat: "no-repeat",
                       backgroundPosition: `${card.position}`,
+                      borderRadius: "5px",
                     }}
                   ></Box>
                 </Card>

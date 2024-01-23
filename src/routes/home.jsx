@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useState, useEffect } from "react";
 import { Box } from "@mui/system";
 import Typography from "@mui/material/Typography";
 import { ThemeProvider } from "@mui/material/styles";
@@ -10,6 +10,48 @@ import Card from "@mui/material/Card";
 
 export default function Home(props) {
   const { theme } = props;
+
+  const [scrollY, setScrollY] = useState(200);
+  const [marginTop, setMarginTop] = useState(-250);
+  const [width, setWidth] = useState(110);
+
+  useEffect(() => {
+    let lastScrollY = window.scrollY;
+
+    const handleScroll = () => {
+      const newScrollY = Math.max(0, 200 - window.scrollY);
+      setScrollY(newScrollY);
+
+      const temp = Math.max(-250, -250 + window.scrollY);
+      const newMarginTop = Math.min(0, Math.max(-250, temp));
+      setMarginTop(newMarginTop);
+
+      const newWidth = Math.min(110, Math.max(90, 110 - window.scrollY * 0.05));
+      setWidth(newWidth);
+
+      if (window.scrollY > lastScrollY) {
+        setScrollY(newScrollY + 1);
+        setMarginTop(newMarginTop + 1);
+        // setWidth(90);
+      } else {
+        if (newScrollY >= 400) {
+          setWidth(Math.min(110, newWidth + 1));
+          setMarginTop(Math.max(-250, newMarginTop - 1));
+        }
+      }
+
+      lastScrollY = window.scrollY;
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
+  const perspectiveValue = scrollY * 0.1;
+
   return (
     <Fragment>
       <ThemeProvider theme={theme}>
@@ -40,16 +82,18 @@ export default function Home(props) {
               <Typography
                 color="primary"
                 sx={{
+                  display: "flex",
                   fontSize: props.isSmall500 ? 40 : 90,
-                  // fontSize: props.isSmall500 ? 90 : 60,
-                  // fontWeight: 900,
+                  fontFamily: "Montserrat",
                   fontWeight: 900,
-                  // margin: "auto",
                   textAlign: "center",
-                  // textAlign: "left",
                   letterSpacing: "-1px",
-                  lineHeight: props.isSmall500 ? "50px" : "90px",
-                  // textTransform: "uppercase",
+                  lineHeight: props.isSmall500 ? "50px" : "100px",
+                  background:
+                    "linear-gradient(151deg, #F4F4F3 1.35%, rgba(244, 244, 243, 0.00) 220.28%)",
+                  backgroundClip: "text",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
                 }}
               >
                 Record and Review <br />
@@ -59,14 +103,11 @@ export default function Home(props) {
                 color="primary"
                 variant="h6"
                 sx={{
-                  // width: props.isSmall500 ? "90%" : "50%",
-                  // margin: "auto",
                   margin: props.isSmall500 ? "20px 0px 20px" : "60px 0px 60px",
                   fontWeight: 400,
                   textAlign: "center",
                   letterSpacing: "0.5px",
                   lineHeight: props.isSmall500 ? "20px" : "30px",
-                  // fontSize: props.isSmall500 ? "14px" : "h6",
                   fontSize: props.isSmall500 ? "14px" : "1.5rem",
                   color: "rgba(200, 200, 200,.6)",
                 }}
@@ -80,21 +121,23 @@ export default function Home(props) {
                 padding: "7.5px",
                 background: "rgb(200, 200, 200, 0.05)",
                 borderRadius: "5px",
+                transform: `perspective(1000px) rotateX(${perspectiveValue}deg)`,
+                transformOrigin: "center bottom",
+                transition: "transform 0.5s ease, margin-top 0.5s ease",
+                marginTop: `${marginTop}px`,
               }}
             >
               <Card
                 sx={{
-                  width: "80vw",
+                  // width: "90vw",
+                  width: `${width}vw`,
                   aspectRatio: "72/45",
-                  backgroundImage: `url(${AppDisplay})`,
+                  backgroundImage: `url(${appPic})`,
                   backgroundSize: "cover",
                   backgroundRepeat: "no-repeat",
                   backgroundPosition: "center",
                   backgroundColor: "transparent",
                   boxShadow: "none",
-                  // boxShadow: "5px 5px 20px 1px rgba(255, 255, 255, 0.2)",
-                  // borderLeft: "3px solid rgba(255, 255, 255, 0.2)",
-                  // borderTop: "3px solid rgba(255, 255, 255, 0.2)",
                 }}
               />
             </Box>
