@@ -7,13 +7,15 @@ import GanntMode from "../component/GanntMode";
 import { styled } from "@mui/material/styles";
 import MuiAppBar from "@mui/material/AppBar";
 import Drawer from "@mui/material/Drawer";
-import { getDatabase, ref, onValue, get } from "firebase/database";
+import { getDatabase, ref, onValue, get, update } from "firebase/database";
 import { ThemeProvider } from "@mui/material/styles";
 import { useSelector } from "react-redux";
 import { fetchNotebookData } from "../redux/action";
 import { handleModeUpdate } from "../redux/action";
 import { handleUpdateIndex } from "../redux/action";
 import { handleUpdatedGanttUnfoldList } from "../redux/action";
+import { handleGanttUnfold } from "../redux/action";
+import { updatedUsername } from "../redux/action";
 
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== "open",
@@ -45,6 +47,7 @@ export default function Application(props) {
   const screenSmall767 = useSelector(
     (state) => state.viewListener.screenWidth767
   );
+
   const isNotebookMode = useSelector(
     (state) => state.viewListener.viewModeisNotebook
   );
@@ -73,10 +76,19 @@ export default function Application(props) {
     indexList?.forEach((element, index) => {
       ganttUnfoldList = {
         ...ganttUnfoldList,
-        [`${element}`]: "false",
+        [`${element}`]: "true",
       };
+      dispatch(handleGanttUnfold(`${index}`, true));
     });
-    dispatch(handleUpdatedGanttUnfoldList(ganttUnfoldList));
+  }
+
+  function updatedUserName(uid, name) {
+    const db = getDatabase();
+    const postData = `${name}`;
+    const updates = {};
+    updates["/users/" + uid + "/username/"] = postData;
+
+    return update(ref(db), updates);
   }
 
   const uid = window.localStorage.getItem("uid");
@@ -84,11 +96,21 @@ export default function Application(props) {
     const fetchData = async () => {
       try {
         const db = getDatabase();
-        const starCountRef = await ref(db, `users/${uid}/notebooks`);
+        const starCountRef = await ref(db, `users/${uid}`);
         onValue(starCountRef, async (snapshot) => {
           const snapshotValue = snapshot.val();
+          if (snapshotValue.username) {
+            window.localStorage.setItem("username", snapshotValue.username);
+            dispatch(updatedUsername(snapshotValue.username));
+          } else {
+            window.localStorage.setItem("username", "User");
+            dispatch(updatedUsername("User"));
+            updatedUserName(uid, "User");
+          }
+
           if (snapshotValue !== null && typeof snapshotValue === "object") {
-            const data = Object.values(snapshotValue);
+            // const data = Object.values(snapshotValue.notebooks);
+            const data = snapshotValue.notebooks;
             await dispatch(fetchNotebookData(data));
             await handleSetGanttUnfoldList(data);
           } else {

@@ -6,6 +6,14 @@ export const fetchNotebookData = (data) => {
   };
 };
 
+// All data
+export const updatedUsername = (name) => {
+  return {
+    type: "username/updatedUsername",
+    payload: name,
+  };
+};
+
 //Focus Notebook & Chapter Index
 export const handleUpdateIndex = (notebookIndex, chapterIndex) => {
   return {
@@ -49,10 +57,10 @@ export const handleSidebarOpen = (boolean) => {
 };
 
 // GanttUnfold
-export const handleUpdatedGanttUnfoldList = (object) => {
+export const handleUpdatedGanttUnfoldList = (list) => {
   return {
     type: "gantt/handleGanttUnfold",
-    payload: object,
+    payload: list,
   };
 };
 

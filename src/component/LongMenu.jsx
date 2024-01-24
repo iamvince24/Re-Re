@@ -105,10 +105,6 @@ export default function LongMenu(props) {
         break;
       }
     }
-    // const chapterId =
-    //   props.notebookData[notebookId].chapters[
-    //     props.notebookData[notebookId].chapters.length - 1
-    //   ].id + 1;
     const chaptersLength = allNotebookData[notebookIndex]?.chapters.length;
     AddNewChapter(uid, notebookIndex, chaptersLength);
   };

@@ -102,6 +102,7 @@ export default function LabTabs(props) {
                     backgroundRepeat: "no-repeat",
                     backgroundPosition: "center",
                     backgroundColor: "transparent",
+                    boxShadow: "none",
                   }}
                 />
               </Box>
@@ -131,6 +132,7 @@ export default function LabTabs(props) {
                     backgroundRepeat: "no-repeat",
                     backgroundPosition: "center",
                     backgroundColor: "transparent",
+                    boxShadow: "none",
                   }}
                 />
               </Box>

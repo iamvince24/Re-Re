@@ -18,6 +18,7 @@ const initialstate = {
       ],
     },
   ],
+  username: "User",
   focusNotebookAndChapterIndex: {
     notebookIndex: 0,
     chapterIndex: 0,
@@ -40,6 +41,12 @@ const notebookData = (state = initialstate, action) => {
           notebookIndex: action.payload.notebookIndex,
           chapterIndex: action.payload.chapterIndex,
         },
+      };
+
+    case "username/updatedUsername":
+      return {
+        ...state,
+        username: action.payload,
       };
 
     default:

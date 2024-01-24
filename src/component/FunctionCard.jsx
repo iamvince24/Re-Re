@@ -110,6 +110,7 @@ export default function SmallFunction(props) {
                     flexDirection: "column",
                     justifyContent: "space-between",
                     borderRadius: "10px",
+                    boxShadow: "none",
                   }}
                 >
                   <Typography

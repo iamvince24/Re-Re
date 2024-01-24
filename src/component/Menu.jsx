@@ -17,6 +17,8 @@ import { getDatabase, ref, update } from "firebase/database";
 import Notebook from "./notebook";
 import { logout } from "../firebase";
 import { useSelector } from "react-redux";
+import { updatedUsername } from "../redux/action";
+import PositionedMenu from "./PositionedMenu";
 
 function writeNewPost(uid, index) {
   const db = getDatabase();
@@ -74,20 +76,26 @@ function generateNumericId() {
 
 export default function Menu(props) {
   const { dispatch, theme, uid } = props;
+  const navigate = useNavigate();
   const allNotebookData = useSelector((state) => state.notebookData.notebooks);
+  const username = useSelector((state) => state.notebookData.username);
+  console.log(username);
+
   const screenSmall767 = useSelector(
     (state) => state.viewListener.screenWidth767
   );
-
-  const navigate = useNavigate();
-  const username = window.localStorage.getItem("username");
 
   const handleDrawerClose = () => {
     dispatch(handleSidebarOpen(false));
   };
 
   const handleAddNotebook = () => {
-    writeNewPost(uid, allNotebookData.length);
+    const notebookIndex =
+      allNotebookData[0].name === "Please Add Notebook"
+        ? 0
+        : allNotebookData.length;
+
+    writeNewPost(uid, notebookIndex);
   };
 
   const handleLogOut = () => {
@@ -121,11 +129,13 @@ export default function Menu(props) {
           <Button
             color="primary"
             sx={{
-              display: "flex",
+              // display: "flex",
+              display: "none",
               alignItems: "center",
               gap: "15px",
+              padding: "5px 15px",
               "&:hover": {
-                backgroundColor: "rgb(214, 159, 149, 0.1)",
+                backgroundColor: "rgba(155, 155, 155, 0.2)",
               },
             }}
           >
@@ -133,10 +143,10 @@ export default function Menu(props) {
               color="primary"
               alt="Your Name"
               src=""
-              // variant="square"
-              size="sm"
               sx={{
                 fontWeight: "900",
+                width: "30px",
+                height: "30px",
                 backgroundColor: `${theme.palette.primary.main}`,
                 color: `${theme.palette.secondary.main}`,
               }}
@@ -148,13 +158,15 @@ export default function Menu(props) {
                 fontWeight: 900,
                 color: `${theme.palette.primary.main}`,
                 textTransform: "capitalize",
-                fontSize: "22px",
+                // fontSize: "22px",
+                fontSize: "20px",
                 marginTop: "2px",
               }}
             >
               {username ? username : "User"}
             </Typography>
           </Button>
+          <PositionedMenu theme={theme} username={username} />
           <IconButton
             color="primary"
             onClick={handleDrawerClose}
@@ -175,6 +187,7 @@ export default function Menu(props) {
             width: "100%",
             boxShadow: "none",
             display: screenSmall767 ? "none" : "flex",
+            backgroundColor: "rgb(155, 155, 155, 0.5)",
           }}
         >
           <Button
@@ -206,7 +219,6 @@ export default function Menu(props) {
               dispatch(handleModeUpdate(true));
               if (screenSmall767) {
                 dispatch(handleModeUpdate(true));
-                // setOpen(false);
                 dispatch(handleSidebarOpen(false));
               }
             }}
@@ -267,6 +279,7 @@ export default function Menu(props) {
             fontWeight: "700",
             marginBottom: "20px",
             boxShadow: "none",
+            display: "none",
           }}
           onClick={handleLogOut}
         >

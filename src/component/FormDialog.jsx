@@ -37,7 +37,6 @@ export default function FormDialog(props) {
   } else {
     defaultName = props.notebookData[notebookIndex].name;
   }
-  console.log(defaultName);
 
   const [open, setOpen] = React.useState(false);
   const [newName, setNewName] = React.useState(defaultName);

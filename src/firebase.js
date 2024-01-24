@@ -1,4 +1,3 @@
-import { useNavigate } from "react-router-dom";
 import { initializeApp } from "firebase/app";
 import { getDatabase, ref, update, get } from "firebase/database";
 import {
@@ -75,7 +74,7 @@ const signInWithGoogle = async () => {
         const snapshot = await get(starCountRef);
         const data = snapshot.val();
         if (data === null) {
-          console.log("User data not found");
+          console.log("New user");
           await handleNewUserData(uid);
         }
       } catch (error) {
@@ -94,39 +93,42 @@ const signInWithGoogle = async () => {
 async function handleNewUserData(uid) {
   const db = getDatabase();
 
-  const postData = [
-    {
-      id: 11232,
-      name: "Sample Notebook",
-      start: "2024-01-02",
-      end: "2024-01-08",
-      color: "white",
-      chapters: [
-        {
-          id: 12312,
-          name: "Ch1 Sample-1",
-          start: "2024-01-02",
-          end: "2024-01-08",
-          content:
-            "Re-Re is a tool for recording and reviewing your learning, the ultimate solution for effortless note tracking.",
-          color: "white",
-        },
-        {
-          id: 12335,
-          name: "Ch2 Sample-2",
-          start: "2024-01-09",
-          end: "2024-01-28",
-          content:
-            "Re-Re is a tool for recording and reviewing your learning, the ultimate solution for effortless note tracking.",
-          color: "white",
-        },
-      ],
-    },
-  ];
+  const postData = {
+    notebooks: [
+      {
+        id: 11232,
+        name: "Sample Notebook",
+        start: "2024-01-02",
+        end: "2024-01-08",
+        color: "white",
+        chapters: [
+          {
+            id: 12312,
+            name: "Ch1 Sample-1",
+            start: "2024-01-02",
+            end: "2024-01-08",
+            content:
+              "Re-Re is a tool for recording and reviewing your learning, the ultimate solution for effortless note tracking.",
+            color: "white",
+          },
+          {
+            id: 12335,
+            name: "Ch2 Sample-2",
+            start: "2024-01-09",
+            end: "2024-01-28",
+            content:
+              "Re-Re is a tool for recording and reviewing your learning, the ultimate solution for effortless note tracking.",
+            color: "white",
+          },
+        ],
+      },
+    ],
+    username: "User",
+  };
 
   // Get a key for a new Post.
   const updates = {};
-  updates["/users/" + uid + "/notebooks"] = postData;
+  updates["/users/" + uid] = postData;
 
   return update(ref(db), updates);
 }
