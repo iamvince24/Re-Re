@@ -17,8 +17,10 @@ import { getDatabase, ref, update } from "firebase/database";
 import Notebook from "./notebook";
 import { logout } from "../firebase";
 import { useSelector } from "react-redux";
-import { updatedUsername } from "../redux/action";
 import PositionedMenu from "./PositionedMenu";
+import Tab from "@mui/material/Tab";
+import TabList from "@mui/lab/TabList";
+import TabContext from "@mui/lab/TabContext";
 
 function writeNewPost(uid, index) {
   const db = getDatabase();
@@ -126,46 +128,6 @@ export default function Menu(props) {
             gap: "15px",
           }}
         >
-          <Button
-            color="primary"
-            sx={{
-              // display: "flex",
-              display: "none",
-              alignItems: "center",
-              gap: "15px",
-              padding: "5px 15px",
-              "&:hover": {
-                backgroundColor: "rgba(155, 155, 155, 0.2)",
-              },
-            }}
-          >
-            <Avatar
-              color="primary"
-              alt="Your Name"
-              src=""
-              sx={{
-                fontWeight: "900",
-                width: "30px",
-                height: "30px",
-                backgroundColor: `${theme.palette.primary.main}`,
-                color: `${theme.palette.secondary.main}`,
-              }}
-            />
-
-            <Typography
-              sx={{
-                fontFamily: "inter",
-                fontWeight: 900,
-                color: `${theme.palette.primary.main}`,
-                textTransform: "capitalize",
-                // fontSize: "22px",
-                fontSize: "20px",
-                marginTop: "2px",
-              }}
-            >
-              {username ? username : "User"}
-            </Typography>
-          </Button>
           <PositionedMenu theme={theme} username={username} />
           <IconButton
             color="primary"
@@ -179,8 +141,7 @@ export default function Menu(props) {
             )}
           </IconButton>
         </Box>
-
-        <ButtonGroup
+        <Box
           size="small"
           variant="contained"
           sx={{
@@ -188,6 +149,10 @@ export default function Menu(props) {
             boxShadow: "none",
             display: screenSmall767 ? "none" : "flex",
             backgroundColor: "rgb(155, 155, 155, 0.5)",
+            borderRadius: "5px",
+            padding: "5px",
+            height: "37.5px",
+            marginBottom: "25px",
           }}
         >
           <Button
@@ -195,13 +160,16 @@ export default function Menu(props) {
             sx={{
               width: "50%",
               color: `${theme.palette.secondary.main}`,
-              fontWeight: "700",
+              fontWeight: "600",
+              textTransform: "capitalize",
+              "&:hover": {
+                bgcolor: "rgba(244, 244, 243, 0.15)",
+              },
             }}
             onClick={() => {
               dispatch(handleModeUpdate(false));
               if (screenSmall767) {
                 dispatch(handleModeUpdate(false));
-                // setOpen(false);
                 dispatch(handleSidebarOpen(false));
               }
             }}
@@ -209,11 +177,15 @@ export default function Menu(props) {
             Notebook
           </Button>
           <Button
-            color="primary"
+            color="modeTabButton"
             sx={{
               width: "50%",
               color: `${theme.palette.secondary.main}`,
-              fontWeight: "700",
+              fontWeight: "600",
+              textTransform: "capitalize",
+              "&:hover": {
+                bgcolor: "rgba(244, 244, 243, 0.15)",
+              },
             }}
             onClick={() => {
               dispatch(handleModeUpdate(true));
@@ -225,8 +197,7 @@ export default function Menu(props) {
           >
             Gantt
           </Button>
-        </ButtonGroup>
-
+        </Box>
         <Box
           sx={{
             display: "flex",

@@ -30,7 +30,7 @@ export default function LabTabs(props) {
             flexDirection: "column",
             justifyContent: "center",
             alignItems: "center",
-            margin: "150px 0px 0px",
+            margin: "0px",
           }}
         >
           <Typography
@@ -55,12 +55,14 @@ export default function LabTabs(props) {
                 onChange={handleChange}
                 aria-label="lab API tabs example"
                 className="tabContainer"
+                // sx={{ height: "30px" }}
               >
                 <Tab
                   className="tab1"
                   label="Gantt"
                   value="1"
                   sx={{
+                    width: "50%",
                     bgcolor: `${theme.palette.primary.main}`,
                     textTransform: "capitalize",
                   }}
@@ -70,6 +72,7 @@ export default function LabTabs(props) {
                   label="Notebook"
                   value="2"
                   sx={{
+                    width: "50%",
                     bgcolor: `${theme.palette.primary.main}`,
                     textTransform: "capitalize",
                     fontWeight: 500,
@@ -150,14 +153,17 @@ export default function LabTabs(props) {
               border-radius: 5px;
             }
             .tabContainer {
-              background-color: red;
               border-radius: 5px;
               padding: 5px;
               background-color: rgb(155, 155, 155, 0.5);
+              width: 300px;
+              height: 50px;
+              min-height: 0px;
             }
             .tab1, .tab2, .tab3 {
               background: none;
               font-weight: 700;
+              min-height: 0px;
             }
             .tab1:hover, .tab2:hover {
               background: rgb(155, 155, 155, 0.2);
@@ -166,12 +172,18 @@ export default function LabTabs(props) {
               border-top-left-radius: 5px;
               border-bottom-left-radius: 5px;
             }
-            .tab3 {
+            .tab2 {
               border-top-right-radius: 5px;
               border-bottom-right-radius: 5px;
             }
             .MuiTabs-indicator {
               display: none;
+            }
+            .css-1ujnqem-MuiTabs-root {
+              min-height: 0px;
+            }
+            .css-uzjdk6-MuiButtonBase-root-MuiTab-root {
+              min-height: 0px;
             }
         `}
       </style>

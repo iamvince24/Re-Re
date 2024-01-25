@@ -85,11 +85,19 @@ export default function Home(props) {
   return (
     <Fragment>
       <ThemeProvider theme={theme}>
-        <Box sx={{ display: "flex", flexDirection: "column" }}>
+        <Box
+          sx={{
+            marginTop: "100px",
+          }}
+        >
           <Box
             sx={{
-              margin: props.isSmall500 ? "50px 20px 25px" : "80px 50px 50px",
-              backgroundColor: "red",
+              width: "100%",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "flex-start",
+              alignItems: "center",
+              overflow: "hidden",
             }}
           >
             <Box
@@ -101,101 +109,95 @@ export default function Home(props) {
                 alignItems: "center",
               }}
             >
-              <Box
+              <Typography
+                color="primary"
                 sx={{
-                  width: "100%",
                   display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "flex-start",
-                  alignItems: "center",
+                  fontSize: props.isSmall500 ? 40 : 80,
+                  fontFamily: "Montserrat",
+                  fontWeight: 900,
+                  textAlign: "center",
+                  letterSpacing: "-1px",
+                  lineHeight: props.isSmall500 ? "50px" : "90px",
+                  background:
+                    "linear-gradient(151deg, #F4F4F3 1.35%, rgba(244, 244, 243, 0.00) 220.28%)",
+                  backgroundClip: "text",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
                 }}
               >
-                <Typography
-                  color="primary"
-                  sx={{
-                    display: "flex",
-                    fontSize: props.isSmall500 ? 40 : 90,
-                    fontFamily: "Montserrat",
-                    fontWeight: 900,
-                    textAlign: "center",
-                    letterSpacing: "-1px",
-                    lineHeight: props.isSmall500 ? "50px" : "100px",
-                    background:
-                      "linear-gradient(151deg, #F4F4F3 1.35%, rgba(244, 244, 243, 0.00) 220.28%)",
-                    backgroundClip: "text",
-                    WebkitBackgroundClip: "text",
-                    WebkitTextFillColor: "transparent",
-                  }}
-                >
-                  Record and Review <br />
-                  your learning
-                </Typography>
-                <Typography
-                  color="primary"
-                  variant="h6"
-                  sx={{
-                    margin: props.isSmall500
-                      ? "20px 0px 20px"
-                      : "60px 0px 60px",
-                    fontWeight: 400,
-                    textAlign: "center",
-                    letterSpacing: "0.5px",
-                    lineHeight: props.isSmall500 ? "20px" : "30px",
-                    fontSize: props.isSmall500 ? "14px" : "1.5rem",
-                    color: "rgba(200, 200, 200,.6)",
-                  }}
-                >
-                  Re-Re is a tool for recording and reviewing your learning,
-                  <br /> the ultimate solution for effortless note tracking
-                </Typography>
-                <Button
-                  size="small"
-                  variant="contained"
-                  sx={{
-                    color: `${props.theme.palette.secondary.main}`,
-                    fontWeight: 700,
-                    boxShadow: "none",
-                    border: "none",
-                    transition: "all 0.1s ease",
-                    whiteSpace: "nowrap",
-                    fontSize: props.isSmall500 ? "10px" : "small",
-                    margin: "0px 0px 30px",
-                  }}
-                  color="primary"
-                  onClick={handleTryOnWebsite}
-                >
-                  Try on Website
-                </Button>
-              </Box>
-              <Box
+                Record and Review <br />
+                your learning
+              </Typography>
+              <Typography
+                color="primary"
+                variant="h6"
                 sx={{
-                  padding: "7.5px",
-                  background: "rgb(200, 200, 200, 0.05)",
-                  borderRadius: "5px",
-                  transform: `perspective(1000px) rotateX(${perspectiveValue}deg)`,
-                  transformOrigin: "center bottom",
-                  transition: "transform 0.5s ease, margin-top 0.5s ease",
-                  marginTop: `${marginTop}px`,
-                  boxShadow: "0px 0px 50px 10px rgba(200, 200, 200, 0.2)",
+                  width: "800px",
+                  margin: props.isSmall500 ? "20px 0px 20px" : "60px 0px 60px",
+                  fontWeight: 400,
+                  textAlign: "center",
+                  letterSpacing: "0.5px",
+                  lineHeight: props.isSmall500 ? "20px" : "30px",
+                  fontSize: props.isSmall500 ? "14px" : "1.5rem",
+                  color: "rgba(200, 200, 200,.6)",
                 }}
               >
-                <Card
-                  sx={{
-                    width: `${width}vw`,
-                    aspectRatio: "72/45",
-                    backgroundImage: `url(${appPic})`,
-                    backgroundSize: "cover",
-                    backgroundRepeat: "no-repeat",
-                    backgroundPosition: "center",
-                    backgroundColor: "transparent",
-                    boxShadow: "none",
-                  }}
-                />
-              </Box>
+                "Introducing Re-Re, an application designed to assist you in
+                recording and reviewing your study notes <br /> the ultimate
+                solution for effortless note tracking."
+              </Typography>
+              <Button
+                size="small"
+                variant="contained"
+                sx={{
+                  color: `${props.theme.palette.secondary.main}`,
+                  fontWeight: 700,
+                  boxShadow: "none",
+                  border: "none",
+                  transition: "all 0.1s ease",
+                  whiteSpace: "nowrap",
+                  fontSize: props.isSmall500 ? "10px" : "small",
+                  margin: "0px 0px 30px",
+                }}
+                color="primary"
+                onClick={handleTryOnWebsite}
+              >
+                Try on Website
+              </Button>
+            </Box>
+            <Box
+              sx={{
+                // padding: "7.5px",
+                background: "rgb(200, 200, 200, 0.05)",
+                borderRadius: "5px",
+                transform: `perspective(1000px) rotateX(${perspectiveValue}deg)`,
+                transformOrigin: "center bottom",
+                transition: "transform 0.5s ease, margin-top 0.5s ease",
+                marginTop: `${marginTop}px`,
+                marginBottom: "150px",
+                position: "relative",
+                boxShadow: "0px 0px 50px 10px rgba(200, 200, 200, 0.2)",
+              }}
+            >
+              <Card
+                sx={{
+                  width: `${width}vw`,
+                  aspectRatio: "72/45",
+                  backgroundImage: `url(${appPic})`,
+                  backgroundSize: "cover",
+                  backgroundRepeat: "no-repeat",
+                  backgroundPosition: "center",
+                  backgroundColor: "transparent",
+                  boxShadow: "none",
+                }}
+              />
             </Box>
           </Box>
-          <LabTabs theme={theme} />
-          <SmallFunction theme={theme} />
+        </Box>
+        <LabTabs theme={theme} />
+        <SmallFunction theme={theme} />
+        <div style={{ display: "flex", justifyContent: "center" }}>
           <Button
             size="small"
             variant="contained"
@@ -214,38 +216,38 @@ export default function Home(props) {
           >
             Try on Website
           </Button>
-          <div
-            style={{
-              margin: "100px auto 50px",
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "center",
-              alignItems: "center",
+        </div>
+        <div
+          style={{
+            margin: "100px auto 50px",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Logo
+            theme={props.theme}
+            isSmall500={props.isSmall500}
+            color={"secondary"}
+            height={150}
+            width={276}
+          />
+          <Typography
+            textAlign={"left"}
+            color="primary"
+            sx={{
+              margin: "auto",
+              fontWeight: 400,
+              letterSpacing: "0.5px",
+              lineHeight: props.isSmall500 ? "20px" : "20px",
+              fontSize: props.isSmall500 ? "14px" : "1rem",
+              color: "rgba(200, 200, 200,.6)",
             }}
           >
-            <Logo
-              theme={props.theme}
-              isSmall500={props.isSmall500}
-              color={"secondary"}
-              height={150}
-              width={276}
-            />
-            <Typography
-              textAlign={"left"}
-              color="primary"
-              sx={{
-                margin: "auto",
-                fontWeight: 400,
-                letterSpacing: "0.5px",
-                lineHeight: props.isSmall500 ? "20px" : "20px",
-                fontSize: props.isSmall500 ? "14px" : "1rem",
-                color: "rgba(200, 200, 200,.6)",
-              }}
-            >
-              © All Rights Reserved.
-            </Typography>
-          </div>
-        </Box>
+            © All Rights Reserved.
+          </Typography>
+        </div>
       </ThemeProvider>
     </Fragment>
   );

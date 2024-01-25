@@ -108,6 +108,12 @@ export default function NotebookMode(props) {
     margin: "0",
   };
 
+  const handleKeyDown = (e) => {
+    if (e.key === "Escape") {
+      setToggleNotebookDisplay(false);
+    }
+  };
+
   useEffect(() => {
     setMarkdownText(
       allNotebookData[notebookIndex]?.chapters[chapterIndex]?.content
@@ -175,22 +181,41 @@ export default function NotebookMode(props) {
             >
               <DatePickerValue theme={theme} />
               {toggleNotebookDisplay ? (
-                <Button
-                  color="primary"
-                  variant="contained"
-                  sx={{
-                    textTransform: "capitalize",
-                    color: `${theme.palette.secondary.main}`,
-                    height: screenSmall767 ? "35px" : "42px",
-                    padding: "0px 15px",
-                    letterSpacing: "0.5px",
-                    boxShadow: "none",
-                    fontWeight: 700,
-                  }}
-                  onClick={() => handleUpdateNotebookContent(markdownText)}
-                >
-                  Done
-                </Button>
+                <div>
+                  <Button
+                    color="primary"
+                    variant="contained"
+                    sx={{
+                      textTransform: "capitalize",
+                      color: `${theme.palette.secondary.main}`,
+                      height: screenSmall767 ? "35px" : "42px",
+                      padding: "0px 15px",
+                      letterSpacing: "0.5px",
+                      boxShadow: "none",
+                      fontWeight: 700,
+                      marginRight: "15px",
+                    }}
+                    onClick={() => setToggleNotebookDisplay(false)}
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    color="primary"
+                    variant="contained"
+                    sx={{
+                      textTransform: "capitalize",
+                      color: `${theme.palette.secondary.main}`,
+                      height: screenSmall767 ? "35px" : "42px",
+                      padding: "0px 15px",
+                      letterSpacing: "0.5px",
+                      boxShadow: "none",
+                      fontWeight: 700,
+                    }}
+                    onClick={() => handleUpdateNotebookContent(markdownText)}
+                  >
+                    Done
+                  </Button>
+                </div>
               ) : (
                 <Button
                   color="primary"
@@ -225,6 +250,8 @@ export default function NotebookMode(props) {
                 value={markdownText}
                 onChange={handleInputChange}
                 className="textEditor"
+                autoFocus
+                onKeyDown={handleKeyDown}
               />
             ) : (
               <TextArea>
@@ -260,8 +287,8 @@ export default function NotebookMode(props) {
       <style>
         {`
         .MarkdownStyle {
-overflow: auto;
-border-radius: 5px;
+          overflow: auto;
+          border-radius: 5px;
         }
         `}
       </style>

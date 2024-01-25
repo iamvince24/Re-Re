@@ -32,6 +32,9 @@ const theme = createTheme({
     background: {
       main: "#F3D9D2",
     },
+    modeTabButton: {
+      main: "rgb(155, 155, 155, 0.5)",
+    },
     buttonBackground: {
       main: "#D69F95",
     },

@@ -89,6 +89,7 @@ export default function SmallFunction(props) {
           <Box
             sx={{
               width: "75vw",
+              minWidth: "500px",
               display: "flex",
               flexDirection: "row",
               justifyContent: "center",

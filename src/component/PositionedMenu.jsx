@@ -66,11 +66,11 @@ export default function PositionedMenu(props) {
           <Typography
             sx={{
               fontFamily: "inter",
-              fontWeight: 900,
+              fontWeight: 800,
               color: `${theme.palette.primary.main}`,
               textTransform: "capitalize",
               // fontSize: "22px",
-              fontSize: "20px",
+              fontSize: "18px",
               marginTop: "2px",
             }}
           >
