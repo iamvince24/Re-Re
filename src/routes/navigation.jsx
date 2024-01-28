@@ -80,6 +80,7 @@ export default function Navigation(props) {
     <Fragment>
       <ThemeProvider theme={theme}>
         <Box
+          className="bgTexture"
           sx={{
             display: "flex",
             justifyContent: "space-between",

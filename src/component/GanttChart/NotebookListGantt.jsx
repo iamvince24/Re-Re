@@ -60,8 +60,10 @@ export default function NotebookListGantt(props) {
             primary={notebook?.name}
             primaryTypographyProps={{
               fontWeight: 700,
-              whiteSpace: "nowrap",
               color: `${theme.palette.primary.main}`,
+              overflow: "hidden",
+              whiteSpace: "nowrap",
+              textOverflow: "ellipsis",
             }}
           />
         </ListItemButton>
@@ -77,6 +79,7 @@ export default function NotebookListGantt(props) {
                 >
                   <List component="div" disablePadding sx={{ height: "40px" }}>
                     <ListItemButton
+                      disableRipple={true}
                       sx={{
                         pl: 5,
                         py: 0,
@@ -97,7 +100,12 @@ export default function NotebookListGantt(props) {
                       </ArticleOutlinedIcon>
                       <ListItemText
                         primary={chapter.name}
-                        primaryTypographyProps={{ pt: "1px" }}
+                        primaryTypographyProps={{
+                          pt: "1px",
+                          overflow: "hidden",
+                          whiteSpace: "nowrap",
+                          textOverflow: "ellipsis",
+                        }}
                       />
                     </ListItemButton>
                   </List>

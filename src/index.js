@@ -56,31 +56,31 @@ const theme = createTheme({
         },
       },
       blue: {
-        solid: "#2E4AF3",
+        solid: "#3DCBFF",
         gradient: {
-          gradientLeft: "#469EFF",
-          gradientRight: "#DFEEFF",
+          gradientLeft: "#3DCBFF",
+          gradientRight: "#3DCBFF",
         },
       },
       yellow: {
-        solid: "#FEB902",
+        solid: "#EFBE46",
         gradient: {
-          gradientLeft: "#FFE49D",
-          gradientRight: "#FFF6DE",
+          gradientLeft: "#EFBE46",
+          gradientRight: "#EFBE46",
         },
       },
       red: {
-        solid: "#FE0000",
+        solid: "#FF575C",
         gradient: {
-          gradientLeft: "#FF6363",
-          gradientRight: "#FFE0E0",
+          gradientLeft: "#FF575C",
+          gradientRight: "#FF575C",
         },
       },
       green: {
-        solid: "#008D8B",
+        solid: "#3FC9CB",
         gradient: {
-          gradientLeft: "#00E3E0",
-          gradientRight: "#DFFFFF",
+          gradientLeft: "#3FC9CB",
+          gradientRight: "#3FC9CB",
         },
       },
     },

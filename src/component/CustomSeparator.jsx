@@ -27,8 +27,10 @@ export default function CustomSeparator(props) {
     (state) => state.notebookData.focusNotebookAndChapterIndex.chapterIndex
   );
 
-  const isNotebookMode = useSelector(
-    (state) => state.viewListener.viewModeisNotebook
+  const isNotebookMode = useSelector((state) => state.viewListener.isGanttMode);
+
+  const screenWidth500 = useSelector(
+    (state) => state.viewListener.screenWidth500
   );
 
   useEffect(() => {
@@ -52,20 +54,13 @@ export default function CustomSeparator(props) {
               underline="none"
               key="1"
               color="inherit"
-              sx={{ color: `${theme.palette.primary.main}` }}
+              sx={{
+                color: `${theme.palette.primary.main}`,
+              }}
             >
               All Notebooks Gantt
             </Link>
-          ) : (
-            <Link
-              //   underline="hover"
-              underline="none"
-              key="1"
-              color="inherit"
-            >
-              All
-            </Link>
-          )}
+          ) : null}
           {isNotebookMode ? null : (
             <Link
               //   underline="hover"

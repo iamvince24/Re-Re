@@ -48,9 +48,7 @@ export default function Application(props) {
     (state) => state.viewListener.screenWidth767
   );
 
-  const isNotebookMode = useSelector(
-    (state) => state.viewListener.viewModeisNotebook
-  );
+  const isGanttMode = useSelector((state) => state.viewListener.isGanttMode);
   const isSidebarOpen = useSelector((state) => state.viewListener.sidebarOpen);
 
   const drawerwidth = screenSmall767 ? "100vw" : 350;
@@ -179,6 +177,7 @@ export default function Application(props) {
           </Drawer>
 
           <AppBar
+            className="bgTexture"
             drawerwidth={drawerwidth}
             position="fixed"
             open={isSidebarOpen}
@@ -189,7 +188,7 @@ export default function Application(props) {
                 : "none",
             }}
           >
-            {isNotebookMode ? (
+            {isGanttMode ? (
               <GanntMode
                 dispatch={dispatch}
                 theme={theme}

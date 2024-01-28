@@ -39,6 +39,7 @@ export default function Notebook(props) {
             width: "100%",
             color: `${props.theme.palette.primary.main}`,
             py: "3px",
+            overflow: "auto",
           }}
           component="nav"
           aria-labelledby="nested-list-subheader"
@@ -66,6 +67,8 @@ export default function Notebook(props) {
                 fontWeight: 700,
                 pt: "2px",
                 overflow: "hidden",
+                whiteSpace: "nowrap",
+                textOverflow: "ellipsis",
               }}
             />
             <LongMenu
@@ -109,17 +112,16 @@ export default function Notebook(props) {
                         </ArticleOutlinedIcon>
                         <ListItemText
                           primary={chapters.name}
-                          primaryTypographyProps={{ pt: "1px" }}
-                          // chapterIndex={index}
+                          primaryTypographyProps={{
+                            pt: "1px",
+                            overflow: "hidden",
+                            whiteSpace: "nowrap",
+                            textOverflow: "ellipsis",
+                          }}
                           onClick={() => {
-                            // props.setNotebookDisplay({
-                            //   notebookId: props.notebook.id,
-                            //   chapterId: chapters.id,
-                            // });
                             dispatch(handleUpdateIndex(notebookIndex, index));
                             if (screenSmall767) {
                               dispatch(handleModeUpdate(true));
-                              // props.setOpen(false);
                               dispatch(handleSidebarOpen(false));
                             }
                           }}

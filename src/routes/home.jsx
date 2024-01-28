@@ -92,7 +92,15 @@ export default function Home(props) {
   return (
     <Fragment>
       <ThemeProvider theme={theme}>
-        <div>
+        <div
+          className="bgTexture"
+          style={{
+            padding: "100px 0px 50px",
+            "@media (max-width:767px)": {
+              padding: "50px 0px 50px",
+            },
+          }}
+        >
           <Box
             sx={{
               width: "100%",
@@ -101,10 +109,6 @@ export default function Home(props) {
               justifyContent: "flex-start",
               alignItems: "center",
               overflow: "hidden",
-              marginTop: "100px",
-              "@media (max-width:767px)": {
-                marginTop: "50px",
-              },
             }}
           >
             <Box
@@ -393,7 +397,6 @@ export default function Home(props) {
           </div>
           <div
             style={{
-              margin: "100px auto 50px",
               display: "flex",
               flexDirection: "column",
               justifyContent: "center",

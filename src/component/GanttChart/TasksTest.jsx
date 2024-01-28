@@ -35,7 +35,7 @@ export default function TasksTest({ theme }) {
         {`
           #gantt-grid-container__tasks {
             border-right: 1px solid var(--color-Tasks-Border-Bottom);
-            overflow: auto;
+            overflow: "hidden",
           }
 
           .gantt-task-row-empty {

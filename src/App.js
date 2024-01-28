@@ -1,3 +1,4 @@
+import { Fragment, useState, useEffect } from "react";
 import "./App.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
@@ -5,13 +6,13 @@ import Application from "./routes/application";
 import Navigation from "./routes/navigation";
 import Home from "./routes/home";
 import Login from "./routes/login";
-import { Fragment } from "react";
+
 import { useMediaQuery } from "@mui/material";
 import { handleScreenWidth500 } from "./redux/action";
 import { handleScreenWidth767 } from "./redux/action";
 
 function App(props) {
-  const { state, dispatch, theme } = props;
+  const { dispatch, theme } = props;
   const loginStatus = false;
 
   const isSmallScreenW500 = useMediaQuery("(max-width:500px)");

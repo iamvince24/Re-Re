@@ -1,7 +1,7 @@
 const initialstate = {
   screenWidth500: false,
   screenWidth767: false,
-  viewModeisNotebook: true,
+  isGanttMode: true,
   sidebarOpen: true,
   ganttUnfold: {
     // 1: false,
@@ -26,7 +26,7 @@ const viewListener = (state = initialstate, action) => {
     case "mode/handleModeUpdate":
       return {
         ...state,
-        viewModeisNotebook: action.payload,
+        isGanttMode: action.payload,
       };
 
     case "sidebar/handleSidebarOpen":

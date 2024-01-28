@@ -8,7 +8,6 @@ import {
 } from "../../utils/dateFunctions";
 import { v4 as uuidv4 } from "uuid";
 import { months } from "../../utils/constants";
-import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Typography from "@mui/joy/Typography";
@@ -35,28 +34,28 @@ export default function NotebookGanttComponent(props) {
     state.viewListener.ganttUnfold[notebookIndex] ? "block" : "none"
   );
 
+  const isShowNotebookTimeRange = useSelector((state) =>
+    state.viewListener.ganttUnfold[notebookIndex] ? "none" : "flex"
+  );
+
   const startDate = `${timeRange.fromSelectYear}-${
     months[timeRange.fromSelectMonth]
   }-01`;
+
   const [taskDurationElDraggedId, setTaskDurationElDraggedId] = useState(null);
   const [contextMenu, setContextMenu] = useState(null);
   const [targetType, setTargetType] = useState(null);
   const [chapterIndex, setChapterIndex] = useState(null);
 
-  let earliestDate = new Date("2024-01-01");
+  let earliestDate = new Date(notebook.chapters[0].start);
   let latestDate = new Date("2024-01-02");
 
-  // 遍歷資料
   notebook.chapters?.forEach((chapter) => {
     const startDate = new Date(chapter.start);
     const endDate = new Date(chapter.end);
-
-    // 檢查最早的日期
     if (startDate < earliestDate) {
       earliestDate = startDate;
     }
-
-    // 檢查最晚的日期
     if (endDate > latestDate) {
       latestDate = endDate;
     }
@@ -68,9 +67,21 @@ export default function NotebookGanttComponent(props) {
     dayjs(latestDate).format(dateFormat),
   ];
 
-  function handleDragStart(taskDurationId) {
-    setTaskDurationElDraggedId(taskDurationId);
-  }
+  const updatedNotebookTimeRange = (startDate, endDate) => {
+    const uid = window.localStorage.getItem("uid");
+    const db = getDatabase();
+    const updates = {};
+    updates["/users/" + uid + "/notebooks/" + notebookIndex + "/start/"] =
+      startDate;
+    updates["/users/" + uid + "/notebooks/" + notebookIndex + "/end/"] =
+      endDate;
+    update(ref(db), updates);
+  };
+
+  updatedNotebookTimeRange(
+    dayjs(earliestDate).format(dateFormat),
+    dayjs(latestDate).format(dateFormat)
+  );
 
   const handleContextMenu = (event, target, index) => {
     event.preventDefault();
@@ -172,10 +183,17 @@ export default function NotebookGanttComponent(props) {
             notebookEnd
           )} * var(--width-Days))`,
           opacity: taskDurationElDraggedId === notebook.id ? "0.5" : "1",
+          display: "flex",
+          alignItems: "center",
+          color: "white",
         }}
         onKeyDown={(e) => deleteTaskDuration(e, notebook.id)}
         onContextMenu={(e) => handleContextMenu(e, "notebook", null)}
-      ></div>
+      >
+        <div style={{ marginLeft: "10px", whiteSpace: "nowrap" }}>
+          {notebook.name}
+        </div>
+      </div>
     </div>
   );
 
@@ -255,28 +273,33 @@ export default function NotebookGanttComponent(props) {
           className="taskDuration"
           draggable="true"
           tabIndex="0"
-          onDragStart={() => handleDragStart(notebook.id)}
+          // onDragStart={() => handleDragStart(notebook.id)}
           style={{
-            // ...taskDuration,
             position: "relative",
             height: "calc(var(--cell-height) - 10px)",
             zIndex: "5",
-            // background:
-            //   "linear-gradient(90deg, var(--color-taskDuration-left) 10%, var(--color-taskDuration-right) 100%)",
             background: `linear-gradient(90deg, ${theme.palette.colorOption[chapterColor]?.gradient.gradientLeft} 10%, ${theme.palette.colorOption[chapterColor]?.gradient.gradientRight} 100%)`,
             borderRadius: "var(--border-radius)",
             boxShadow: "3px 3px 3px rgba(0, 0, 0, 0.05)",
             cursor: "context-menu",
             alignSelf: "center",
-            justifyItems: "center",
+            justifyItems: "flex-start",
+            margin: "auto",
             width: `calc(${dayDiff(
               chapter.start,
               chapter.end
             )} * var(--width-Days))`,
             opacity: taskDurationElDraggedId === notebook.id ? "0.5" : "1",
+            display: "flex",
+            alignItems: "center",
+            color: "white",
           }}
           onContextMenu={(e) => handleContextMenu(e, "chapter", index)}
-        ></div>
+        >
+          <div style={{ marginLeft: "10px", whiteSpace: "nowrap" }}>
+            {chapter.name}
+          </div>
+        </div>
       </div>
     );
 

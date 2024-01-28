@@ -22,7 +22,7 @@ import Tab from "@mui/material/Tab";
 import TabList from "@mui/lab/TabList";
 import TabContext from "@mui/lab/TabContext";
 
-function writeNewPost(uid, index) {
+function AddNotebook(uid, index) {
   const db = getDatabase();
 
   const currentDate = new Date();
@@ -80,8 +80,8 @@ export default function Menu(props) {
   const { dispatch, theme, uid } = props;
   const navigate = useNavigate();
   const allNotebookData = useSelector((state) => state.notebookData.notebooks);
+  const isGanttMode = useSelector((state) => state.viewListener.isGanttMode);
   const username = useSelector((state) => state.notebookData.username);
-  console.log(username);
 
   const screenSmall767 = useSelector(
     (state) => state.viewListener.screenWidth767
@@ -97,7 +97,7 @@ export default function Menu(props) {
         ? 0
         : allNotebookData.length;
 
-    writeNewPost(uid, notebookIndex);
+    AddNotebook(uid, notebookIndex);
   };
 
   const handleLogOut = () => {
@@ -110,6 +110,7 @@ export default function Menu(props) {
   return (
     <ThemeProvider theme={theme}>
       <Box
+        className="bgTexture"
         sx={{
           height: "100vh",
           width: "auto",
@@ -162,6 +163,7 @@ export default function Menu(props) {
               color: `${theme.palette.secondary.main}`,
               fontWeight: "600",
               textTransform: "capitalize",
+              bgcolor: isGanttMode ? "none" : "rgba(244, 244, 243, 0.3)",
               "&:hover": {
                 bgcolor: "rgba(244, 244, 243, 0.15)",
               },
@@ -183,6 +185,7 @@ export default function Menu(props) {
               color: `${theme.palette.secondary.main}`,
               fontWeight: "600",
               textTransform: "capitalize",
+              bgcolor: isGanttMode ? "rgba(244, 244, 243, 0.3)" : "none",
               "&:hover": {
                 bgcolor: "rgba(244, 244, 243, 0.15)",
               },

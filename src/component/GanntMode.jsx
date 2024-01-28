@@ -64,6 +64,7 @@ export default function GanntMode(props) {
   return (
     <Fragment>
       <Box
+        className="bgTexture"
         sx={{
           height: "100vh",
           overflow: "auto",

@@ -58,9 +58,7 @@ export default function NotebookMode(props) {
   const screenSmall767 = useSelector(
     (state) => state.viewListener.screenWidth767
   );
-  const isNotebookMode = useSelector(
-    (state) => state.viewListener.viewModeisNotebook
-  );
+  const isNotebookMode = useSelector((state) => state.viewListener.isGanttMode);
   const isSidebarOpen = useSelector((state) => state.viewListener.sidebarOpen);
 
   const notebookIndex = useSelector(
@@ -103,8 +101,8 @@ export default function NotebookMode(props) {
 
   const customCodeStyle = {
     backgroundColor: "#1F2937",
-    borderRadius: "8px", // Adjust the radius according to your preference
-    padding: "12px", // Adjust the padding according to your preference
+    borderRadius: "8px",
+    padding: "12px",
     margin: "0",
   };
 
@@ -127,6 +125,7 @@ export default function NotebookMode(props) {
     <Fragment>
       <ThemeProvider theme={theme}>
         <Box
+          className="bgTexture"
           sx={{
             height: "100vh",
             width: "100%",
