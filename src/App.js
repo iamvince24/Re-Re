@@ -1,11 +1,5 @@
 import "./App.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-// import Button from "@mui/material/Button";
-import {
-  createTheme,
-  ThemeProvider,
-  unstable_createMuiStrictModeTheme,
-} from "@mui/material/styles";
 
 import Application from "./routes/application";
 import Navigation from "./routes/navigation";
@@ -20,20 +14,10 @@ function App(props) {
   const { state, dispatch, theme } = props;
   const loginStatus = false;
 
-  const isSmallscreenWidth500 = useMediaQuery("(max-width:500px)");
-  const isSmallscreenWidth767 = useMediaQuery("(max-width:767px)");
-  dispatch(handleScreenWidth500(isSmallscreenWidth500));
-  dispatch(handleScreenWidth767(isSmallscreenWidth767));
-
-  const scrollToHeading = () => {
-    // 滚动到目标 h1 标签
-    const targetHeading = document.getElementById("targetHeading");
-    if (targetHeading) {
-      // targetHeading.scrollIntoView({ behavior: "smooth" });
-      console.log("ffsdf");
-    }
-    console.log(targetHeading);
-  };
+  const isSmallScreenW500 = useMediaQuery("(max-width:500px)");
+  const isSmallScreenW767 = useMediaQuery("(max-width:767px)");
+  dispatch(handleScreenWidth500(isSmallScreenW500));
+  dispatch(handleScreenWidth767(isSmallScreenW767));
 
   return (
     <Fragment>
@@ -41,18 +25,26 @@ function App(props) {
         {loginStatus ? null : (
           <Navigation
             theme={theme}
-            isSmall500={isSmallscreenWidth500}
-            scrollToHeading={scrollToHeading}
+            isSmallScreenW500={isSmallScreenW500}
+            isSmallScreenW767={isSmallScreenW767}
           />
         )}
         <Routes>
           <Route
             path="/"
-            element={<Home theme={theme} isSmall500={isSmallscreenWidth500} />}
+            element={
+              <Home
+                theme={theme}
+                isSmallScreenW500={isSmallScreenW500}
+                isSmallScreenW767={isSmallScreenW767}
+              />
+            }
           />
           <Route
             path="/login"
-            element={<Login theme={theme} isSmall500={isSmallscreenWidth500} />}
+            element={
+              <Login theme={theme} isSmallScreenW500={isSmallScreenW500} />
+            }
           />
           <Route
             path="/application"

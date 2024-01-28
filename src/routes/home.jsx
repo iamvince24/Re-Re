@@ -11,14 +11,21 @@ import Card from "@mui/material/Card";
 import { handleNewUserData } from "../firebase";
 import Button from "@mui/material/Button";
 import Logo from "../assets/img/logo";
+import GanttImg from "../assets/img/GanttImg.png";
+import NotebookImg from "../assets/img/NotebookImg.png";
+import { red } from "@mui/material/colors";
 
 export default function Home(props) {
-  const { theme } = props;
-
+  const { theme, isSmallScreenW500, isSmallScreenW767 } = props;
   const navigate = useNavigate();
 
+  let marginTopInit = -250;
+  if (isSmallScreenW767) {
+    marginTopInit = -50;
+  }
+
   const [scrollY, setScrollY] = useState(200);
-  const [marginTop, setMarginTop] = useState(-250);
+  const [marginTop, setMarginTop] = useState(marginTopInit);
   const [width, setWidth] = useState(110);
 
   useEffect(() => {
@@ -28,8 +35,8 @@ export default function Home(props) {
       const newScrollY = Math.max(0, 200 - window.scrollY);
       setScrollY(newScrollY);
 
-      const temp = Math.max(-250, -250 + window.scrollY);
-      const newMarginTop = Math.min(50, Math.max(-250, temp));
+      const temp = Math.max(marginTopInit, marginTopInit + window.scrollY);
+      const newMarginTop = Math.min(50, Math.max(marginTopInit, temp));
       setMarginTop(newMarginTop);
 
       const newWidth = Math.min(110, Math.max(90, 110 - window.scrollY * 0.05));
@@ -41,7 +48,7 @@ export default function Home(props) {
       } else {
         if (newScrollY >= 400) {
           setWidth(Math.min(110, newWidth + 1));
-          setMarginTop(Math.max(-250, newMarginTop - 1));
+          setMarginTop(Math.max(marginTopInit, newMarginTop - 1));
         }
       }
 
@@ -85,11 +92,7 @@ export default function Home(props) {
   return (
     <Fragment>
       <ThemeProvider theme={theme}>
-        <Box
-          sx={{
-            marginTop: "100px",
-          }}
-        >
+        <div>
           <Box
             sx={{
               width: "100%",
@@ -98,6 +101,10 @@ export default function Home(props) {
               justifyContent: "flex-start",
               alignItems: "center",
               overflow: "hidden",
+              marginTop: "100px",
+              "@media (max-width:767px)": {
+                marginTop: "50px",
+              },
             }}
           >
             <Box
@@ -112,18 +119,21 @@ export default function Home(props) {
               <Typography
                 color="primary"
                 sx={{
-                  display: "flex",
-                  fontSize: props.isSmall500 ? 40 : 80,
+                  fontSize: "80px",
+                  lineHeight: "90px",
+                  letterSpacing: "-1px",
                   fontFamily: "Montserrat",
                   fontWeight: 900,
                   textAlign: "center",
-                  letterSpacing: "-1px",
-                  lineHeight: props.isSmall500 ? "50px" : "90px",
                   background:
                     "linear-gradient(151deg, #F4F4F3 1.35%, rgba(244, 244, 243, 0.00) 220.28%)",
                   backgroundClip: "text",
                   WebkitBackgroundClip: "text",
                   WebkitTextFillColor: "transparent",
+                  "@media (max-width:767px)": {
+                    fontSize: "40px",
+                    lineHeight: "40px",
+                  },
                 }}
               >
                 Record and Review <br />
@@ -133,31 +143,37 @@ export default function Home(props) {
                 color="primary"
                 variant="h6"
                 sx={{
-                  width: "800px",
-                  margin: props.isSmall500 ? "20px 0px 20px" : "60px 0px 60px",
+                  width: "60%",
+                  fontSize: "22.5px",
+                  lineHeight: "35px",
+                  margin: "60px 0px",
                   fontWeight: 400,
                   textAlign: "center",
                   letterSpacing: "0.5px",
-                  lineHeight: props.isSmall500 ? "20px" : "30px",
-                  fontSize: props.isSmall500 ? "14px" : "1.5rem",
                   color: "rgba(200, 200, 200,.6)",
+                  "@media (max-width:767px)": {
+                    width: "80%",
+                    fontSize: "14px",
+                    lineHeight: "20px",
+                    margin: "30px 0px",
+                  },
                 }}
               >
                 "Introducing Re-Re, an application designed to assist you in
-                recording and reviewing your study notes <br /> the ultimate
-                solution for effortless note tracking."
+                recording and reviewing your study notes the ultimate solution
+                for effortless note tracking."
               </Typography>
               <Button
                 size="small"
                 variant="contained"
                 sx={{
-                  color: `${props.theme.palette.secondary.main}`,
+                  color: `${theme.palette.secondary.main}`,
                   fontWeight: 700,
                   boxShadow: "none",
                   border: "none",
                   transition: "all 0.1s ease",
                   whiteSpace: "nowrap",
-                  fontSize: props.isSmall500 ? "10px" : "small",
+                  fontSize: isSmallScreenW500 ? "10px" : "small",
                   margin: "0px 0px 30px",
                 }}
                 color="primary"
@@ -168,7 +184,6 @@ export default function Home(props) {
             </Box>
             <Box
               sx={{
-                // padding: "7.5px",
                 background: "rgb(200, 200, 200, 0.05)",
                 borderRadius: "5px",
                 transform: `perspective(1000px) rotateX(${perspectiveValue}deg)`,
@@ -194,59 +209,220 @@ export default function Home(props) {
               />
             </Box>
           </Box>
-        </Box>
-        <LabTabs theme={theme} />
-        <SmallFunction theme={theme} />
-        <div style={{ display: "flex", justifyContent: "center" }}>
-          <Button
-            size="small"
-            variant="contained"
+          <Box
             sx={{
-              color: `${props.theme.palette.secondary.main}`,
-              fontWeight: 700,
-              boxShadow: "none",
-              border: "none",
-              transition: "all 0.1s ease",
-              whiteSpace: "nowrap",
-              fontSize: props.isSmall500 ? "10px" : "small",
-              margin: "50px auto",
-            }}
-            color="primary"
-            onClick={handleTryOnWebsite}
-          >
-            Try on Website
-          </Button>
-        </div>
-        <div
-          style={{
-            margin: "100px auto 50px",
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <Logo
-            theme={props.theme}
-            isSmall500={props.isSmall500}
-            color={"secondary"}
-            height={150}
-            width={276}
-          />
-          <Typography
-            textAlign={"left"}
-            color="primary"
-            sx={{
-              margin: "auto",
-              fontWeight: 400,
-              letterSpacing: "0.5px",
-              lineHeight: props.isSmall500 ? "20px" : "20px",
-              fontSize: props.isSmall500 ? "14px" : "1rem",
-              color: "rgba(200, 200, 200,.6)",
+              width: "100%",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
+              margin: "100px 0px",
+              "@media (max-width:767px)": {
+                margin: "0px 0px 50px",
+              },
             }}
           >
-            © All Rights Reserved.
-          </Typography>
+            <Box
+              sx={{
+                width: "90%",
+                maxWidth: "1280px",
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
+              <Box
+                sx={{
+                  width: "50%",
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "flex-start",
+                  alignItems: "flex-start",
+                  "@media (max-width:767px)": {
+                    width: "100%",
+                  },
+                }}
+              >
+                <Typography
+                  sx={{
+                    fontSize: "40px",
+                    letterSpacing: "-1px",
+                    fontFamily: "Montserrat",
+                    fontWeight: 900,
+                    textAlign: "left",
+                    background:
+                      "linear-gradient(151deg, #F4F4F3 1.35%, rgba(244, 244, 243, 0.00) 220.28%)",
+                    backgroundClip: "text",
+                    WebkitBackgroundClip: "text",
+                    WebkitTextFillColor: "transparent",
+                    "@media (max-width:767px)": {
+                      fontSize: "25px",
+                    },
+                  }}
+                >
+                  Why Re-Re ?
+                </Typography>
+                <Typography
+                  color="primary"
+                  sx={{
+                    fontSize: "22.5px",
+                    lineHeight: "35px",
+                    fontWeight: 400,
+                    textAlign: "left",
+                    letterSpacing: "0.5px",
+                    color: "rgba(200, 200, 200,.6)",
+                    "@media (max-width:767px)": {
+                      fontSize: "14px",
+                      lineHeight: "20px",
+                    },
+                  }}
+                >
+                  "Introduce an application, Re-Re, that helps you record and
+                  review in your study, the ultimate solution for effortless
+                  note tracking.Introduce an application, Re-Re, that helps you
+                  record and review in your study, the ultimate solution for
+                  effortless note tracking."
+                </Typography>
+                <div
+                  style={{
+                    width: "100%",
+                    display: isSmallScreenW767 ? "flex" : "none",
+                    justifyContent: "center",
+                    margin: "30px 0px",
+                  }}
+                >
+                  <Card
+                    sx={{
+                      display: isSmallScreenW767 ? "flex" : "none",
+                      width: "30%",
+                      minWidth: "200px",
+                      aspectRatio: "486/352",
+                      backgroundImage: `url(${NotebookImg})`,
+                      backgroundSize: "cover",
+                      backgroundRepeat: "no-repeat",
+                      backgroundPosition: "center",
+                      backgroundColor: "transparent",
+                      boxShadow: "none",
+                      "@media (max-width:767px)": {
+                        minWidth: "150px",
+                      },
+                    }}
+                  />
+                </div>
+                <Typography
+                  color="primary"
+                  sx={{
+                    fontSize: "22.5px",
+                    lineHeight: "35px",
+                    fontWeight: 400,
+                    textAlign: "left",
+                    letterSpacing: "0.5px",
+                    color: "rgba(200, 200, 200,.6)",
+                    "@media (max-width:767px)": {
+                      fontSize: "14px",
+                      lineHeight: "20px",
+                    },
+                  }}
+                >
+                  {" "}
+                  "Introduce an application, Re-Re, that helps you record and
+                  review in your study, the ultimate solution for effortless
+                  note tracking.Introduce an application, Re-Re, that helps you
+                  record and review in your study, the ultimate solution for
+                  effortless note tracking."
+                </Typography>
+              </Box>
+              <Card
+                sx={{
+                  display: isSmallScreenW767 ? "none" : "flex",
+                  width: "30%",
+                  marginTop: "30px",
+                  aspectRatio: "486/352",
+                  backgroundImage: `url(${NotebookImg})`,
+                  backgroundSize: "cover",
+                  backgroundRepeat: "no-repeat",
+                  backgroundPosition: "center",
+                  backgroundColor: "transparent",
+                  boxShadow: "none",
+                }}
+              />
+            </Box>
+            <Card
+              sx={{
+                width: "60%",
+                aspectRatio: "1233/370",
+                margin: "120px 0px",
+                backgroundImage: `url(${GanttImg})`,
+                backgroundSize: "cover",
+                backgroundRepeat: "no-repeat",
+                backgroundPosition: "center",
+                backgroundColor: "transparent",
+                boxShadow: "none",
+                "@media (max-width:767px)": {
+                  width: "70%",
+                  margin: "50px 0px",
+                },
+                "@media (max-width:400px)": {
+                  width: "80%",
+                },
+              }}
+            />
+          </Box>
+          <LabTabs theme={theme} isSmallScreenW500={isSmallScreenW500} />
+          <SmallFunction theme={theme} isSmallScreenW500={isSmallScreenW500} />
+          <div style={{ display: "flex", justifyContent: "center" }}>
+            <Button
+              size="small"
+              variant="contained"
+              sx={{
+                color: `${theme.palette.secondary.main}`,
+                fontWeight: 700,
+                boxShadow: "none",
+                border: "none",
+                transition: "all 0.1s ease",
+                whiteSpace: "nowrap",
+                fontSize: isSmallScreenW500 ? "10px" : "small",
+                margin: "50px auto",
+              }}
+              color="primary"
+              onClick={handleTryOnWebsite}
+            >
+              Try on Website
+            </Button>
+          </div>
+          <div
+            style={{
+              margin: "100px auto 50px",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+            id="targetAbout"
+          >
+            <Logo
+              theme={theme}
+              isSmallScreenW500={isSmallScreenW500}
+              color={"secondary"}
+              height={150}
+              width={276}
+            />
+            <Typography
+              textAlign={"left"}
+              color="primary"
+              sx={{
+                margin: "auto",
+                fontWeight: 400,
+                letterSpacing: "0.5px",
+                lineHeight: isSmallScreenW500 ? "20px" : "20px",
+                fontSize: isSmallScreenW500 ? "14px" : "1rem",
+                color: "rgba(200, 200, 200,.6)",
+              }}
+            >
+              © All Rights Reserved.
+            </Typography>
+          </div>
         </div>
       </ThemeProvider>
     </Fragment>

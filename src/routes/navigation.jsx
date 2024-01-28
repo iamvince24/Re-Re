@@ -6,13 +6,28 @@ import { ThemeProvider } from "@mui/material/styles";
 import Logo from "../assets/img/logo";
 import IconButton from "@mui/material/IconButton";
 import { LinkButton } from "../component/Button";
-import Typography from "@mui/material/Typography";
-import { v4 as uuidv4 } from "uuid";
 import { handleNewUserData } from "../firebase";
 import Button from "@mui/material/Button";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import MenuIcon from "@mui/icons-material/Menu";
+import { useLocation } from "react-router-dom";
 
 export default function Navigation(props) {
-  const { scrollToHeading } = props;
+  const { theme, isSmallScreenW500 } = props;
+
+  const location = useLocation();
+  const currentPath = location.pathname;
+  const isLoginPath = currentPath.includes("login");
+
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   const navigate = useNavigate();
 
@@ -28,7 +43,7 @@ export default function Navigation(props) {
     }
   };
 
-  function generateRandomString() {
+  const generateRandomString = () => {
     const characters =
       "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
     let randomString = "";
@@ -39,21 +54,38 @@ export default function Navigation(props) {
     }
 
     return randomString;
-  }
+  };
+
+  const handleSectionScroll = async (target, offset) => {
+    if (isLoginPath) {
+      await navigate("/");
+      const targetElement = document.getElementById(target);
+      if (targetElement) {
+        window.scrollTo({
+          top: targetElement.offsetTop + offset,
+          behavior: "smooth",
+        });
+      }
+    }
+    const targetElement = document.getElementById(target);
+    if (targetElement) {
+      window.scrollTo({
+        top: targetElement.offsetTop + offset,
+        behavior: "smooth",
+      });
+    }
+  };
 
   return (
     <Fragment>
-      <ThemeProvider theme={props.theme}>
+      <ThemeProvider theme={theme}>
         <Box
           sx={{
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
             color: "white",
-            padding: props.isSmall500 ? "7.5px 15px" : "15px 50px",
-            // background:
-            //   "linear-gradient(90deg, rgba(217, 217, 217, 0.20) 0%, rgba(217, 217, 217, 0.00) 100%)",
-            // borderBottom: "1.5px solid var(--primary-color)",
+            padding: isSmallScreenW500 ? "7.5px 15px" : "15px 40px",
             backdropFilter: "blur(100px)",
           }}
         >
@@ -62,7 +94,7 @@ export default function Navigation(props) {
               display: "flex",
               flexDirection: "row",
               alignItems: "center",
-              gap: props.isSmall500 ? "10px" : "30px",
+              gap: isSmallScreenW500 ? "10px" : "30px",
             }}
           >
             <Link
@@ -83,85 +115,161 @@ export default function Navigation(props) {
                 }}
               >
                 <Logo
-                  theme={props.theme}
-                  isSmall500={props.isSmall500}
+                  theme={theme}
+                  isSmall500={isSmallScreenW500}
                   color={"primary"}
                   height={183}
                   width={237}
                 />
               </IconButton>
             </Link>
-            <div
-              style={{
-                marginTop: props.isSmall500 ? "7px" : "2.5px",
-                textDecoration: "none",
-                display: "flex",
-                flexDirection: "row",
-                alignItems: "center",
-                gap: props.isSmall500 ? "10px" : "30px",
-              }}
-            >
-              <MuiLink
-                href="/"
+            {isSmallScreenW500 ? null : (
+              <Box
                 sx={{
-                  fontSize: props.isSmall500 ? "12px" : "14px",
+                  marginTop: "2.5px",
                   textDecoration: "none",
-                  "&:hover": {
-                    textDecoration: "underline",
-                  },
-                }}
-                onClick={scrollToHeading}
-              >
-                Features
-              </MuiLink>
-              <MuiLink
-                href="/"
-                sx={{
-                  fontSize: props.isSmall500 ? "12px" : "14px",
-                  textDecoration: "none",
-                  "&:hover": {
-                    textDecoration: "underline",
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "center",
+                  gap: "30px",
+                  "@media (max-width:767px)": {
+                    gap: "20px",
+                    marginTop: "7px",
                   },
                 }}
               >
-                About
-              </MuiLink>
-            </div>
+                <MuiLink
+                  sx={{
+                    fontSize: isSmallScreenW500 ? "12px" : "14px",
+                    cursor: "pointer",
+                    textDecoration: "none",
+                    "&:hover": {
+                      textDecoration: "underline",
+                    },
+                  }}
+                  onClick={() => handleSectionScroll("targetFeature", 0)}
+                >
+                  Features
+                </MuiLink>
+                <MuiLink
+                  sx={{
+                    fontSize: isSmallScreenW500 ? "12px" : "14px",
+                    cursor: "pointer",
+                    textDecoration: "none",
+                    "&:hover": {
+                      textDecoration: "underline",
+                    },
+                  }}
+                  onClick={() => handleSectionScroll("targetAbout", 200)}
+                >
+                  About
+                </MuiLink>
+              </Box>
+            )}
           </Box>
-          <Box
-            sx={{
-              display: "flex",
-              gap: props.isSmall500 ? "10px" : "30px",
-              alignItems: "center",
-              paddingTop: "5px",
-              background: "none",
-            }}
-          >
-            <LinkButton
-              to="/login"
-              isSmall500={props.isSmall500}
-              theme={props.theme}
-            >
-              Log In
-            </LinkButton>
-            <Button
-              size="small"
-              variant="contained"
+          {isSmallScreenW500 ? null : (
+            <Box
               sx={{
-                color: `${props.theme.palette.secondary.main}`,
-                fontWeight: 700,
-                boxShadow: "none",
-                border: "none",
-                transition: "all 0.1s ease",
-                whiteSpace: "nowrap",
-                fontSize: props.isSmall500 ? "8px" : "10px",
+                display: "flex",
+                gap: "10px",
+                alignItems: "center",
+                paddingTop: "5px",
+                background: "none",
               }}
-              color="primary"
-              onClick={handleTryOnWebsite}
             >
-              Try on Website
-            </Button>
-          </Box>
+              <LinkButton
+                to="/login"
+                isSmall500={isSmallScreenW500}
+                theme={theme}
+              >
+                Log In
+              </LinkButton>
+              <Button
+                size="small"
+                variant="contained"
+                sx={{
+                  color: `${theme.palette.secondary.main}`,
+                  fontWeight: 700,
+                  boxShadow: "none",
+                  border: "none",
+                  transition: "all 0.1s ease",
+                  whiteSpace: "nowrap",
+                  fontSize: isSmallScreenW500 ? "8px" : "10px",
+                }}
+                color="primary"
+                onClick={handleTryOnWebsite}
+              >
+                Try on Website
+              </Button>
+            </Box>
+          )}
+          {isSmallScreenW500 ? (
+            <div>
+              <Button
+                id="basic-button"
+                aria-controls={open ? "basic-menu" : undefined}
+                aria-haspopup="true"
+                aria-expanded={open ? "true" : undefined}
+                onClick={handleClick}
+                startIcon={<MenuIcon />}
+                sx={{ minWidth: "0px", padding: "0px 8px 2px" }}
+              ></Button>
+              <Menu
+                id="basic-menu"
+                anchorEl={anchorEl}
+                open={open}
+                onClose={handleClose}
+                MenuListProps={{
+                  "aria-labelledby": "basic-button",
+                }}
+              >
+                <MenuItem
+                  onClick={() => {
+                    handleSectionScroll("targetFeature", 0);
+                    handleClose();
+                  }}
+                >
+                  Features
+                </MenuItem>
+                <MenuItem
+                  onClick={() => {
+                    handleSectionScroll("targetAbout", 200);
+                    handleClose();
+                  }}
+                >
+                  About
+                </MenuItem>
+                <MenuItem
+                  onClick={() => {
+                    navigate("/login");
+                    handleClose();
+                  }}
+                >
+                  Log In
+                </MenuItem>
+                <MenuItem
+                  onClick={() => {
+                    handleTryOnWebsite();
+                    handleClose();
+                  }}
+                >
+                  Try on Website
+                </MenuItem>
+              </Menu>
+
+              <style>
+                {`
+                    .css-1d6wzja-MuiButton-startIcon>*:nth-of-type(1) {
+                        font-size: 30px;
+                    }
+                    .css-1d6wzja-MuiButton-startIcon {
+                        margin: 0px;
+                        margin: 5px 0px 0px;
+                    }
+                `}
+              </style>
+            </div>
+          ) : null}
         </Box>
       </ThemeProvider>
     </Fragment>

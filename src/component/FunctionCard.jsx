@@ -54,19 +54,25 @@ export default function SmallFunction(props) {
             alignItems: "center",
             margin: "150px 0px 0px",
           }}
-          id="targetHeading"
         >
           <Typography
-            textAlign={"center"}
             sx={{
-              fontSize: "50px",
-              fontWeight: 900,
+              fontSize: "40px",
+              letterSpacing: "-1px",
               fontFamily: "Montserrat",
+              fontWeight: 900,
+              margin: "0px 0px 40px",
+              textAlign: "center",
               background:
                 "linear-gradient(151deg, #F4F4F3 1.35%, rgba(244, 244, 243, 0.00) 220.28%)",
               backgroundClip: "text",
               WebkitBackgroundClip: "text",
               WebkitTextFillColor: "transparent",
+              "@media (max-width:767px)": {
+                fontSize: "25px",
+                margin: "0px 0px 20px",
+                lineHeight: "25px",
+              },
             }}
           >
             Convenient little tool
@@ -74,28 +80,40 @@ export default function SmallFunction(props) {
           <Typography
             color="primary"
             sx={{
-              margin: props.isSmall500 ? "10px 0px 20px" : "20px 0px 40px",
+              width: "70%",
+              margin: "0px 0px 20px",
+              fontSize: "22.5px",
+              lineHeight: "35px",
               fontWeight: 400,
               textAlign: "center",
               letterSpacing: "0.5px",
-              lineHeight: props.isSmall500 ? "20px" : "30px",
-              fontSize: props.isSmall500 ? "14px" : "1.25rem",
-              color: "rgba(200, 200, 200,.6)",
+              color: "rgba(200, 200, 200, 0.6)",
+              "@media (max-width:767px)": {
+                width: "80%",
+                fontSize: "14px",
+                lineHeight: "20px",
+              },
+              "@media (max-width:500px)": {
+                width: "280px",
+              },
             }}
           >
-            The following small functions can help you adjust <br />
-            and view various progress of Gantt more conveniently and clearly.
+            The following small functions can help you adjust and view various
+            progress of Gantt more conveniently and clearly.
           </Typography>
           <Box
             sx={{
-              width: "75vw",
-              minWidth: "500px",
+              width: "100%",
+              maxWidth: "1000px",
               display: "flex",
               flexDirection: "row",
               justifyContent: "center",
               alignItems: "center",
               flexWrap: "wrap",
               gap: "20px",
+              "@media (max-width:767px)": {
+                width: "100%",
+              },
             }}
           >
             {cardInformation.map((card) => {
@@ -103,7 +121,7 @@ export default function SmallFunction(props) {
                 <Card
                   key={card.name}
                   sx={{
-                    width: "470px",
+                    width: "480px",
                     height: "300px",
                     bgcolor: "rgba(155, 155, 155, 0.2)",
                     padding: "15px",
@@ -112,6 +130,15 @@ export default function SmallFunction(props) {
                     justifyContent: "space-between",
                     borderRadius: "10px",
                     boxShadow: "none",
+                    "@media (max-width:767px)": {
+                      width: "400px",
+                      height: "250px",
+                    },
+                    "@media (max-width:400px)": {
+                      width: "90vw",
+                      minWidth: "288px",
+                      minHeight: "250px",
+                    },
                   }}
                 >
                   <Typography
@@ -120,6 +147,9 @@ export default function SmallFunction(props) {
                     sx={{
                       fontSize: "22.5px",
                       fontWeight: 700,
+                      "@media (max-width:767px)": {
+                        fontSize: "18px",
+                      },
                     }}
                   >
                     {card.name}
@@ -130,7 +160,11 @@ export default function SmallFunction(props) {
                     sx={{
                       fontSize: "14px",
                       fontWeight: 500,
+                      color: "rgba(200, 200, 200, 0.6)",
                       margin: "5px 0px 10px",
+                      "@media (max-width:767px)": {
+                        fontSize: "14px",
+                      },
                     }}
                   >
                     {card.introduction}

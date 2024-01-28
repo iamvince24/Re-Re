@@ -22,6 +22,7 @@ import {
 } from "../firebase";
 
 export default function Login(props) {
+  const { theme, isSmallScreenW500 } = props;
   const [email, setEmail] = useState("test@gmail.com");
   const [password, setPassword] = useState("test123");
 
@@ -59,24 +60,24 @@ export default function Login(props) {
 
   return (
     <Fragment>
-      <Box sx={{ display: "flex", width: "100vw", height: "100vh" }}>
-        <ThemeProvider theme={props.theme}>
+      <ThemeProvider theme={theme}>
+        <Box sx={{ display: "flex", width: "100%", height: "100%" }}>
           <Card
             sx={{
-              width: props.isSmall500 ? 275 : 345,
-              height: props.isSmall500 ? 350 : 390,
-              margin: props.isSmall500 ? "50px auto" : "100px auto",
+              width: isSmallScreenW500 ? 290 : 345,
+              height: isSmallScreenW500 ? 350 : 390,
+              margin: isSmallScreenW500 ? "60px auto" : "100px auto",
               display: "flex",
               flexDirection: "column",
               gap: "20px",
-              padding: props.isSmall500 ? "20px 20px 10px" : "40px 40px 20px",
-              backgroundColor: `${props.theme.palette.primary.main}`,
+              padding: isSmallScreenW500 ? "20px 20px 10px" : "40px 40px 20px",
+              backgroundColor: `${theme.palette.primary.main}`,
             }}
           >
             <Typography
               color="secondary"
               sx={{
-                fontSize: props.isSmall500 ? 20 : 25,
+                fontSize: isSmallScreenW500 ? 20 : 25,
                 fontWeight: 900,
                 whiteSpace: "nowrap",
                 textAlign: "center",
@@ -121,7 +122,7 @@ export default function Login(props) {
               direction="row"
               sx={{
                 width: "100%",
-                margin: props.isSmall500 ? "5px 0px 5px" : "10px 0px 5px",
+                margin: isSmallScreenW500 ? "5px 0px 5px" : "10px 0px 5px",
                 display: "flex",
                 justifyContent: "space-between",
                 alignItems: "center",
@@ -134,7 +135,7 @@ export default function Login(props) {
                   boxShadow: "none",
                   color: "var(--primary-color)",
                   fontWeight: 700,
-                  fontSize: props.isSmall500 ? "10px" : "small",
+                  fontSize: isSmallScreenW500 ? "10px" : "small",
                 }}
                 onClick={handleRegister}
               >
@@ -157,7 +158,7 @@ export default function Login(props) {
                   boxShadow: "none",
                   color: "var(--primary-color)",
                   fontWeight: 700,
-                  fontSize: props.isSmall500 ? "10px" : "small",
+                  fontSize: isSmallScreenW500 ? "10px" : "small",
                 }}
                 onClick={handleLogin}
               >
@@ -171,15 +172,15 @@ export default function Login(props) {
                 boxShadow: "none",
                 color: "var(--primary-color)",
                 fontWeight: 700,
-                fontSize: props.isSmall500 ? "10px" : "small",
+                fontSize: isSmallScreenW500 ? "10px" : "small",
               }}
               onClick={handleSignInWithGoogle}
             >
               Log In With Google
             </Button>
           </Card>
-        </ThemeProvider>
-      </Box>
+        </Box>
+      </ThemeProvider>
     </Fragment>
   );
 }
