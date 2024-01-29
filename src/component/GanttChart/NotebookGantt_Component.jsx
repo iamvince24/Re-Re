@@ -18,6 +18,7 @@ import { useSelector } from "react-redux";
 
 export default function NotebookGanttComponent(props) {
   const {
+    notebookData,
     theme,
     notebookIndex,
     notebook,
@@ -46,8 +47,9 @@ export default function NotebookGanttComponent(props) {
   const [contextMenu, setContextMenu] = useState(null);
   const [targetType, setTargetType] = useState(null);
   const [chapterIndex, setChapterIndex] = useState(null);
+  console.log(notebook);
 
-  let earliestDate = new Date(notebook.chapters[0].start);
+  let earliestDate = new Date(notebook?.chapters[0]?.start);
   let latestDate = new Date("2024-01-02");
 
   notebook.chapters?.forEach((chapter) => {
@@ -70,6 +72,7 @@ export default function NotebookGanttComponent(props) {
   const updatedNotebookTimeRange = (startDate, endDate) => {
     const uid = window.localStorage.getItem("uid");
     const db = getDatabase();
+
     const updates = {};
     updates["/users/" + uid + "/notebooks/" + notebookIndex + "/start/"] =
       startDate;
@@ -77,6 +80,8 @@ export default function NotebookGanttComponent(props) {
       endDate;
     update(ref(db), updates);
   };
+
+  console.log(notebookIndex);
 
   updatedNotebookTimeRange(
     dayjs(earliestDate).format(dateFormat),

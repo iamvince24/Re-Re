@@ -86,8 +86,11 @@ export default function Navigation(props) {
             justifyContent: "space-between",
             alignItems: "center",
             color: "white",
-            padding: isSmallScreenW500 ? "7.5px 15px" : "15px 40px",
+            padding: "15px 40px",
             backdropFilter: "blur(100px)",
+            "@media (max-width:767px)": {
+              padding: "7.5px 15px",
+            },
           }}
         >
           <Box
@@ -144,6 +147,21 @@ export default function Navigation(props) {
                     fontSize: isSmallScreenW500 ? "12px" : "14px",
                     cursor: "pointer",
                     textDecoration: "none",
+                    letterSpacing: "0.5px",
+                    "&:hover": {
+                      textDecoration: "underline",
+                    },
+                  }}
+                  onClick={() => handleSectionScroll("targetWhy", 0)}
+                >
+                  Why Re-Re ?
+                </MuiLink>
+                <MuiLink
+                  sx={{
+                    fontSize: isSmallScreenW500 ? "12px" : "14px",
+                    cursor: "pointer",
+                    textDecoration: "none",
+                    letterSpacing: "0.5px",
                     "&:hover": {
                       textDecoration: "underline",
                     },
@@ -151,19 +169,6 @@ export default function Navigation(props) {
                   onClick={() => handleSectionScroll("targetFeature", 0)}
                 >
                   Features
-                </MuiLink>
-                <MuiLink
-                  sx={{
-                    fontSize: isSmallScreenW500 ? "12px" : "14px",
-                    cursor: "pointer",
-                    textDecoration: "none",
-                    "&:hover": {
-                      textDecoration: "underline",
-                    },
-                  }}
-                  onClick={() => handleSectionScroll("targetAbout", 200)}
-                >
-                  About
                 </MuiLink>
               </Box>
             )}
@@ -189,6 +194,7 @@ export default function Navigation(props) {
                 size="small"
                 variant="contained"
                 sx={{
+                  letterSpacing: "0.5px",
                   color: `${theme.palette.secondary.main}`,
                   fontWeight: 700,
                   boxShadow: "none",
@@ -226,19 +232,19 @@ export default function Navigation(props) {
               >
                 <MenuItem
                   onClick={() => {
+                    handleSectionScroll("targetWhy", 0);
+                    handleClose();
+                  }}
+                >
+                  Why Re-Re ?
+                </MenuItem>
+                <MenuItem
+                  onClick={() => {
                     handleSectionScroll("targetFeature", 0);
                     handleClose();
                   }}
                 >
                   Features
-                </MenuItem>
-                <MenuItem
-                  onClick={() => {
-                    handleSectionScroll("targetAbout", 200);
-                    handleClose();
-                  }}
-                >
-                  About
                 </MenuItem>
                 <MenuItem
                   onClick={() => {

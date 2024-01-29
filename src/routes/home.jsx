@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect } from "react";
+import React, { Fragment, useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { Box } from "@mui/system";
 import Typography from "@mui/material/Typography";
@@ -6,49 +6,38 @@ import { ThemeProvider } from "@mui/material/styles";
 import LabTabs from "../component/LabTabs";
 import SmallFunction from "../component/FunctionCard";
 import appPic from "../assets/img/app.png";
-import AppDisplay from "../assets/img/AppDisplay.png";
 import Card from "@mui/material/Card";
 import { handleNewUserData } from "../firebase";
 import Button from "@mui/material/Button";
 import Logo from "../assets/img/logo";
 import GanttImg from "../assets/img/GanttImg.png";
 import NotebookImg from "../assets/img/NotebookImg.png";
-import { red } from "@mui/material/colors";
 
 export default function Home(props) {
   const { theme, isSmallScreenW500, isSmallScreenW767 } = props;
   const navigate = useNavigate();
 
-  let marginTopInit = -250;
-  if (isSmallScreenW767) {
-    marginTopInit = -50;
-  }
-
-  const [scrollY, setScrollY] = useState(200);
-  const [marginTop, setMarginTop] = useState(marginTopInit);
-  const [width, setWidth] = useState(110);
+  const [scrollY, setScrollY] = useState(100);
+  const [scale, setScale] = useState(1.15);
 
   useEffect(() => {
     let lastScrollY = window.scrollY;
 
     const handleScroll = () => {
-      const newScrollY = Math.max(0, 200 - window.scrollY);
+      const newScrollY = Math.max(0, 100 - window.scrollY * 0.5);
       setScrollY(newScrollY);
 
-      const temp = Math.max(marginTopInit, marginTopInit + window.scrollY);
-      const newMarginTop = Math.min(50, Math.max(marginTopInit, temp));
-      setMarginTop(newMarginTop);
-
-      const newWidth = Math.min(110, Math.max(90, 110 - window.scrollY * 0.05));
-      setWidth(newWidth);
+      const newScale = Math.min(
+        1.15,
+        Math.max(0.9, 1.15 - window.scrollY * 0.25)
+      );
+      setScale(newScale);
 
       if (window.scrollY > lastScrollY) {
         setScrollY(newScrollY + 1);
-        setMarginTop(newMarginTop + 1);
       } else {
         if (newScrollY >= 400) {
-          setWidth(Math.min(110, newWidth + 1));
-          setMarginTop(Math.max(marginTopInit, newMarginTop - 1));
+          setScale(Math.min(1.15, newScale + 0.5));
         }
       }
 
@@ -92,9 +81,9 @@ export default function Home(props) {
   return (
     <Fragment>
       <ThemeProvider theme={theme}>
-        <div
+        <Box
           className="bgTexture"
-          style={{
+          sx={{
             padding: "100px 0px 50px",
             "@media (max-width:767px)": {
               padding: "50px 0px 50px",
@@ -123,6 +112,7 @@ export default function Home(props) {
               <Typography
                 color="primary"
                 sx={{
+                  width: "90%",
                   fontSize: "80px",
                   lineHeight: "90px",
                   letterSpacing: "-1px",
@@ -163,9 +153,8 @@ export default function Home(props) {
                   },
                 }}
               >
-                "Introducing Re-Re, an application designed to assist you in
-                recording and reviewing your study notes the ultimate solution
-                for effortless note tracking."
+                "Introducing Re-Re, an application meticulously crafted to aid
+                you in recording and reviewing your study notes."
               </Typography>
               <Button
                 size="small"
@@ -188,20 +177,24 @@ export default function Home(props) {
             </Box>
             <Box
               sx={{
+                width: "80%",
                 background: "rgb(200, 200, 200, 0.05)",
                 borderRadius: "5px",
-                transform: `perspective(1000px) rotateX(${perspectiveValue}deg)`,
+                transform: `perspective(1000px) rotateX(${perspectiveValue}deg) scale(${scale})`,
                 transformOrigin: "center bottom",
                 transition: "transform 0.5s ease, margin-top 0.5s ease",
-                marginTop: `${marginTop}px`,
+                marginTop: "40px",
                 marginBottom: "150px",
                 position: "relative",
                 boxShadow: "0px 0px 50px 10px rgba(200, 200, 200, 0.2)",
+                "@media (max-width:1000px)": {
+                  marginTop: "50px",
+                },
               }}
             >
               <Card
                 sx={{
-                  width: `${width}vw`,
+                  width: "100%",
                   aspectRatio: "72/45",
                   backgroundImage: `url(${appPic})`,
                   backgroundSize: "cover",
@@ -214,6 +207,7 @@ export default function Home(props) {
             </Box>
           </Box>
           <Box
+            id="targetWhy"
             sx={{
               width: "100%",
               display: "flex",
@@ -229,7 +223,7 @@ export default function Home(props) {
             <Box
               sx={{
                 width: "90%",
-                maxWidth: "1280px",
+                // maxWidth: "1280px",
                 display: "flex",
                 flexDirection: "row",
                 justifyContent: "space-between",
@@ -282,11 +276,30 @@ export default function Home(props) {
                     },
                   }}
                 >
-                  "Introduce an application, Re-Re, that helps you record and
-                  review in your study, the ultimate solution for effortless
-                  note tracking.Introduce an application, Re-Re, that helps you
-                  record and review in your study, the ultimate solution for
-                  effortless note tracking."
+                  "In modern note-taking tools, whether it's paper or software,
+                  most of them cannot record the time spent on learning
+                  something. Additionally, each note usually only records the
+                  starting time and editing time in a point-like manner, which
+                  is relatively non-intuitive when faced with a large number of
+                  notes. However, we believe that recording learning time is
+                  very helpful for one's own learning, especially in this era of
+                  information explosion.&nbsp;
+                  <span
+                    style={{
+                      color: "rgba(200, 200, 200, 0.9)",
+                      fontWeight: 600,
+                    }}
+                  >
+                    For people who need to absorb a large amount of different
+                    information, evaluating their own learning situation and
+                    finding the best learning method and the time spent on it
+                    are important investments that can improve efficiency.
+                  </span>
+                  &nbsp; However, currently there is no software that can help
+                  record both notes and time, and this is exactly what we want
+                  to achieve."
+                  <br />
+                  <br />
                 </Typography>
                 <div
                   style={{
@@ -329,28 +342,47 @@ export default function Home(props) {
                     },
                   }}
                 >
-                  {" "}
-                  "Introduce an application, Re-Re, that helps you record and
-                  review in your study, the ultimate solution for effortless
-                  note tracking.Introduce an application, Re-Re, that helps you
-                  record and review in your study, the ultimate solution for
-                  effortless note tracking."
+                  "Re-Re is a time management learning software. By displaying
+                  the time intervals spent on each note on a Gantt chart, users
+                  can clearly understand their learning progress during each
+                  time period in the past.&nbsp;
+                  <span
+                    style={{
+                      color: "rgba(200, 200, 200, 0.9)",
+                      fontWeight: 600,
+                    }}
+                  >
+                    The biggest advantage of this software is its ability to
+                    utilize past learning assessments to effectively plan future
+                    learning content, making it more systematic and tailored to
+                    individual needs.
+                  </span>
+                  &nbsp; We hope that every user can make full use of their past
+                  learning experiences while continuously learning."
                 </Typography>
               </Box>
-              <Card
+              <Box
                 sx={{
+                  width: "50%",
                   display: isSmallScreenW767 ? "none" : "flex",
-                  width: "30%",
-                  marginTop: "30px",
-                  aspectRatio: "486/352",
-                  backgroundImage: `url(${NotebookImg})`,
-                  backgroundSize: "cover",
-                  backgroundRepeat: "no-repeat",
-                  backgroundPosition: "center",
-                  backgroundColor: "transparent",
-                  boxShadow: "none",
                 }}
-              />
+              >
+                <Card
+                  sx={{
+                    width: "70%",
+                    maxWidth: "500px",
+                    margin: "0px auto 0px",
+                    marginRight: "30px",
+                    aspectRatio: "486/352",
+                    backgroundImage: `url(${NotebookImg})`,
+                    backgroundSize: "cover",
+                    backgroundRepeat: "no-repeat",
+                    backgroundPosition: "center",
+                    backgroundColor: "transparent",
+                    boxShadow: "none",
+                  }}
+                />
+              </Box>
             </Box>
             <Card
               sx={{
@@ -375,7 +407,13 @@ export default function Home(props) {
           </Box>
           <LabTabs theme={theme} isSmallScreenW500={isSmallScreenW500} />
           <SmallFunction theme={theme} isSmallScreenW500={isSmallScreenW500} />
-          <div style={{ display: "flex", justifyContent: "center" }}>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              marginBottom: "100px",
+            }}
+          >
             <Button
               size="small"
               variant="contained"
@@ -402,7 +440,6 @@ export default function Home(props) {
               justifyContent: "center",
               alignItems: "center",
             }}
-            id="targetAbout"
           >
             <Logo
               theme={theme}
@@ -426,7 +463,7 @@ export default function Home(props) {
               © All Rights Reserved.
             </Typography>
           </div>
-        </div>
+        </Box>
       </ThemeProvider>
     </Fragment>
   );
