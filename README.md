@@ -1,70 +1,68 @@
-# Getting Started with Create React App
+# Re-Re is an application meticulously crafted to aid you in recording and reviewing your study notes.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+#### Accounts for testing：
 
-## Available Scripts
+Email：test@gmail.com
 
-In the project directory, you can run:
+Password：test123
 
-### `npm start`
+## Overview
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Re-Re is a note-taking application that can be used to record and review the learning process. In addition to supporting note editing in Markdown format, the notes also have a visual Gantt chart timeline function, which can provide a better understanding of one's learning process.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+![AppDisplay.png](https://res.craft.do/user/full/6e51b78d-bb10-9598-78bc-b1dd033f3f34/doc/F14CFCD8-BE7A-4E77-9E69-8D661B7371D8/F79E28EB-C025-4A27-967F-321C4FA6CCE2_2/ypNSwRkrF1W1atPP2Ko9A0lWG4ulVHumsSS68SEFzywz/AppDisplay.png)
 
-### `npm test`
+## Live [Demo](https://re-re-pi.vercel.app/)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Build with
 
-### `npm run build`
+#### Front-End
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- React / React Router
+- Redux
+- Material UI
+- styled-components
+- Firebase Authentication & Realtime database
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+#### Library
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- [react-markdown](https://github.com/remarkjs/react-markdown#react-markdown) - React component to render markdown.
+- [gantt-chart-nextjs-starter](https://github.com/ritza-co/gantt-chart-nextjs-starter) - A Gantt chart with React using Next.js
 
-### `npm run eject`
+## Key feature
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### Gantt Mode
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+![app.png](https://res.craft.do/user/full/6e51b78d-bb10-9598-78bc-b1dd033f3f34/doc/F14CFCD8-BE7A-4E77-9E69-8D661B7371D8/72A6D6E7-7054-48D9-ADA2-F4C1F6D456AB_2/Cx7UBPbHI3bWdP12mrnVLTk0DogauCrtAiH16FurptQz/app.png)
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### Notebook Mode
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+![app_notebook.png](https://res.craft.do/user/full/6e51b78d-bb10-9598-78bc-b1dd033f3f34/doc/F14CFCD8-BE7A-4E77-9E69-8D661B7371D8/A1897F56-BEB1-428E-BC15-AA8E8996B5EC_2/XZ2iRqApxqUEz8AsFK1WyKLnRoox92iuMKxBSc2brW0z/app_notebook.png)
 
-## Learn More
+### Other feature
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+#### Mode Change
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+![ModeChange.png](https://res.craft.do/user/full/6e51b78d-bb10-9598-78bc-b1dd033f3f34/doc/F14CFCD8-BE7A-4E77-9E69-8D661B7371D8/9752BFC2-4C6A-4D76-BDE0-7721E01A8189_2/nr5o9ExZzlJbG1YMrRb2FoHrPCYbp5qMeIH4UIghXJ8z/ModeChange.png)
 
-### Code Splitting
+#### Notebook Date Picker
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+![DatePicker.png](https://res.craft.do/user/full/6e51b78d-bb10-9598-78bc-b1dd033f3f34/doc/F14CFCD8-BE7A-4E77-9E69-8D661B7371D8/6D2B7E19-556E-407D-852E-9A7406AB77F8_2/jlFlQ8OsV95kNgBnyQMJZiRaBrownaQBASy0INGaJocz/DatePicker.png)
 
-### Analyzing the Bundle Size
+#### Change Durations Color
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+![TimelineColor.png](https://res.craft.do/user/full/6e51b78d-bb10-9598-78bc-b1dd033f3f34/doc/F14CFCD8-BE7A-4E77-9E69-8D661B7371D8/4438635F-D2AD-4668-8F65-A05538E49514_2/O8Cx2vBj6uiyZSXeIBoz667OTowruBJMySNRib41eEEz/TimelineColor.png)
 
-### Making a Progressive Web App
+#### Change Time Range
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+![TimeRangePicker.png](https://res.craft.do/user/full/6e51b78d-bb10-9598-78bc-b1dd033f3f34/doc/F14CFCD8-BE7A-4E77-9E69-8D661B7371D8/58D9B4D5-6AF0-4D21-92B1-DA7E0F3604F6_2/lX9v2U0gogB0j9eOAhnXvZG1sZjGxNhyYnl3jorNh0sz/TimeRangePicker.png)
 
-### Advanced Configuration
+### Future feature
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+- Rich text editor
+- Add spaced repetition function for specific notes.
 
-### Deployment
+## License
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+Copyright Notice and Statement: currently not offering any license. Permission only to view and download.
 
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
