@@ -216,14 +216,13 @@ export default function Home(props) {
               alignItems: "center",
               margin: "100px 0px",
               "@media (max-width:767px)": {
-                margin: "0px 0px 50px",
+                margin: "0px 0px 100px",
               },
             }}
           >
             <Box
               sx={{
                 width: "90%",
-                // maxWidth: "1280px",
                 display: "flex",
                 flexDirection: "row",
                 justifyContent: "space-between",
@@ -237,7 +236,7 @@ export default function Home(props) {
                   flexDirection: "column",
                   justifyContent: "flex-start",
                   alignItems: "flex-start",
-                  "@media (max-width:767px)": {
+                  "@media (max-width:1200px)": {
                     width: "100%",
                   },
                 }}
@@ -301,17 +300,21 @@ export default function Home(props) {
                   <br />
                   <br />
                 </Typography>
-                <div
-                  style={{
+                <Box
+                  sx={{
                     width: "100%",
-                    display: isSmallScreenW767 ? "flex" : "none",
+                    display: "none",
                     justifyContent: "center",
                     margin: "30px 0px",
+                    "@media (max-width:1200px)": {
+                      display: "flex",
+                    },
                   }}
                 >
                   <Card
                     sx={{
-                      display: isSmallScreenW767 ? "flex" : "none",
+                      // display: isSmallScreenW767 ? "flex" : "none",
+                      display: "flex",
                       width: "30%",
                       minWidth: "200px",
                       aspectRatio: "486/352",
@@ -326,7 +329,7 @@ export default function Home(props) {
                       },
                     }}
                   />
-                </div>
+                </Box>
                 <Typography
                   color="primary"
                   sx={{
@@ -364,7 +367,10 @@ export default function Home(props) {
               <Box
                 sx={{
                   width: "50%",
-                  display: isSmallScreenW767 ? "none" : "flex",
+                  display: "flex",
+                  "@media (max-width:1200px)": {
+                    display: "none",
+                  },
                 }}
               >
                 <Card

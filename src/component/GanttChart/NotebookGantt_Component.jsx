@@ -47,7 +47,6 @@ export default function NotebookGanttComponent(props) {
   const [contextMenu, setContextMenu] = useState(null);
   const [targetType, setTargetType] = useState(null);
   const [chapterIndex, setChapterIndex] = useState(null);
-  console.log(notebook);
 
   let earliestDate = new Date(notebook?.chapters[0]?.start);
   let latestDate = new Date("2024-01-02");

@@ -101,6 +101,10 @@ export default function DateRangePicker(props) {
           .ant-picker-dropdown-range {
             z-index: 10000;
           }
+
+          :where(.css-dev-only-do-not-override-74037d).ant-picker-focused.ant-picker {
+            box-shadow: none;
+          }
         `}
       </style>
       <ConfigProvider
@@ -114,8 +118,6 @@ export default function DateRangePicker(props) {
             colorIcon: `${theme.palette.secondary.main}`,
             colorIconHover: `${theme.palette.secondary.main}`,
             warningActiveShadow: "none",
-            // colorBgContainer: "#F3D9D2",
-            // cellActiveWithRangeBg: "#F3D9D2",
             colorBgContainer: "red",
             cellActiveWithRangeBg: "red",
           },
