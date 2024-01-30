@@ -18,8 +18,8 @@ export default function Logo(props) {
         color={`${props.color}`}
         xmlns="http://www.w3.org/2000/svg"
         sx={{
-          fontSize: props.isSmall500 ? "30px" : "45px",
-          paddingTop: props.isSmall500 ? "5px" : "none",
+          fontSize: props.isSmallScreenW500 ? "30px" : "45px",
+          paddingTop: props.isSmallScreenW500 ? "5px" : "none",
         }}
       >
         <path d="M217.805 143.614C203.799 157.006 185.378 165.818 164.946 167.646C166.285 172.536 167 177.685 167 183H237C237 167.006 229.491 152.767 217.805 143.614Z" />

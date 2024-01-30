@@ -120,7 +120,7 @@ export default function Navigation(props) {
               >
                 <Logo
                   theme={theme}
-                  isSmall500={isSmallScreenW500}
+                  isSmallScreenW500={isSmallScreenW500}
                   color={"primary"}
                   height={183}
                   width={237}

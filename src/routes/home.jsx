@@ -462,8 +462,12 @@ export default function Home(props) {
                 fontWeight: 400,
                 letterSpacing: "0.5px",
                 lineHeight: isSmallScreenW500 ? "20px" : "20px",
-                fontSize: isSmallScreenW500 ? "14px" : "1rem",
+                fontSize: "1rem",
                 color: "rgba(200, 200, 200,.6)",
+                "@media (max-width:767px)": {
+                  marginTop: "10px",
+                  fontSize: "14px",
+                },
               }}
             >
               © All Rights Reserved.

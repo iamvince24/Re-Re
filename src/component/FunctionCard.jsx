@@ -53,6 +53,9 @@ export default function SmallFunction(props) {
             justifyContent: "center",
             alignItems: "center",
             margin: "150px 0px 0px",
+            "@media (max-width:767px)": {
+              margin: "100px 0px 0px",
+            },
           }}
         >
           <Typography
@@ -131,12 +134,12 @@ export default function SmallFunction(props) {
                     borderRadius: "10px",
                     boxShadow: "none",
                     "@media (max-width:767px)": {
-                      width: "400px",
+                      margin: "auto 20px",
                       height: "250px",
                     },
                     "@media (max-width:400px)": {
                       width: "90vw",
-                      minWidth: "288px",
+                      margin: "auto",
                       minHeight: "250px",
                     },
                   }}
