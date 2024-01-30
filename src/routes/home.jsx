@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect, useRef } from "react";
+import React, { Fragment, useState, useEffect, lazy, Suspense } from "react";
 import { useNavigate } from "react-router-dom";
 import { Box } from "@mui/system";
 import Typography from "@mui/material/Typography";
@@ -12,6 +12,7 @@ import Button from "@mui/material/Button";
 import Logo from "../assets/img/logo";
 import GanttImg from "../assets/img/GanttImg.png";
 import NotebookImg from "../assets/img/NotebookImg.png";
+import Skeleton from "@mui/material/Skeleton";
 
 export default function Home(props) {
   const { theme, isSmallScreenW500, isSmallScreenW767 } = props;
@@ -76,6 +77,10 @@ export default function Home(props) {
     }
 
     return randomString;
+  }
+
+  function Loading() {
+    return <h2>🌀 Loading...</h2>;
   }
 
   return (
@@ -311,24 +316,38 @@ export default function Home(props) {
                     },
                   }}
                 >
-                  <Card
-                    sx={{
-                      // display: isSmallScreenW767 ? "flex" : "none",
-                      display: "flex",
-                      width: "30%",
-                      minWidth: "200px",
-                      aspectRatio: "486/352",
-                      backgroundImage: `url(${NotebookImg})`,
-                      backgroundSize: "cover",
-                      backgroundRepeat: "no-repeat",
-                      backgroundPosition: "center",
-                      backgroundColor: "transparent",
-                      boxShadow: "none",
-                      "@media (max-width:767px)": {
-                        minWidth: "150px",
-                      },
-                    }}
-                  />
+                  <Suspense
+                    fallback={
+                      <Skeleton
+                        variant="rounded"
+                        // width={"30%"}
+                        // height={"auto"}
+                        sx={{
+                          width: "30%",
+                          height: "auto",
+                          aspectRatio: "486/352",
+                        }}
+                      />
+                    }
+                  >
+                    <Card
+                      sx={{
+                        display: "flex",
+                        width: "30%",
+                        minWidth: "200px",
+                        aspectRatio: "486/352",
+                        backgroundImage: `url(${NotebookImg})`,
+                        backgroundSize: "cover",
+                        backgroundRepeat: "no-repeat",
+                        backgroundPosition: "center",
+                        backgroundColor: "transparent",
+                        boxShadow: "none",
+                        "@media (max-width:767px)": {
+                          minWidth: "150px",
+                        },
+                      }}
+                    />
+                  </Suspense>
                 </Box>
                 <Typography
                   color="primary"
