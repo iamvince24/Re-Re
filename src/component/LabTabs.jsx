@@ -248,6 +248,9 @@ export default function LabTabs(props) {
             .css-1gsv261 {
               border: none;
             }
+            .css-orq8zk {
+              min-height: 0px;
+            }
             .css-1ujnqem-MuiTabs-root{
               min-height: 0px;
             }
