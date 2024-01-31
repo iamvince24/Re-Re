@@ -16,6 +16,7 @@ import Notebook from "./notebook";
 import { logout } from "../firebase";
 import { useSelector } from "react-redux";
 import PositionedMenu from "./PositionedMenu";
+import { debounce } from "lodash";
 
 function AddNotebook(uid, index) {
   const db = getDatabase();
@@ -86,14 +87,14 @@ export default function Menu(props) {
     dispatch(handleSidebarOpen(false));
   };
 
-  const handleAddNotebook = () => {
+  const handleAddNotebook = debounce(() => {
     const notebookIndex =
       allNotebookData[0].name === "Please Add Notebook"
         ? 0
         : allNotebookData.length;
 
     AddNotebook(uid, notebookIndex);
-  };
+  }, 100);
 
   const handleLogOut = () => {
     logout();

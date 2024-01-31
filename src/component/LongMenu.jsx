@@ -15,6 +15,7 @@ import { getDatabase, ref, set, child, push, update } from "firebase/database";
 import { ThemeProvider } from "@mui/material/styles";
 import { useSelector } from "react-redux";
 import { v4 as uuidv4 } from "uuid";
+import { debounce } from "lodash";
 
 // const options = ["Rename", "Delete"];
 function generateNumericId() {
@@ -95,7 +96,7 @@ export default function LongMenu(props) {
     event.stopPropagation();
   };
 
-  const handleAddNewChapter = () => {
+  const handleAddNewChapter = debounce(() => {
     let notebookId = 0;
     const uid = window.localStorage.getItem("uid");
     for (var i = 0; i < props.notebookData.length; i++) {
@@ -109,7 +110,7 @@ export default function LongMenu(props) {
         ? 0
         : allNotebookData[notebookIndex]?.chapters.length;
     AddNewChapter(uid, notebookIndex, chaptersLength);
-  };
+  }, 500);
 
   return (
     <Fragment>

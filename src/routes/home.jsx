@@ -55,7 +55,7 @@ export default function Home(props) {
 
   const perspectiveValue = scrollY * 0.1;
 
-  const handleTryOnWebsite = async () => {
+  const handleTryOnWebsite = debounce(async () => {
     try {
       const uid = generateRandomString();
       window.localStorage.setItem("uid", uid);
@@ -65,7 +65,7 @@ export default function Home(props) {
       console.error("Login failed", error.message);
       alert("The account or password is wrong, please fill it in again.");
     }
-  };
+  }, 500);
 
   function generateRandomString() {
     const characters =
@@ -78,10 +78,6 @@ export default function Home(props) {
     }
 
     return randomString;
-  }
-
-  function Loading() {
-    return <h2>🌀 Loading...</h2>;
   }
 
   return (

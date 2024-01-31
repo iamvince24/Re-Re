@@ -16,6 +16,7 @@ import { handleUpdateIndex } from "../redux/action";
 import { handleUpdatedGanttUnfoldList } from "../redux/action";
 import { handleGanttUnfold } from "../redux/action";
 import { updatedUsername } from "../redux/action";
+import { debounce } from "lodash";
 
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== "open",
@@ -53,7 +54,7 @@ export default function Application(props) {
 
   const drawerwidth = screenSmall767 ? "100vw" : 350;
 
-  function getInitNotebookAndChapterId(allData) {
+  const getInitNotebookAndChapterId = debounce((allData) => {
     let notebookIdList = [];
     let chapterIdList = [];
     allData?.forEach((notebook, index) => {
@@ -63,7 +64,7 @@ export default function Application(props) {
       });
     });
     dispatch(handleUpdateIndex(notebookIdList[0], chapterIdList[0]));
-  }
+  }, 500);
 
   function handleSetGanttUnfoldList(allData) {
     let indexList = [];

@@ -12,6 +12,7 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useLocation } from "react-router-dom";
+import { debounce } from "lodash";
 
 export default function Navigation(props) {
   const { theme, isSmallScreenW500 } = props;
@@ -31,7 +32,7 @@ export default function Navigation(props) {
 
   const navigate = useNavigate();
 
-  const handleTryOnWebsite = async () => {
+  const handleTryOnWebsite = debounce(async () => {
     try {
       const uid = generateRandomString();
       window.localStorage.setItem("uid", uid);
@@ -41,7 +42,7 @@ export default function Navigation(props) {
       console.error("Login failed", error.message);
       alert("The account or password is wrong, please fill it in again.");
     }
-  };
+  }, 500);
 
   const generateRandomString = () => {
     const characters =
