@@ -14,13 +14,6 @@ body {
 
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  /* background: #f3d9d2; */
-  /* background: var(--secondary-color); */
-  /* background: linear-gradient(
-    151deg,
-    #f4f4f3 1.35%,
-    rgba(244, 244, 243, 0) 220.28%
-  ); */
   background-color: var(--secondary-color);
   background-image: url("./assets/img/noise_white.png");
 }
@@ -76,43 +69,6 @@ code {
   background-image: url("./assets/img/noise_white.png");
 }
 
-/* .MuiBox-root .css-izdrea {
-  background: var(--secondary-color);
-  background-image: url("./assets/img/noise_white.png");
-}
-
-.MuiBox-root .css-1omejne {
-  background: var(--secondary-color);
-  background-image: url("./assets/img/noise_white.png");
-} */
-
-/* width */
-/* ::-webkit-scrollbar {
-  width: 5px;
-} */
-
-/* Track */
-/* ::-webkit-scrollbar-track {
-  background: #f3d9d2;
-} */
-
-/* Handle */
-/* ::-webkit-scrollbar-thumb {
-  background: rgba(46, 74, 243, 0.7);
-  border-radius: 2.5px;
-} */
-
-/* Handle on hover */
-/* ::-webkit-scrollbar-thumb:hover {
-  background: rgba(46, 74, 243, 0.9);
-} */
-
-/* .taskRow:after:hover {
-  background: rgb(255, 255, 255, 0.5) !important;
-  position: relative;
-  z-index: 30000;
-} */
-
 .MuiBox-root .css-1k43qvq text {
   color: var(--primary-color);
 }
@@ -122,19 +78,22 @@ code {
 }
 
 h1 {
-  margin: 10px 0px 5px;
+  margin: 25px 0px 10px;
   font-weight: 900;
 }
 
 h2 {
-  margin: 10px 0px 5px;
-  font-weight: bold;
+  margin: 25px 0px 10px;
+  font-weight: 700;
+}
+
+h3 {
+  margin: 15px 0px 10px;
+  font-weight: 700;
 }
 
 .textEditor p {
   line-height: 30px;
-  /* line-height: 1.9rem; */
-  /* margin: 2.5px 0px; */
   margin-top: 1.5em;
 }
 
@@ -148,7 +107,7 @@ a {
 }
 
 ul {
-  margin-left: 20px;
+  margin: 20px 0px 20px 20px;
 }
 
 ol {

@@ -56,8 +56,17 @@ export default function DatePickerValue(props) {
   };
 
   useEffect(() => {
-    setStartValue(allNotebookData[notebookIndex]?.chapters[chapterIndex].start);
-    setEndValue(allNotebookData[notebookIndex]?.chapters[chapterIndex].end);
+    let tempStartValue =
+      allNotebookData[notebookIndex].chapters === undefined
+        ? null
+        : allNotebookData[notebookIndex]?.chapters[chapterIndex].start;
+    let tempEndValue =
+      allNotebookData[notebookIndex].chapters === undefined
+        ? null
+        : allNotebookData[notebookIndex]?.chapters[chapterIndex].end;
+
+    setStartValue(tempStartValue);
+    setEndValue(tempEndValue);
   }, [focusNotebookAndChapterIndex]);
 
   return (
@@ -95,7 +104,7 @@ export default function DatePickerValue(props) {
             padding: 2.5px;
             border-radius: 4px;
             text-align: center;
-            font-weight: 700;
+            font-weight: 500;
           }
 
           :where(.css-dev-only-do-not-override-abqk3i).ant-picker {

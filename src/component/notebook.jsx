@@ -120,6 +120,7 @@ export default function Notebook(props) {
                           }}
                           onClick={() => {
                             dispatch(handleUpdateIndex(notebookIndex, index));
+                            dispatch(handleModeUpdate(false));
                             if (screenSmall767) {
                               dispatch(handleModeUpdate(true));
                               dispatch(handleSidebarOpen(false));

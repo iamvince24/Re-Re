@@ -97,6 +97,7 @@ export default function Application(props) {
         const starCountRef = await ref(db, `users/${uid}`);
         onValue(starCountRef, async (snapshot) => {
           const snapshotValue = snapshot.val();
+
           if (snapshotValue.username) {
             window.localStorage.setItem("username", snapshotValue.username);
             dispatch(updatedUsername(snapshotValue.username));
@@ -109,8 +110,32 @@ export default function Application(props) {
           if (snapshotValue !== null && typeof snapshotValue === "object") {
             // const data = Object.values(snapshotValue.notebooks);
             const data = snapshotValue.notebooks;
-            await dispatch(fetchNotebookData(data));
-            await handleSetGanttUnfoldList(data);
+            if (data !== undefined && data[0].name !== undefined) {
+              await dispatch(fetchNotebookData(data));
+              await handleSetGanttUnfoldList(data);
+            } else {
+              dispatch(
+                fetchNotebookData([
+                  {
+                    id: 12312,
+                    name: "Please Add Notebook",
+                    start: "2024-01-01",
+                    end: "2024-01-06",
+                    color: "white",
+                    chapters: [
+                      {
+                        id: "15433",
+                        name: "Please Add Notebook",
+                        start: "2024-01-01",
+                        end: "2024-01-06",
+                        content: "",
+                        color: "white",
+                      },
+                    ],
+                  },
+                ])
+              );
+            }
           } else {
             console.error("沒有資料了");
             dispatch(

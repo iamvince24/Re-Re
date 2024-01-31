@@ -9,15 +9,14 @@ import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import styled from "styled-components";
 import { ThemeProvider } from "@mui/material/styles";
-import Markdown from "react-markdown";
 import { getDatabase, update, ref } from "firebase/database";
 import { useSelector } from "react-redux";
 import { handleSidebarOpen } from "../redux/action";
 
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { materialLight } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { nightOwl } from "react-syntax-highlighter/dist/esm/styles/prism";
 import ReactMarkdown from "react-markdown";
+import rehypeRaw from "rehype-raw";
 
 // const barHeight = 70;
 // const drawerWidth = 350;
@@ -113,12 +112,17 @@ export default function NotebookMode(props) {
   };
 
   useEffect(() => {
-    setMarkdownText(
-      allNotebookData[notebookIndex]?.chapters[chapterIndex]?.content
-    );
-    setChapterName(
-      allNotebookData[notebookIndex]?.chapters[chapterIndex]?.name
-    );
+    let tempMarkdownText =
+      allNotebookData[notebookIndex].chapters === undefined
+        ? null
+        : allNotebookData[notebookIndex]?.chapters[chapterIndex]?.content;
+    let tempChapterName =
+      allNotebookData[notebookIndex].chapters === undefined
+        ? null
+        : allNotebookData[notebookIndex]?.chapters[chapterIndex]?.name;
+
+    setMarkdownText(tempMarkdownText);
+    setChapterName(tempChapterName);
   }, [allNotebookData, notebookIndex, chapterIndex]);
 
   return (
@@ -172,10 +176,16 @@ export default function NotebookMode(props) {
               sx={{
                 textAlign: "left",
                 display: "flex",
-                flexDirection: screenSmall767 ? "column" : "row",
+                flexDirection: "row",
                 justifyContent: "space-between",
-                alignItems: screenSmall767 ? "flex-start" : "center",
-                gap: screenSmall767 ? "20px" : "none",
+                alignItems: "center",
+                gap: "none",
+                "@media (max-width:767px)": {
+                  width: "100%",
+                  gap: "20px",
+                  flexDirection: "column",
+                  alignItems: "flex-start",
+                },
               }}
             >
               <DatePickerValue theme={theme} />
@@ -191,7 +201,7 @@ export default function NotebookMode(props) {
                       padding: "0px 15px",
                       letterSpacing: "0.5px",
                       boxShadow: "none",
-                      fontWeight: 700,
+                      fontWeight: 500,
                       marginRight: "15px",
                     }}
                     onClick={() => setToggleNotebookDisplay(false)}
@@ -208,7 +218,7 @@ export default function NotebookMode(props) {
                       padding: "0px 15px",
                       letterSpacing: "0.5px",
                       boxShadow: "none",
-                      fontWeight: 700,
+                      fontWeight: 500,
                     }}
                     onClick={() => handleUpdateNotebookContent(markdownText)}
                   >
@@ -226,11 +236,11 @@ export default function NotebookMode(props) {
                     padding: "0px 15px",
                     letterSpacing: "0.5px",
                     boxShadow: "none",
-                    fontWeight: 700,
+                    fontWeight: 500,
                   }}
                   onClick={() => setToggleNotebookDisplay(true)}
                 >
-                  To Markdown Editor
+                  Editor
                 </Button>
               )}
             </Box>
@@ -255,6 +265,7 @@ export default function NotebookMode(props) {
             ) : (
               <TextArea>
                 <ReactMarkdown
+                  rehypePlugins={[rehypeRaw]}
                   components={{
                     code: ({ node, inline, className, children, ...props }) => {
                       const match = /language-(\w+)/.exec(className || "");

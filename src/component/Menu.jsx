@@ -1,12 +1,10 @@
 import { Fragment, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Box } from "@mui/system";
-import Avatar from "@mui/material/Avatar";
 import Typography from "@mui/material/Typography";
 import ControlPointIcon from "@mui/icons-material/ControlPoint";
 import Button from "@mui/material/Button";
 import { IconButton } from "@mui/material";
-import ButtonGroup from "@mui/material/ButtonGroup";
 import { ThemeProvider } from "@mui/material/styles";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
@@ -18,9 +16,6 @@ import Notebook from "./notebook";
 import { logout } from "../firebase";
 import { useSelector } from "react-redux";
 import PositionedMenu from "./PositionedMenu";
-import Tab from "@mui/material/Tab";
-import TabList from "@mui/lab/TabList";
-import TabContext from "@mui/lab/TabContext";
 
 function AddNotebook(uid, index) {
   const db = getDatabase();
@@ -222,7 +217,14 @@ export default function Menu(props) {
           <IconButton aria-label="delete" onClick={handleAddNotebook}>
             <ControlPointIcon
               fontSize="small"
-              sx={{ color: `${theme.palette.primary.main}` }}
+              sx={{
+                color: `${theme.palette.primary.main}`,
+                boxShadow: "none",
+                transition: "all 0.1s ease",
+                "&:hover": {
+                  color: "rgb(155, 155, 155, 0.8)", // 将红色更改为您想要的颜色
+                },
+              }}
             />
           </IconButton>
         </Box>

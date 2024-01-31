@@ -34,10 +34,24 @@ export default function CustomSeparator(props) {
   );
 
   useEffect(() => {
-    setNotebookName(allNotebookData[notebookIndex]?.name);
-    setChapterName(
-      allNotebookData[notebookIndex]?.chapters[chapterIndex]?.name
-    );
+    let tempNotebookName = "";
+    let tempChapterName = "";
+    if (allNotebookData[notebookIndex] !== undefined) {
+      tempNotebookName =
+        allNotebookData[notebookIndex].chapters === undefined
+          ? null
+          : allNotebookData[notebookIndex]?.name;
+      tempChapterName =
+        allNotebookData[notebookIndex].chapters === undefined
+          ? null
+          : allNotebookData[notebookIndex]?.chapters[chapterIndex]?.name;
+    } else {
+      tempNotebookName = null;
+      tempChapterName = null;
+    }
+
+    setNotebookName(tempNotebookName);
+    setChapterName(tempChapterName);
   }, [allNotebookData, notebookIndex, chapterIndex]);
 
   return (

@@ -41,7 +41,6 @@ function AddNewChapter(uid, notebookIndex, chaptersLength) {
   };
 
   // Get a key for a new Post.
-
   const newPostKey = chaptersLength;
   const updates = {};
   updates[
@@ -105,7 +104,10 @@ export default function LongMenu(props) {
         break;
       }
     }
-    const chaptersLength = allNotebookData[notebookIndex]?.chapters.length;
+    const chaptersLength =
+      allNotebookData[notebookIndex]?.chapters === undefined
+        ? 0
+        : allNotebookData[notebookIndex]?.chapters.length;
     AddNewChapter(uid, notebookIndex, chaptersLength);
   };
 

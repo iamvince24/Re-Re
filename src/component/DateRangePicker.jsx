@@ -1,25 +1,13 @@
 import * as React from "react";
-import { Fragment, useState, useEffect } from "react";
+import { Fragment, useState } from "react";
 import dayjs from "dayjs";
 import { ConfigProvider, Space } from "antd";
-
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import { DatePicker } from "antd";
 import { months } from "../utils/constants";
-
-import {
-  getDatabase,
-  set,
-  remove,
-  update,
-  ref,
-  push,
-  child,
-} from "firebase/database";
 dayjs.extend(customParseFormat);
 
 const { RangePicker } = DatePicker;
-// const dateFormat = "YYYY-MM-DD";
 const dateFormat = "YYYY-MM";
 
 export default function DateRangePicker(props) {
@@ -75,7 +63,7 @@ export default function DateRangePicker(props) {
             padding: 2.5px;
             border-radius: 4px;
             text-align: center;
-            font-weight: 700;
+            font-weight: 500;
           }
 
           .custom-range-picker .ant-picker-input input:hover {

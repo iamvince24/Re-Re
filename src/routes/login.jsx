@@ -1,12 +1,8 @@
 import React, { Fragment, useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useAuthState } from "react-firebase-hooks/auth";
 
 import Box from "@mui/material/Box";
-import FormControl from "@mui/material/FormControl";
-import InputLabel from "@mui/material/InputLabel";
-import Input from "@mui/material/Input";
-import { FormHelperText } from "@mui/material";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
@@ -118,7 +114,6 @@ export default function Login(props) {
             />
 
             <Stack
-              // spacing={4}
               direction="row"
               sx={{
                 width: "100%",

@@ -2,17 +2,13 @@ import { Fragment, useState } from "react";
 import * as React from "react";
 import { Box } from "@mui/system";
 import Typography from "@mui/joy/Typography";
-import Divider from "@mui/material/Divider";
 import Button from "@mui/material/Button";
 import CustomSeparator from "./CustomSeparator";
-import DatePickerValue from "./DatePickerValue";
-import TextareaRef from "./TextareaRef";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import { months } from "../utils/constants";
 import { dayDiff } from "../utils/dateFunctions";
 
-import { useSpring, animated } from "react-spring";
 import GanttChart from "./GanttChart/GanttChart";
 import DateRangePicker from "./DateRangePicker";
 import { handleSidebarOpen } from "../redux/action";
@@ -115,7 +111,6 @@ export default function GanntMode(props) {
                 screenSmall767 ? "flex-start" : "space-between"
               }`,
               alignItems: `${screenSmall767 ? "flex-start" : "center"}`,
-              marginTop: "35px",
             }}
           >
             <DateRangePicker
@@ -134,7 +129,7 @@ export default function GanntMode(props) {
                 marginTop: `${screenSmall767 ? "10px" : "0px"}`,
                 letterSpacing: "0.5px",
                 boxShadow: "none",
-                fontWeight: 700,
+                fontWeight: 500,
               }}
               onClick={() => {
                 handleGanttMoveToday();

@@ -3,15 +3,15 @@ const initialstate = {
     {
       id: 12312,
       name: "Loading",
-      start: "YYYY-MM-DD",
-      end: "YYYY-MM-DD",
+      start: "2024-01-01",
+      end: "2024-01-02",
       color: "white",
       chapters: [
         {
           id: "15433",
           name: "Loading",
-          start: "YYYY-MM-DD",
-          end: "YYYY-MM-DD",
+          start: "2024-01-01",
+          end: "2024-01-02",
           content: "",
           color: "white",
         },

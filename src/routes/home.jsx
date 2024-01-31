@@ -13,6 +13,7 @@ import Logo from "../assets/img/logo";
 import GanttImg from "../assets/img/GanttImg.png";
 import NotebookImg from "../assets/img/NotebookImg.png";
 import Skeleton from "@mui/material/Skeleton";
+import { debounce } from "lodash";
 
 export default function Home(props) {
   const { theme, isSmallScreenW500, isSmallScreenW767 } = props;

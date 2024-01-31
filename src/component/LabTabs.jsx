@@ -204,24 +204,27 @@ export default function LabTabs(props) {
               padding: 5px;
               background-color: rgb(155, 155, 155, 0.5);
               width: 300px;
-              height: 45px;
               @media (max-width:767px) {
-                width: 200px;
-                height: 35px;
+                width: 250px;
               }
               @media (max-width:500px) {
-                height: 30px;
-                padding: 2.5px;
+                width: 200px;
               }
             }
             .tab1, .tab2 {
               background: none;
               font-weight: 700;
               min-height: 0px;
-              height: 33.5px;
+              height: 38px;
+              font-size: 1rem;
               @media (max-width:767px) {
-                height: 23.5px;
+                height: 33px;
                 font-weight: 500;
+                font-size: 0.9rem;
+              }
+              @media (max-width:500px) {
+                height: 28px;
+                font-size: 14px;
               }
             }
             .tab1:hover, .tab2:hover {
@@ -239,10 +242,13 @@ export default function LabTabs(props) {
             .MuiTabs-indicator {
               display: none;
             }
-            .css-1ujnqem-MuiTabs-root {
+            .css-uzjdk6-MuiButtonBase-root-MuiTab-root {
               min-height: 0px;
             }
-            .css-uzjdk6-MuiButtonBase-root-MuiTab-root {
+            .css-1gsv261 {
+              border: none;
+            }
+            .css-1ujnqem-MuiTabs-root{
               min-height: 0px;
             }
         `}

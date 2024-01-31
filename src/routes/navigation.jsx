@@ -152,7 +152,7 @@ export default function Navigation(props) {
                       textDecoration: "underline",
                     },
                   }}
-                  onClick={() => handleSectionScroll("targetWhy", 0)}
+                  onClick={() => handleSectionScroll("targetWhy", -30)}
                 >
                   Why Re-Re ?
                 </MuiLink>
@@ -166,7 +166,7 @@ export default function Navigation(props) {
                       textDecoration: "underline",
                     },
                   }}
-                  onClick={() => handleSectionScroll("targetFeature", 0)}
+                  onClick={() => handleSectionScroll("targetFeature", -30)}
                 >
                   Features
                 </MuiLink>
@@ -232,7 +232,7 @@ export default function Navigation(props) {
               >
                 <MenuItem
                   onClick={() => {
-                    handleSectionScroll("targetWhy", 0);
+                    handleSectionScroll("targetWhy", -30);
                     handleClose();
                   }}
                 >
@@ -240,7 +240,7 @@ export default function Navigation(props) {
                 </MenuItem>
                 <MenuItem
                   onClick={() => {
-                    handleSectionScroll("targetFeature", 0);
+                    handleSectionScroll("targetFeature", -30);
                     handleClose();
                   }}
                 >

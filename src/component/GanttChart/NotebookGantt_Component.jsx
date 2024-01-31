@@ -31,6 +31,8 @@ export default function NotebookGanttComponent(props) {
     ganttTimePeriodCell,
   } = props;
 
+  const allNotebookData = useSelector((state) => state.notebookData.notebooks);
+
   const isUnfold = useSelector((state) =>
     state.viewListener.ganttUnfold[notebookIndex] ? "block" : "none"
   );
@@ -48,7 +50,20 @@ export default function NotebookGanttComponent(props) {
   const [targetType, setTargetType] = useState(null);
   const [chapterIndex, setChapterIndex] = useState(null);
 
-  let earliestDate = new Date(notebook?.chapters[0]?.start);
+  if (allNotebookData === undefined) {
+    console.log(undefined);
+  }
+
+  // let earliestDate =
+  //   allNotebookData === undefined
+  //     ? "2024-01-01"
+  //     : allNotebookData.chapters === undefined
+  //     ? "2024-01-01"
+  //     : new Date(notebook?.chapters[0]?.start);
+  let earliestDate =
+    notebook?.chapters === undefined
+      ? "2024-01-02"
+      : new Date(notebook?.chapters[0]?.start);
   let latestDate = new Date("2024-01-02");
 
   notebook.chapters?.forEach((chapter) => {
@@ -80,12 +95,14 @@ export default function NotebookGanttComponent(props) {
     update(ref(db), updates);
   };
 
-  console.log(notebookIndex);
-
-  updatedNotebookTimeRange(
-    dayjs(earliestDate).format(dateFormat),
-    dayjs(latestDate).format(dateFormat)
-  );
+  useEffect(() => {
+    if (allNotebookData !== undefined) {
+      updatedNotebookTimeRange(
+        dayjs(earliestDate).format(dateFormat),
+        dayjs(latestDate).format(dateFormat)
+      );
+    }
+  });
 
   const handleContextMenu = (event, target, index) => {
     event.preventDefault();
@@ -175,6 +192,7 @@ export default function NotebookGanttComponent(props) {
         style={{
           position: "relative",
           height: "calc(var(--cell-height) - 10px)",
+          margin: "0px 5px",
           zIndex: "5",
           background: `linear-gradient(90deg, ${theme.palette.colorOption[noteBookColor]?.gradient.gradientLeft} 10%, ${theme.palette.colorOption[noteBookColor]?.gradient.gradientRight} 100%)`,
           borderRadius: "var(--border-radius)",
@@ -185,7 +203,7 @@ export default function NotebookGanttComponent(props) {
           width: `calc(${dayDiff(
             notebookStart,
             notebookEnd
-          )} * var(--width-Days))`,
+          )} * var(--width-Days) - 5px)`,
           opacity: taskDurationElDraggedId === notebook.id ? "0.5" : "1",
           display: "flex",
           alignItems: "center",
@@ -257,12 +275,12 @@ export default function NotebookGanttComponent(props) {
       <div
         key={uuidv4()}
         style={{
+          position: "absolute",
           height: "40px",
           padding: "0.5px 0px",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          position: "absolute",
           borderRight: "0.5px solid var(--color-TimeTable-TaskRow-BorderRight)",
           left: `calc((${dayDiff(
             startDate,
@@ -281,18 +299,19 @@ export default function NotebookGanttComponent(props) {
           style={{
             position: "relative",
             height: "calc(var(--cell-height) - 10px)",
+            margin: "0px 5px",
             zIndex: "5",
             background: `linear-gradient(90deg, ${theme.palette.colorOption[chapterColor]?.gradient.gradientLeft} 10%, ${theme.palette.colorOption[chapterColor]?.gradient.gradientRight} 100%)`,
             borderRadius: "var(--border-radius)",
             boxShadow: "3px 3px 3px rgba(0, 0, 0, 0.05)",
             cursor: "context-menu",
             alignSelf: "center",
-            justifyItems: "flex-start",
-            margin: "auto",
+            justifyItems: "center",
+            // margin: "auto",
             width: `calc(${dayDiff(
               chapter.start,
               chapter.end
-            )} * var(--width-Days))`,
+            )} * var(--width-Days) - 5px)`,
             opacity: taskDurationElDraggedId === notebook.id ? "0.5" : "1",
             display: "flex",
             alignItems: "center",

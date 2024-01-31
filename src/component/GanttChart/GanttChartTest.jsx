@@ -1,12 +1,7 @@
 import { Fragment, useState, useEffect } from "react";
-import Button from "@mui/material/Button";
 import { v4 as uuidv4 } from "uuid";
 import { monthDiff, getDaysInMonth } from "../../utils/dateFunctions";
 import { months } from "../../utils/constants";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
-import Typography from "@mui/joy/Typography";
-import Brightness1Icon from "@mui/icons-material/Brightness1";
 import NotebookGanttComponent from "./NotebookGantt_Component";
 
 export default function GanttChartTest({
