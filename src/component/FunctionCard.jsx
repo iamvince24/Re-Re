@@ -78,7 +78,7 @@ export default function SmallFunction(props) {
               },
             }}
           >
-            Convenient little tool
+            User-friendly and convenient tool
           </Typography>
           <Typography
             color="primary"
