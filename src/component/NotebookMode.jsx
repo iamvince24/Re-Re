@@ -57,7 +57,6 @@ export default function NotebookMode(props) {
   const screenSmall767 = useSelector(
     (state) => state.viewListener.screenWidth767
   );
-  const isNotebookMode = useSelector((state) => state.viewListener.isGanttMode);
   const isSidebarOpen = useSelector((state) => state.viewListener.sidebarOpen);
 
   const notebookIndex = useSelector(
@@ -71,6 +70,7 @@ export default function NotebookMode(props) {
 
   const [chapterName, setChapterName] = useState("");
   const [markdownText, setMarkdownText] = useState("");
+  const [markdownTextTemp, setMarkdownTextTemp] = useState("");
 
   const uid = window.localStorage.getItem("uid");
 
@@ -82,7 +82,7 @@ export default function NotebookMode(props) {
     setMarkdownText(e.target.value);
   };
 
-  const handleUpdateNotebookContent = (content) => {
+  const handleUpdateNotebookContent = (e, content) => {
     setToggleNotebookDisplay(false);
 
     const db = getDatabase();
@@ -121,6 +121,7 @@ export default function NotebookMode(props) {
         ? null
         : allNotebookData[notebookIndex]?.chapters[chapterIndex]?.name;
 
+    setMarkdownTextTemp(tempMarkdownText);
     setMarkdownText(tempMarkdownText);
     setChapterName(tempChapterName);
   }, [allNotebookData, notebookIndex, chapterIndex]);
@@ -204,7 +205,10 @@ export default function NotebookMode(props) {
                       fontWeight: 500,
                       marginRight: "15px",
                     }}
-                    onClick={() => setToggleNotebookDisplay(false)}
+                    onClick={() => {
+                      setToggleNotebookDisplay(false);
+                      setMarkdownText(markdownTextTemp);
+                    }}
                   >
                     Cancel
                   </Button>
@@ -220,7 +224,9 @@ export default function NotebookMode(props) {
                       boxShadow: "none",
                       fontWeight: 500,
                     }}
-                    onClick={() => handleUpdateNotebookContent(markdownText)}
+                    onClick={(e) =>
+                      handleUpdateNotebookContent(e, markdownText)
+                    }
                   >
                     Done
                   </Button>
