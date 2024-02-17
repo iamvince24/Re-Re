@@ -1,11 +1,11 @@
-import { Fragment, useState, useEffect } from "react";
+import { Fragment } from "react";
 import "./App.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-import Application from "./routes/application";
-import Navigation from "./routes/navigation";
-import Home from "./routes/home";
-import Login from "./routes/login";
+import Application from "./pages/application";
+import Navigation from "./pages/navigation";
+import Home from "./pages/home/home";
+import Login from "./pages/login";
 
 import { useMediaQuery } from "@mui/material";
 import { handleScreenWidth500 } from "./redux/action";
