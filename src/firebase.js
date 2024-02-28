@@ -45,7 +45,6 @@ const registerWithEmailAndPassword = async (email, password) => {
     const user = res.user;
     window.localStorage.setItem("uid", user.uid);
     await handleNewUserData(user.uid);
-    window.localStorage.setItem("uid", user.uid);
   } catch (err) {
     console.error(err);
     alert(err.message);

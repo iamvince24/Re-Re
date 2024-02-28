@@ -50,12 +50,6 @@ export default function GanttChartComponent(props) {
     console.log(undefined);
   }
 
-  // let earliestDate =
-  //   allNotebookData === undefined
-  //     ? "2024-01-01"
-  //     : allNotebookData.chapters === undefined
-  //     ? "2024-01-01"
-  //     : new Date(notebook?.chapters[0]?.start);
   let earliestDate =
     notebook?.chapters === undefined
       ? "2024-01-02"

@@ -99,7 +99,10 @@ export default function Navigation(props) {
               display: "flex",
               flexDirection: "row",
               alignItems: "center",
-              gap: isSmallScreenW500 ? "10px" : "30px",
+              gap: "30px",
+              "@media (max-width:500px)": {
+                gap: "10px",
+              },
             }}
           >
             <Link
@@ -145,12 +148,15 @@ export default function Navigation(props) {
               >
                 <MuiLink
                   sx={{
-                    fontSize: isSmallScreenW500 ? "12px" : "14px",
+                    fontSize: "14px",
                     cursor: "pointer",
                     textDecoration: "none",
                     letterSpacing: "0.5px",
                     "&:hover": {
                       textDecoration: "underline",
+                    },
+                    "@media (max-width:500px)": {
+                      fontSize: "12px",
                     },
                   }}
                   onClick={() => handleSectionScroll("targetWhy", -30)}
@@ -159,12 +165,15 @@ export default function Navigation(props) {
                 </MuiLink>
                 <MuiLink
                   sx={{
-                    fontSize: isSmallScreenW500 ? "12px" : "14px",
+                    fontSize: "14px",
                     cursor: "pointer",
                     textDecoration: "none",
                     letterSpacing: "0.5px",
                     "&:hover": {
                       textDecoration: "underline",
+                    },
+                    "@media (max-width:500px)": {
+                      fontSize: "12px",
                     },
                   }}
                   onClick={() => handleSectionScroll("targetFeature", -30)}
@@ -202,7 +211,10 @@ export default function Navigation(props) {
                   border: "none",
                   transition: "all 0.1s ease",
                   whiteSpace: "nowrap",
-                  fontSize: isSmallScreenW500 ? "8px" : "10px",
+                  fontSize: "10px",
+                  "@media (max-width:500px)": {
+                    fontSize: "8px",
+                  },
                 }}
                 color="primary"
                 onClick={handleTryOnWebsite}
@@ -264,7 +276,6 @@ export default function Navigation(props) {
                   Try on Website
                 </MenuItem>
               </Menu>
-
               <style>
                 {`
                     .css-1d6wzja-MuiButton-startIcon>*:nth-of-type(1) {

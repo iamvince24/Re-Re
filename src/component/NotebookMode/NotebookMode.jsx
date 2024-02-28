@@ -18,8 +18,6 @@ import { nightOwl } from "react-syntax-highlighter/dist/esm/styles/prism";
 import ReactMarkdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
 
-// const barHeight = 70;
-// const drawerWidth = 350;
 const toolBarHeight = 180;
 
 const TextEditor = styled.textarea.attrs(() => ({

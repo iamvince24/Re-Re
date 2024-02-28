@@ -1,19 +1,24 @@
-import React, { Fragment } from "react";
+import React, { Fragment, lazy, Suspense } from "react";
 import Box from "@mui/material/Box";
 import Tab from "@mui/material/Tab";
 import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
-import Card from "@mui/material/Card";
+// import Card from "@mui/material/Card";
 import { ThemeProvider } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
-import NotebookMode from "../../../assets/img/NotebookMode.png";
-import GanttMode from "../../../assets/img/GanttMode.png";
+
+// import NotebookMode from "../../../assets/img/NotebookMode.png";
+// import GanttMode from "../../../assets/img/GanttMode.png";
+
+import NotebookMode from "../../../assets/img/NotebookMode.webp";
+import GanttMode from "../../../assets/img/GanttMode.webp";
+
+const LazyCard = React.lazy(() => import("@mui/material/Card"));
 
 export default function LabTabs(props) {
   const { theme } = props;
   const [value, setValue] = React.useState("1");
-
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -121,17 +126,19 @@ export default function LabTabs(props) {
                   borderRadius: "5px",
                 }}
               >
-                <Card
-                  sx={{
-                    aspectRatio: "72/45",
-                    backgroundImage: `url(${GanttMode})`,
-                    backgroundSize: "cover",
-                    backgroundRepeat: "no-repeat",
-                    backgroundPosition: "center",
-                    backgroundColor: "transparent",
-                    boxShadow: "none",
-                  }}
-                />
+                <Suspense fallback={<div>Loading...</div>}>
+                  <LazyCard
+                    sx={{
+                      aspectRatio: "72/45",
+                      backgroundImage: `url(${GanttMode})`,
+                      backgroundSize: "cover",
+                      backgroundRepeat: "no-repeat",
+                      backgroundPosition: "center",
+                      backgroundColor: "transparent",
+                      boxShadow: "none",
+                    }}
+                  />
+                </Suspense>
               </Box>
             </TabPanel>
             <TabPanel
@@ -171,17 +178,19 @@ export default function LabTabs(props) {
                   borderRadius: "5px",
                 }}
               >
-                <Card
-                  sx={{
-                    aspectRatio: "72/45",
-                    backgroundImage: `url(${NotebookMode})`,
-                    backgroundSize: "cover",
-                    backgroundRepeat: "no-repeat",
-                    backgroundPosition: "center",
-                    backgroundColor: "transparent",
-                    boxShadow: "none",
-                  }}
-                />
+                <Suspense fallback={<div>Loading...</div>}>
+                  <LazyCard
+                    sx={{
+                      aspectRatio: "72/45",
+                      backgroundImage: `url(${NotebookMode})`,
+                      backgroundSize: "cover",
+                      backgroundRepeat: "no-repeat",
+                      backgroundPosition: "center",
+                      backgroundColor: "transparent",
+                      boxShadow: "none",
+                    }}
+                  />
+                </Suspense>
               </Box>
             </TabPanel>
           </TabContext>
