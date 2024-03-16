@@ -1,19 +1,36 @@
-import React, { lazy, Suspense } from "react";
+import React, { useState, useEffect } from "react";
 import { Box } from "@mui/system";
 import Typography from "@mui/material/Typography";
-import Skeleton from "@mui/material/Skeleton";
-
-// import NotebookImg from "../../../assets/img/NotebookImg.png";
-// import GanttImg from "../../../assets/img/GanttImg.png";
+import Card from "@mui/material/Card";
 
 import NotebookImg from "../../../assets/img/NotebookImg.webp";
 import GanttImg from "../../../assets/img/GanttImg.webp";
 
-const LazyCard = React.lazy(() => import("@mui/material/Card"));
-
 const WhyReReSection = () => {
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const { top } = cardRef.current.getBoundingClientRect();
+      const windowHeight =
+        window.innerHeight || document.documentElement.clientHeight;
+      if (top < windowHeight) {
+        setIsVisible(true);
+        window.removeEventListener("scroll", handleScroll);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
+  const cardRef = React.useRef();
+
   return (
     <Box
+      ref={cardRef}
       id="targetWhy"
       sx={{
         width: "100%",
@@ -116,36 +133,23 @@ const WhyReReSection = () => {
               },
             }}
           >
-            <Suspense
-              fallback={
-                <Skeleton
-                  variant="rounded"
-                  sx={{
-                    width: "30%",
-                    height: "auto",
-                    aspectRatio: "486/352",
-                  }}
-                />
-              }
-            >
-              <LazyCard
-                sx={{
-                  display: "flex",
-                  width: "30%",
-                  minWidth: "200px",
-                  aspectRatio: "486/352",
-                  backgroundImage: `url(${NotebookImg})`,
-                  backgroundSize: "cover",
-                  backgroundRepeat: "no-repeat",
-                  backgroundPosition: "center",
-                  backgroundColor: "transparent",
-                  boxShadow: "none",
-                  "@media (max-width:767px)": {
-                    minWidth: "150px",
-                  },
-                }}
-              />
-            </Suspense>
+            <Card
+              sx={{
+                display: "flex",
+                width: "30%",
+                minWidth: "200px",
+                aspectRatio: "486/352",
+                backgroundImage: isVisible ? `url(${NotebookImg})` : "none",
+                backgroundSize: "cover",
+                backgroundRepeat: "no-repeat",
+                backgroundPosition: "center",
+                backgroundColor: "transparent",
+                boxShadow: "none",
+                "@media (max-width:767px)": {
+                  minWidth: "150px",
+                },
+              }}
+            />
           </Box>
           <Typography
             color="primary"
@@ -190,47 +194,43 @@ const WhyReReSection = () => {
             },
           }}
         >
-          <Suspense fallback={<div>Loading...</div>}>
-            <LazyCard
-              sx={{
-                width: "70%",
-                maxWidth: "500px",
-                margin: "0px auto 0px",
-                marginRight: "30px",
-                aspectRatio: "486/352",
-                backgroundImage: `url(${NotebookImg})`,
-                backgroundSize: "cover",
-                backgroundRepeat: "no-repeat",
-                backgroundPosition: "center",
-                backgroundColor: "transparent",
-                boxShadow: "none",
-              }}
-            />
-          </Suspense>
+          <Card
+            sx={{
+              width: "70%",
+              maxWidth: "500px",
+              margin: "0px auto 0px",
+              marginRight: "30px",
+              aspectRatio: "486/352",
+              backgroundImage: isVisible ? `url(${NotebookImg})` : "none",
+              backgroundSize: "cover",
+              backgroundRepeat: "no-repeat",
+              backgroundPosition: "center",
+              backgroundColor: "transparent",
+              boxShadow: "none",
+            }}
+          />
         </Box>
       </Box>
-      <Suspense fallback={<div>Loading...</div>}>
-        <LazyCard
-          sx={{
-            width: "60%",
-            aspectRatio: "1233/370",
-            margin: "120px 0px",
-            backgroundImage: `url(${GanttImg})`,
-            backgroundSize: "cover",
-            backgroundRepeat: "no-repeat",
-            backgroundPosition: "center",
-            backgroundColor: "transparent",
-            boxShadow: "none",
-            "@media (max-width:767px)": {
-              width: "70%",
-              margin: "50px 0px",
-            },
-            "@media (max-width:400px)": {
-              width: "80%",
-            },
-          }}
-        />
-      </Suspense>
+      <Card
+        sx={{
+          width: "60%",
+          aspectRatio: "1233/370",
+          margin: "120px 0px",
+          backgroundImage: isVisible ? `url(${GanttImg})` : "none",
+          backgroundSize: "cover",
+          backgroundRepeat: "no-repeat",
+          backgroundPosition: "center",
+          backgroundColor: "transparent",
+          boxShadow: "none",
+          "@media (max-width:767px)": {
+            width: "70%",
+            margin: "50px 0px",
+          },
+          "@media (max-width:400px)": {
+            width: "80%",
+          },
+        }}
+      />
     </Box>
   );
 };
