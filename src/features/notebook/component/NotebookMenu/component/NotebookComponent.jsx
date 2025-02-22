@@ -12,9 +12,9 @@ import ExpandMore from "@mui/icons-material/ExpandMore";
 import StarBorder from "@mui/icons-material/StarBorder";
 import ArticleOutlinedIcon from "@mui/icons-material/ArticleOutlined";
 import LongMenu from "./LongMenu";
-import { handleModeUpdate } from "../../../redux/action";
-import { handleSidebarOpen } from "../../../redux/action";
-import { handleUpdateIndex } from "../../../redux/action";
+import { handleModeUpdate } from "../../../../../store/action";
+import { handleSidebarOpen } from "../../../../../store/action";
+import { handleUpdateIndex } from "../../../../../store/action";
 import { useSelector } from "react-redux";
 
 export default function NotebookComponent(props) {

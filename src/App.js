@@ -1,15 +1,13 @@
 import { Fragment } from "react";
 import "./App.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-
-import Application from "./pages/application";
-import Navigation from "./pages/navigation";
-import Home from "./pages/home/home";
-import Login from "./pages/login";
-
+import Application from "./pages/Application/index";
+import Navigation from "./component/layout/navigation/index";
+import Home from "./pages/Home/index";
+import Login from "./pages/Login/index";
 import { useMediaQuery } from "@mui/material";
-import { handleScreenWidth500 } from "./redux/action";
-import { handleScreenWidth767 } from "./redux/action";
+import { handleScreenWidth500 } from "./store/action";
+import { handleScreenWidth767 } from "./store/action";
 
 function App(props) {
   const { dispatch, theme } = props;

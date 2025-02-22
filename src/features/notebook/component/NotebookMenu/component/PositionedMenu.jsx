@@ -6,7 +6,7 @@ import { ThemeProvider } from "@mui/material/styles";
 import Avatar from "@mui/material/Avatar";
 import Typography from "@mui/material/Typography";
 import { useNavigate } from "react-router-dom";
-import { logout } from "../../../firebase";
+import { logout } from "../../../../../firebase";
 import ChangeUserNameFormDialog from "./ChangeUserNameFormDialog";
 
 export default function PositionedMenu(props) {

@@ -15,14 +15,14 @@ import {
   registerWithEmailAndPassword,
   logInWithEmailAndPassword,
   signInWithGoogle,
-} from "../firebase";
+} from "../../firebase";
 
 export default function Login(props) {
   const { theme, isSmallScreenW500 } = props;
   const [email, setEmail] = useState("test@gmail.com");
   const [password, setPassword] = useState("test123");
 
-  const [user, loading, error] = useAuthState(auth);
+  const [user, loading] = useAuthState(auth);
   const navigate = useNavigate();
 
   const handleLogin = async () => {

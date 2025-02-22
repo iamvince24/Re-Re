@@ -11,7 +11,7 @@ import ExpandMore from "@mui/icons-material/ExpandMore";
 import StarBorder from "@mui/icons-material/StarBorder";
 import ArticleOutlinedIcon from "@mui/icons-material/ArticleOutlined";
 import { useSelector, useDispatch } from "react-redux";
-import { handleGanttUnfold } from "../../../redux/action";
+import { handleGanttUnfold } from "../../../../../store/action";
 
 export default function GanttNotebookListComponent(props) {
   const { theme, notebook, index } = props;

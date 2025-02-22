@@ -3,21 +3,20 @@ import * as React from "react";
 import { Box } from "@mui/system";
 import Typography from "@mui/joy/Typography";
 import Button from "@mui/material/Button";
-import CustomSeparator from "../Common/CustomSeparator";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
-import { months } from "../../utils/constants";
-import { dayDiff } from "../../utils/dateFunctions";
-
+import { months } from "../../../../utils/constants";
+import { dayDiff } from "../../../../utils/dateFunctions";
+import CustomSeparator from "../../../../component/common/CustomSeparator";
 import GanttChart from "./component/GanttChart";
 import DateRangePicker from "./component/DateRangePicker";
-import { handleSidebarOpen } from "../../redux/action";
+import { handleSidebarOpen } from "../../../../store/action";
 import { useSelector } from "react-redux";
 
 const barHeight = 70;
 const drawerWidth = 350;
 
-export default function GanntMode(props) {
+export default function GanttChartMode(props) {
   const { dispatch, theme } = props;
   const isSidebarOpen = useSelector((state) => state.viewListener.sidebarOpen);
   const screenSmall767 = useSelector(

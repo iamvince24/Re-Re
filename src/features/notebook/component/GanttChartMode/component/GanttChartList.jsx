@@ -1,7 +1,7 @@
 import { Fragment, useState, useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
-import { monthDiff, getDaysInMonth } from "../../../utils/dateFunctions";
-import { months } from "../../../utils/constants";
+import { monthDiff, getDaysInMonth } from "../../../../../utils/dateFunctions";
+import { months } from "../../../../../utils/constants";
 import GanttChartComponent from "./GanttChartComponent";
 
 export default function GanttChartList({

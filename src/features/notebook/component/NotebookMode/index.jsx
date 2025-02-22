@@ -3,7 +3,7 @@ import * as React from "react";
 import { Box } from "@mui/system";
 import Typography from "@mui/joy/Typography";
 import Button from "@mui/material/Button";
-import CustomSeparator from "../Common/CustomSeparator";
+import CustomSeparator from "../../../../component/common/CustomSeparator";
 import DatePickerValue from "./component/DatePickerValue";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
@@ -11,7 +11,7 @@ import styled from "styled-components";
 import { ThemeProvider } from "@mui/material/styles";
 import { getDatabase, update, ref } from "firebase/database";
 import { useSelector } from "react-redux";
-import { handleSidebarOpen } from "../../redux/action";
+import { handleSidebarOpen } from "../../../../store/action";
 
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { nightOwl } from "react-syntax-highlighter/dist/esm/styles/prism";

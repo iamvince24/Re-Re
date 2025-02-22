@@ -1,21 +1,19 @@
 import { Fragment, useEffect } from "react";
 import * as React from "react";
 import { Box } from "@mui/system";
-import NotebookMenu from "../component/NotebookMenu/NotebookMenu";
-import NotebookMode from "../component/NotebookMode/NotebookMode";
-import GanntMode from "../component/GanttChartMode/GanntMode";
 import { styled } from "@mui/material/styles";
 import MuiAppBar from "@mui/material/AppBar";
 import Drawer from "@mui/material/Drawer";
 import { getDatabase, ref, onValue, update } from "firebase/database";
 import { ThemeProvider } from "@mui/material/styles";
 import { useSelector } from "react-redux";
-import { fetchNotebookData } from "../redux/action";
-import { handleModeUpdate } from "../redux/action";
-import { handleUpdateIndex } from "../redux/action";
-import { handleGanttUnfold } from "../redux/action";
-import { updatedUsername } from "../redux/action";
-import { debounce } from "lodash";
+import { fetchNotebookData } from "../../store/action";
+import { handleModeUpdate } from "../../store/action";
+import { handleGanttUnfold } from "../../store/action";
+import { updatedUsername } from "../../store/action";
+import NotebookMenu from "../../features/notebook/component/NotebookMenu";
+import GanttChartMode from "../../features/notebook/component/GanttChartMode";
+import NotebookMode from "../../features/notebook/component/NotebookMode";
 
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== "open",
@@ -202,7 +200,7 @@ export default function Application(props) {
             }}
           >
             {isGanttMode ? (
-              <GanntMode
+              <GanttChartMode
                 dispatch={dispatch}
                 theme={theme}
                 notebookData={allNotebookData}

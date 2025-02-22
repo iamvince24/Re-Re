@@ -6,7 +6,7 @@ import reportWebVitals from "./reportWebVitals";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 import { Provider } from "react-redux";
-import store from "./redux/store";
+import store from "./store/store";
 
 const websocketUrl = "ws://localhost:3000";
 const socket = new WebSocket(websocketUrl);
