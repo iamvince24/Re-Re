@@ -1,43 +1,42 @@
-import React, { Fragment, useState, useEffect } from "react";
-import Box from "@mui/material/Box";
-import Tab from "@mui/material/Tab";
-import TabContext from "@mui/lab/TabContext";
-import TabList from "@mui/lab/TabList";
-import TabPanel from "@mui/lab/TabPanel";
-import Card from "@mui/material/Card";
-import { ThemeProvider } from "@mui/material/styles";
-import Typography from "@mui/material/Typography";
+import React, { Fragment, useState, useEffect } from 'react'
+import Box from '@mui/material/Box'
+import Tab from '@mui/material/Tab'
+import TabContext from '@mui/lab/TabContext'
+import TabList from '@mui/lab/TabList'
+import TabPanel from '@mui/lab/TabPanel'
+import Card from '@mui/material/Card'
+import { ThemeProvider } from '@mui/material/styles'
+import Typography from '@mui/material/Typography'
 
-import NotebookMode from "../../../assets/img/NotebookMode.webp";
-import GanttMode from "../../../assets/img/GanttMode.webp";
+import NotebookMode from '../../../assets/img/NotebookMode.webp'
+import GanttMode from '../../../assets/img/GanttMode.webp'
 
 export default function LabTabs(props) {
-  const { theme } = props;
-  const [value, setValue] = React.useState("1");
+  const { theme } = props
+  const [value, setValue] = React.useState('1')
   const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
+    setValue(newValue)
+  }
 
-  const [isVisible, setIsVisible] = useState(false);
+  const [isVisible, setIsVisible] = useState(false)
 
   useEffect(() => {
     const handleScroll = () => {
-      const { top } = cardRef.current.getBoundingClientRect();
-      const windowHeight =
-        window.innerHeight || document.documentElement.clientHeight;
+      const { top } = cardRef.current.getBoundingClientRect()
+      const windowHeight = window.innerHeight || document.documentElement.clientHeight
       if (top < windowHeight) {
-        setIsVisible(true);
-        window.removeEventListener("scroll", handleScroll);
+        setIsVisible(true)
+        window.removeEventListener('scroll', handleScroll)
       }
-    };
+    }
 
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener('scroll', handleScroll)
     return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
+      window.removeEventListener('scroll', handleScroll)
+    }
+  }, [])
 
-  const cardRef = React.useRef();
+  const cardRef = React.useRef()
 
   return (
     <Fragment>
@@ -45,53 +44,48 @@ export default function LabTabs(props) {
         <Box
           ref={cardRef}
           sx={{
-            width: "100%",
-            typography: "body1",
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            alignItems: "center",
-            margin: "0px",
+            width: '100%',
+            typography: 'body1',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
+            margin: '0px',
           }}
           id="targetFeature"
         >
           <Typography
             sx={{
-              fontSize: "40px",
-              letterSpacing: "-1px",
-              fontFamily: "Montserrat",
+              fontSize: '40px',
+              letterSpacing: '-1px',
+              fontFamily: 'Montserrat',
               fontWeight: 900,
-              margin: "0px 0px 40px",
-              textAlign: "center",
-              background:
-                "linear-gradient(151deg, #F4F4F3 1.35%, rgba(244, 244, 243, 0.00) 220.28%)",
-              backgroundClip: "text",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-              "@media (max-width:767px)": {
-                fontSize: "25px",
-                margin: "0px 20px 20px",
-                lineHeight: "25px",
+              margin: '0px 0px 40px',
+              textAlign: 'center',
+              background: 'linear-gradient(151deg, #F4F4F3 1.35%, rgba(244, 244, 243, 0.00) 220.28%)',
+              backgroundClip: 'text',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              '@media (max-width:767px)': {
+                fontSize: '25px',
+                margin: '0px 20px 20px',
+                lineHeight: '25px',
               },
             }}
           >
             Two modes can be chosen.
           </Typography>
           <TabContext value={value}>
-            <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-              <TabList
-                onChange={handleChange}
-                aria-label="lab API tabs example"
-                className="tabContainer"
-              >
+            <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+              <TabList onChange={handleChange} aria-label="lab API tabs example" className="tabContainer">
                 <Tab
                   className="tab1"
                   label="Gantt"
                   value="1"
                   sx={{
-                    width: "50%",
+                    width: '50%',
                     bgcolor: `${theme.palette.primary.main}`,
-                    textTransform: "capitalize",
+                    textTransform: 'capitalize',
                   }}
                 />
                 <Tab
@@ -99,9 +93,9 @@ export default function LabTabs(props) {
                   label="Notebook"
                   value="2"
                   sx={{
-                    width: "50%",
+                    width: '50%',
                     bgcolor: `${theme.palette.primary.main}`,
-                    textTransform: "capitalize",
+                    textTransform: 'capitalize',
                     fontWeight: 500,
                   }}
                 />
@@ -110,48 +104,47 @@ export default function LabTabs(props) {
             <TabPanel
               value="1"
               sx={{
-                width: "80%",
-                "@media (max-width:767px)": {
-                  width: "100%",
+                width: '80%',
+                '@media (max-width:767px)': {
+                  width: '100%',
                 },
               }}
             >
               <Typography
                 color="primary"
                 sx={{
-                  width: "100%",
-                  margin: "0px 0px 20px",
-                  fontSize: "22.5px",
-                  lineHeight: "35px",
+                  width: '100%',
+                  margin: '0px 0px 20px',
+                  fontSize: '22.5px',
+                  lineHeight: '35px',
                   fontWeight: 400,
-                  textAlign: "center",
-                  letterSpacing: "0.5px",
-                  color: "rgba(200, 200, 200, 0.6)",
-                  "@media (max-width:767px)": {
-                    fontSize: "14px",
-                    lineHeight: "20px",
+                  textAlign: 'center',
+                  letterSpacing: '0.5px',
+                  color: 'rgba(200, 200, 200, 0.6)',
+                  '@media (max-width:767px)': {
+                    fontSize: '14px',
+                    lineHeight: '20px',
                   },
                 }}
               >
-                Using Gantt's presentation, the past learning process can be
-                clearly understood.
+                Using Gantt's presentation, the past learning process can be clearly understood.
               </Typography>
               <Box
                 sx={{
-                  padding: "7.5px",
-                  background: "rgb(200, 200, 200, 0.05)",
-                  borderRadius: "5px",
+                  padding: '7.5px',
+                  background: 'rgb(200, 200, 200, 0.05)',
+                  borderRadius: '5px',
                 }}
               >
                 <Card
                   sx={{
-                    aspectRatio: "72/45",
-                    backgroundImage: isVisible ? `url(${GanttMode})` : "none",
-                    backgroundSize: "cover",
-                    backgroundRepeat: "no-repeat",
-                    backgroundPosition: "center",
-                    backgroundColor: "transparent",
-                    boxShadow: "none",
+                    aspectRatio: '72/45',
+                    backgroundImage: isVisible ? `url(${GanttMode})` : 'none',
+                    backgroundSize: 'cover',
+                    backgroundRepeat: 'no-repeat',
+                    backgroundPosition: 'center',
+                    backgroundColor: 'transparent',
+                    boxShadow: 'none',
                   }}
                 />
               </Box>
@@ -159,52 +152,49 @@ export default function LabTabs(props) {
             <TabPanel
               value="2"
               sx={{
-                width: "80%",
-                "@media (max-width:767px)": {
-                  width: "100%",
+                width: '80%',
+                '@media (max-width:767px)': {
+                  width: '100%',
                 },
               }}
             >
               <Typography
                 color="primary"
-                textAlign={"center"}
+                textAlign={'center'}
                 sx={{
-                  width: "100%",
-                  margin: "0px 0px 20px",
-                  fontSize: "22.5px",
-                  lineHeight: "35px",
+                  width: '100%',
+                  margin: '0px 0px 20px',
+                  fontSize: '22.5px',
+                  lineHeight: '35px',
                   fontWeight: 400,
-                  textAlign: "center",
-                  letterSpacing: "0.5px",
-                  color: "rgba(200, 200, 200,.6)",
-                  "@media (max-width:767px)": {
-                    fontSize: "14px",
-                    lineHeight: "20px",
+                  textAlign: 'center',
+                  letterSpacing: '0.5px',
+                  color: 'rgba(200, 200, 200,.6)',
+                  '@media (max-width:767px)': {
+                    fontSize: '14px',
+                    lineHeight: '20px',
                   },
                 }}
               >
-                Using markdown syntax can make your notes more visually
-                appealing.
+                Using markdown syntax can make your notes more visually appealing.
               </Typography>
               <Box
                 sx={{
-                  padding: "7.5px",
-                  background: "rgb(200, 200, 200, 0.05)",
-                  borderRadius: "5px",
+                  padding: '7.5px',
+                  background: 'rgb(200, 200, 200, 0.05)',
+                  borderRadius: '5px',
                 }}
               >
                 <Card
                   sx={{
-                    aspectRatio: "72/45",
+                    aspectRatio: '72/45',
                     // backgroundImage: `url(${NotebookMode})`,
-                    backgroundImage: isVisible
-                      ? `url(${NotebookMode})`
-                      : "none",
-                    backgroundSize: "cover",
-                    backgroundRepeat: "no-repeat",
-                    backgroundPosition: "center",
-                    backgroundColor: "transparent",
-                    boxShadow: "none",
+                    backgroundImage: isVisible ? `url(${NotebookMode})` : 'none',
+                    backgroundSize: 'cover',
+                    backgroundRepeat: 'no-repeat',
+                    backgroundPosition: 'center',
+                    backgroundColor: 'transparent',
+                    boxShadow: 'none',
                   }}
                 />
               </Box>
@@ -282,5 +272,5 @@ export default function LabTabs(props) {
         `}
       </style>
     </Fragment>
-  );
+  )
 }
