@@ -1,7 +1,7 @@
 import React, { Fragment, useState, useEffect } from "react";
 import styled from "styled-components";
 import Typography from "@mui/material/Typography";
-import { ThemeProvider } from "@mui/material/styles";
+import { ThemeProvider, Theme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import Button from "@mui/material/Button";
@@ -63,7 +63,12 @@ const FunctionCardSubtitle = styled("div")`
   }
 `;
 
-export default function FunctionCard(props) {
+interface FunctionCardProps {
+  theme: Theme;
+  handleTryOnWebsite: () => void;
+}
+
+export default function FunctionCard(props: FunctionCardProps) {
   const { theme, handleTryOnWebsite } = props;
 
   const cardInformation = [
@@ -99,14 +104,18 @@ export default function FunctionCard(props) {
 
   const [isVisible, setIsVisible] = useState(false);
 
+  const cardRef = React.useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     const handleScroll = () => {
-      const { top } = cardRef.current.getBoundingClientRect();
-      const windowHeight =
-        window.innerHeight || document.documentElement.clientHeight;
-      if (top < windowHeight) {
-        setIsVisible(true);
-        window.removeEventListener("scroll", handleScroll);
+      if (cardRef.current) {
+        const { top } = cardRef.current.getBoundingClientRect();
+        const windowHeight =
+          window.innerHeight || document.documentElement.clientHeight;
+        if (top < windowHeight) {
+          setIsVisible(true);
+          window.removeEventListener("scroll", handleScroll);
+        }
       }
     };
 
@@ -115,8 +124,6 @@ export default function FunctionCard(props) {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
-
-  const cardRef = React.useRef();
 
   return (
     <Fragment>

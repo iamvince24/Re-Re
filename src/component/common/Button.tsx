@@ -1,8 +1,16 @@
 import * as React from "react";
 import Button from "@mui/material/Button";
 import { Link } from "react-router-dom";
+import { Theme } from "@mui/material/styles";
 
-const LinkButton = ({ to, children, isSmall500, theme }) => {
+interface LinkButtonProps {
+  to: string;
+  children: React.ReactNode;
+  isSmall500: boolean;
+  theme: Theme;
+}
+
+const LinkButton: React.FC<LinkButtonProps> = ({ to, children, isSmall500, theme }) => {
   return (
     <Link to={to} style={{ textDecoration: "none" }}>
       <Button

@@ -5,16 +5,20 @@ import TabContext from '@mui/lab/TabContext'
 import TabList from '@mui/lab/TabList'
 import TabPanel from '@mui/lab/TabPanel'
 import Card from '@mui/material/Card'
-import { ThemeProvider } from '@mui/material/styles'
+import { ThemeProvider, Theme } from '@mui/material/styles'
 import Typography from '@mui/material/Typography'
 
 import NotebookMode from '../../../assets/img/NotebookMode.webp'
 import GanttMode from '../../../assets/img/GanttMode.webp'
 
-export default function LabTabs(props) {
+interface LabTabsProps {
+  theme: Theme;
+}
+
+export default function LabTabs(props: LabTabsProps) {
   const { theme } = props
   const [value, setValue] = React.useState('1')
-  const handleChange = (event, newValue) => {
+  const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue)
   }
 
@@ -22,11 +26,13 @@ export default function LabTabs(props) {
 
   useEffect(() => {
     const handleScroll = () => {
-      const { top } = cardRef.current.getBoundingClientRect()
-      const windowHeight = window.innerHeight || document.documentElement.clientHeight
-      if (top < windowHeight) {
-        setIsVisible(true)
-        window.removeEventListener('scroll', handleScroll)
+      if (cardRef.current) {
+        const { top } = cardRef.current.getBoundingClientRect()
+        const windowHeight = window.innerHeight || document.documentElement.clientHeight
+        if (top < windowHeight) {
+          setIsVisible(true)
+          window.removeEventListener('scroll', handleScroll)
+        }
       }
     }
 
@@ -36,7 +42,7 @@ export default function LabTabs(props) {
     }
   }, [])
 
-  const cardRef = React.useRef()
+  const cardRef = React.useRef<HTMLDivElement>(null)
 
   return (
     <Fragment>

@@ -1,5 +1,5 @@
-import { initializeApp } from "firebase/app";
-import { getDatabase, ref, update, get } from "firebase/database";
+import { initializeApp, FirebaseApp } from "firebase/app";
+import { getDatabase, ref, update, get, Database } from "firebase/database";
 import {
   GoogleAuthProvider,
   getAuth,
@@ -8,9 +8,11 @@ import {
   createUserWithEmailAndPassword,
   sendPasswordResetEmail,
   signOut,
+  Auth,
+  User,
 } from "firebase/auth";
 
-import { getFirestore } from "firebase/firestore";
+import { getFirestore, Firestore } from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBY1kXb-eozbwAIS0VYKBcYnb3tcq5wHUg",
@@ -28,38 +30,38 @@ const database = getDatabase(app);
 const db = getFirestore(app);
 const googleProvider = new GoogleAuthProvider();
 
-const logInWithEmailAndPassword = async (auth, email, password) => {
+const logInWithEmailAndPassword = async (auth: Auth, email: string, password: string): Promise<void> => {
   try {
     const res = await signInWithEmailAndPassword(auth, email, password);
     const user = res.user;
     window.localStorage.setItem("uid", user.uid);
-  } catch (err) {
+  } catch (err: any) {
     console.error(err);
     alert(err.message);
   }
 };
 
-const registerWithEmailAndPassword = async (email, password) => {
+const registerWithEmailAndPassword = async (email: string, password: string): Promise<void> => {
   try {
     const res = await createUserWithEmailAndPassword(auth, email, password);
     const user = res.user;
     window.localStorage.setItem("uid", user.uid);
     await handleNewUserData(user.uid);
-  } catch (err) {
+  } catch (err: any) {
     console.error(err);
     alert(err.message);
   }
 };
 
-const signInWithGoogle = async () => {
+const signInWithGoogle = async (): Promise<void> => {
   try {
     const res = await signInWithPopup(auth, googleProvider);
     const user = res.user;
     const uid = user.uid;
     window.localStorage.setItem("uid", user.uid);
-    window.localStorage.setItem("username", user.displayName);
+    window.localStorage.setItem("username", user.displayName || "");
 
-    const fetchData = async (uid) => {
+    const fetchData = async (uid: string): Promise<void> => {
       try {
         const db = getDatabase();
         const starCountRef = ref(db, `users/${uid}`);
@@ -76,13 +78,13 @@ const signInWithGoogle = async () => {
 
     await fetchData(uid);
     window.localStorage.setItem("uid", uid);
-  } catch (err) {
+  } catch (err: any) {
     console.error(err);
     alert(err.message);
   }
 };
 
-async function handleNewUserData(uid) {
+async function handleNewUserData(uid: string): Promise<void> {
   const db = getDatabase();
 
   const postData = {
@@ -125,8 +127,8 @@ async function handleNewUserData(uid) {
   return update(ref(db), updates);
 }
 
-const logout = () => {
-  signOut(auth);
+const logout = (): Promise<void> => {
+  return signOut(auth);
 };
 
 export {

@@ -1,4 +1,51 @@
-const initialstate = {
+export interface Chapter {
+  id: string | number;
+  name: string;
+  start: string;
+  end: string;
+  content: string;
+  color: string;
+}
+
+export interface Notebook {
+  id: number;
+  name: string;
+  start: string;
+  end: string;
+  color: string;
+  chapters: Chapter[];
+}
+
+export interface NotebookState {
+  notebooks: Notebook[];
+  username: string;
+  focusNotebookAndChapterIndex: {
+    notebookIndex: number;
+    chapterIndex: number;
+  };
+}
+
+interface FetchNotebookDataAction {
+  type: "notebookData/fetchNotebookData";
+  payload: Notebook[];
+}
+
+interface UpdateIndexAction {
+  type: "notebookData/handleUpdateIndex";
+  payload: {
+    notebookIndex: number;
+    chapterIndex: number;
+  };
+}
+
+interface UpdateUsernameAction {
+  type: "username/updatedUsername";
+  payload: string;
+}
+
+type NotebookAction = FetchNotebookDataAction | UpdateIndexAction | UpdateUsernameAction;
+
+const initialstate: NotebookState = {
   notebooks: [
     {
       id: 12312,
@@ -25,7 +72,7 @@ const initialstate = {
   },
 };
 
-const notebookData = (state = initialstate, action) => {
+const notebookData = (state = initialstate, action: NotebookAction): NotebookState => {
   switch (action.type) {
     case "notebookData/fetchNotebookData":
       return {

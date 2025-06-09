@@ -6,16 +6,19 @@ import Card from '@mui/material/Card'
 import NotebookImg from '../../../assets/img/NotebookImg.webp'
 import GanttImg from '../../../assets/img/GanttImg.webp'
 
-const WhyReReSection = () => {
+const WhyReReSection: React.FC = () => {
   const [isVisible, setIsVisible] = useState(false)
+  const cardRef = React.useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const handleScroll = () => {
-      const { top } = cardRef.current.getBoundingClientRect()
-      const windowHeight = window.innerHeight || document.documentElement.clientHeight
-      if (top < windowHeight) {
-        setIsVisible(true)
-        window.removeEventListener('scroll', handleScroll)
+      if (cardRef.current) {
+        const { top } = cardRef.current.getBoundingClientRect()
+        const windowHeight = window.innerHeight || document.documentElement.clientHeight
+        if (top < windowHeight) {
+          setIsVisible(true)
+          window.removeEventListener('scroll', handleScroll)
+        }
       }
     }
 
@@ -24,8 +27,6 @@ const WhyReReSection = () => {
       window.removeEventListener('scroll', handleScroll)
     }
   }, [])
-
-  const cardRef = React.useRef()
 
   return (
     <Box

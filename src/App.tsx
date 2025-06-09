@@ -8,8 +8,16 @@ import Login from './pages/Login/index'
 import { useMediaQuery } from '@mui/material'
 import { handleScreenWidth500 } from './store/action'
 import { handleScreenWidth767 } from './store/action'
+import { Dispatch } from 'redux'
+import { Theme } from '@mui/material/styles'
 
-function App(props) {
+interface AppProps {
+  dispatch: Dispatch
+  theme?: Theme
+  state?: any
+}
+
+function App(props: AppProps) {
   const { dispatch, theme } = props
   const loginStatus = false
 

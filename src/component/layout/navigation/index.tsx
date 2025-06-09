@@ -2,8 +2,8 @@ import React, { Fragment } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { Link as MuiLink } from '@mui/material'
 import { Box } from '@mui/system'
-import { ThemeProvider } from '@mui/material/styles'
-import Logo from '../../../assets/img/logo.jsx'
+import { ThemeProvider, Theme } from '@mui/material/styles'
+import Logo from '../../../assets/img/logo'
 import IconButton from '@mui/material/IconButton'
 import { LinkButton } from '../../common/Button'
 import { handleNewUserData } from '../../../firebase'
@@ -14,16 +14,22 @@ import MenuIcon from '@mui/icons-material/Menu'
 import { useLocation } from 'react-router-dom'
 import { debounce } from 'lodash'
 
-export default function Navigation(props) {
+interface NavigationProps {
+  theme: Theme;
+  isSmallScreenW500: boolean;
+  isSmallScreenW767: boolean;
+}
+
+export default function Navigation(props: NavigationProps) {
   const { theme, isSmallScreenW500 } = props
 
   const location = useLocation()
   const currentPath = location.pathname
   const isLoginPath = currentPath.includes('login')
 
-  const [anchorEl, setAnchorEl] = React.useState(null)
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
-  const handleClick = event => {
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget)
   }
   const handleClose = () => {

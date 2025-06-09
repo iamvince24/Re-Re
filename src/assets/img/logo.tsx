@@ -1,9 +1,17 @@
 import SvgIcon from "@mui/material/SvgIcon";
 import React, { Fragment } from "react";
-import { ThemeProvider } from "@mui/material/styles";
+import { ThemeProvider, Theme } from "@mui/material/styles";
 import IconButton from "@mui/material/IconButton";
 
-export default function Logo(props) {
+interface LogoProps {
+  width: string | number;
+  height: string | number;
+  theme: Theme;
+  color: string;
+  isSmallScreenW500: boolean;
+}
+
+export default function Logo(props: LogoProps) {
   return (
     <SvgIcon>
       <svg
