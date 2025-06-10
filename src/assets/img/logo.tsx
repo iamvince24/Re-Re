@@ -15,20 +15,11 @@ export default function Logo(props: LogoProps) {
   return (
     <SvgIcon>
       <svg
-        // width="237"
-        // height="183"
-        // viewBox="0 0 237 183"
         width={`${props.width}`}
         height={`${props.height}`}
         viewBox={`0 0 ${props.width} ${props.height}`}
         fill={`${props.theme.palette.primary.main}`}
-        // color="primary"
-        color={`${props.color}`}
         xmlns="http://www.w3.org/2000/svg"
-        sx={{
-          fontSize: props.isSmallScreenW500 ? "30px" : "45px",
-          paddingTop: props.isSmallScreenW500 ? "5px" : "none",
-        }}
       >
         <path d="M217.805 143.614C203.799 157.006 185.378 165.818 164.946 167.646C166.285 172.536 167 177.685 167 183H237C237 167.006 229.491 152.767 217.805 143.614Z" />
         <path d="M210.932 139.089C197.902 150.988 180.922 158.635 162.189 159.834C158.52 151.423 152.915 144.051 145.937 138.28C159.666 122.758 168 102.352 168 80C168 44.5024 146.982 13.9138 116.712 0H157C158.069 1.86891e-07 159.133 0.0209623 160.192 0.0624996C202.895 1.73792 237 36.8861 237 80C237 101.22 228.738 120.51 215.256 134.829C213.869 136.303 212.426 137.724 210.932 139.089Z" />

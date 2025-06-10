@@ -9,11 +9,11 @@ import Button from '@mui/material/Button'
 import { debounce } from 'lodash'
 
 import WhyReReSection from '../home/component/WhyReReSection'
-import Logo from '../../assets/img/logo.jsx'
+import Logo from '../../assets/img/logo'
 import FlipCard from '../home/component/FlipCard'
+import { handleNewUserData } from '../../firebase'
 import LabTabs from './component/LabTabs'
 import FunctionCard from './component/FunctionCard'
-import { handleNewUserData } from '../../firebase'
 
 const MainSection = styled(Box)`
   padding: 100px 0px 50px;
@@ -46,7 +46,13 @@ const Footer = styled(Box)`
   align-items: center;
 `
 
-export default function Home(props) {
+interface HomeProps {
+  theme: any
+  isSmallScreenW500: boolean
+  isSmallScreenW767?: boolean
+}
+
+export default function Home(props: HomeProps) {
   const { theme, isSmallScreenW500 } = props
   const navigate = useNavigate()
 
@@ -57,7 +63,7 @@ export default function Home(props) {
       await handleNewUserData(uid)
       navigate('/application')
     } catch (error) {
-      console.error('Login failed', error.message)
+      console.error('Login failed', (error as Error).message)
       alert('The account or password is wrong, please fill it in again.')
     }
   }, 500)

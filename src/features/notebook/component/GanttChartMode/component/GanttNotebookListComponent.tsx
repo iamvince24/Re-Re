@@ -13,15 +13,41 @@ import ArticleOutlinedIcon from "@mui/icons-material/ArticleOutlined";
 import { useSelector, useDispatch } from "react-redux";
 import { handleGanttUnfold } from "../../../../../store/action";
 
-export default function GanttNotebookListComponent(props) {
+interface Chapter {
+  id: string;
+  name: string;
+  start: string;
+  end: string;
+  color: string;
+}
+
+interface Notebook {
+  id: string;
+  name: string;
+  chapters?: Chapter[];
+}
+
+interface GanttNotebookListComponentProps {
+  theme: any;
+  notebook: Notebook;
+  index: number;
+}
+
+interface RootState {
+  viewListener: {
+    ganttUnfold: { [key: number]: boolean };
+  };
+}
+
+export default function GanttNotebookListComponent(props: GanttNotebookListComponentProps) {
   const { theme, notebook, index } = props;
   const dispatch = useDispatch();
 
   const isUnfold = useSelector(
-    (state) => state.viewListener.ganttUnfold[index]
+    (state: RootState) => state.viewListener.ganttUnfold[index]
   );
 
-  const handleClick = (event) => {
+  const handleClick = (event: React.MouseEvent) => {
     event.stopPropagation();
     dispatch(handleGanttUnfold(index, !isUnfold));
   };
@@ -68,13 +94,13 @@ export default function GanttNotebookListComponent(props) {
           />
         </ListItemButton>
         {notebook?.chapters
-          ? notebook?.chapters.map((chapter, index) => {
+          ? notebook?.chapters.map((chapter: Chapter, chapterIndex: number) => {
               return (
                 <Collapse
                   in={isUnfold}
                   timeout="auto"
                   unmountOnExit
-                  key={`${chapter.id}-${index}`}
+                  key={`${chapter.id}-${chapterIndex}`}
                   sx={{ height: "40px", padding: 0 }}
                 >
                   <List component="div" disablePadding sx={{ height: "40px" }}>

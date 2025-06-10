@@ -1,8 +1,19 @@
 import { useSelector } from "react-redux";
 
-export default function Grid({ children, theme }) {
+interface GridProps {
+  children: React.ReactNode;
+  theme: any;
+}
+
+interface RootState {
+  viewListener: {
+    screenWidth767: boolean;
+  };
+}
+
+export default function Grid({ children, theme }: GridProps) {
   const screenSmall767 = useSelector(
-    (state) => state.viewListener.screenWidth767
+    (state: RootState) => state.viewListener.screenWidth767
   );
 
   return (

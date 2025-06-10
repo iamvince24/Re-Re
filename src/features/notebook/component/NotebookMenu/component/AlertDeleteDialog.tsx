@@ -6,24 +6,47 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import { ThemeProvider } from "@mui/material/styles";
+import { ThemeProvider, Theme } from "@mui/material/styles";
 import MenuItem from "@mui/material/MenuItem";
 import { useSelector } from "react-redux";
 
 import { getDatabase, update, ref } from "firebase/database";
 
-export default function AlertDeleteDialog(props) {
+interface AlertDeleteDialogProps {
+  notebookIndex?: number;
+  chapterIndex?: number;
+  notebookId?: string;
+  chapterId?: string;
+  theme: Theme;
+  deleteMessage: string;
+  handleCloseBtn: (event: React.MouseEvent) => void;
+}
+
+interface RootState {
+  notebookData: {
+    notebooks: Array<{
+      id: string;
+      chapters?: Array<{
+        id: string;
+        [key: string]: any;
+      }>;
+      [key: string]: any;
+    }>;
+  };
+}
+
+export default function AlertDeleteDialog(props: AlertDeleteDialogProps) {
   const { notebookIndex, chapterIndex, notebookId, chapterId } = props;
-  const allNotebookData = useSelector((state) => state.notebookData.notebooks);
+  const allNotebookData = useSelector((state: RootState) => state.notebookData.notebooks);
 
   const [open, setOpen] = useState(false);
 
-  const handleClickOpen = (event) => {
+  const handleClickOpen = (event: React.MouseEvent) => {
     event.stopPropagation();
     setOpen(true);
   };
 
-  const handleClose = (event) => {
+  const handleClose = (event: React.MouseEvent) => {
     event.stopPropagation();
     setOpen(false);
     props.handleCloseBtn(event);
@@ -34,11 +57,11 @@ export default function AlertDeleteDialog(props) {
   const handleDelete = async () => {
     const db = getDatabase();
 
-    let postData = {};
-    if (chapterIndex !== undefined) {
-      postData = allNotebookData[notebookIndex].chapters.filter(
+    let postData: any = {};
+    if (chapterIndex !== undefined && notebookIndex !== undefined) {
+      postData = allNotebookData[notebookIndex]?.chapters?.filter(
         (chapter) => chapter.id !== chapterId
-      );
+      ) || [];
     } else {
       postData = allNotebookData.filter(
         (notebook) => notebook.id !== notebookId
@@ -51,7 +74,7 @@ export default function AlertDeleteDialog(props) {
     } else {
       dataPath = `/users/${uid}/notebooks`;
     }
-    const updates = {};
+    const updates: { [key: string]: any } = {};
     updates[dataPath] = postData;
     return update(ref(db), updates);
   };
@@ -59,7 +82,7 @@ export default function AlertDeleteDialog(props) {
   return (
     <Fragment>
       <ThemeProvider theme={props.theme}>
-        <MenuItem variant="outlined" onClick={handleClickOpen}>
+        <MenuItem onClick={handleClickOpen}>
           Delete
         </MenuItem>
 

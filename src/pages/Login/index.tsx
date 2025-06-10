@@ -1,12 +1,13 @@
 import React, { Fragment, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuthState } from "react-firebase-hooks/auth";
+import { User } from "firebase/auth";
 
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
-import { ThemeProvider } from "@mui/material/styles";
+import { ThemeProvider, Theme } from "@mui/material/styles";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 
@@ -17,19 +18,24 @@ import {
   signInWithGoogle,
 } from "../../firebase";
 
-export default function Login(props) {
+interface LoginProps {
+  theme: Theme;
+  isSmallScreenW500: boolean;
+}
+
+export default function Login(props: LoginProps) {
   const { theme, isSmallScreenW500 } = props;
   const [email, setEmail] = useState("test@gmail.com");
   const [password, setPassword] = useState("test123");
 
-  const [user, loading] = useAuthState(auth);
+  const [user, loading] = useAuthState(auth) as [User | null, boolean, Error | undefined];
   const navigate = useNavigate();
 
   const handleLogin = async () => {
     try {
       await logInWithEmailAndPassword(auth, email, password);
       navigate("/application");
-    } catch (error) {
+    } catch (error: any) {
       console.error("Login failed", error.message);
       alert("The account or password is wrong, please fill it in again.");
     }
@@ -39,7 +45,7 @@ export default function Login(props) {
     try {
       await registerWithEmailAndPassword(email, password);
       navigate("/application");
-    } catch (error) {
+    } catch (error: any) {
       console.error("Registration error:", error.message);
       alert(error.message);
     }
@@ -100,7 +106,7 @@ export default function Login(props) {
               color="secondary"
               size="small"
               defaultValue={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
               autoFocus
             />
             <TextField
@@ -110,7 +116,7 @@ export default function Login(props) {
               color="secondary"
               size="small"
               defaultValue={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
             />
 
             <Stack
@@ -138,7 +144,7 @@ export default function Login(props) {
               </Button>
               <Typography
                 color="secondary"
-                variant="body"
+                variant="body1"
                 sx={{
                   whiteSpace: "nowrap",
                   textAlign: "center",

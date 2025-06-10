@@ -12,15 +12,22 @@ import GanttChart from "./component/GanttChart";
 import DateRangePicker from "./component/DateRangePicker";
 import { handleSidebarOpen } from "../../../../store/action";
 import { useSelector } from "react-redux";
+import { TimeRange } from './types';
 
 const barHeight = 70;
 const drawerWidth = 350;
 
-export default function GanttChartMode(props) {
+interface GanttChartModeProps {
+  dispatch: any;
+  theme: any;
+  notebookData: any;
+}
+
+export default function GanttChartMode(props: GanttChartModeProps) {
   const { dispatch, theme } = props;
-  const isSidebarOpen = useSelector((state) => state.viewListener.sidebarOpen);
+  const isSidebarOpen = useSelector((state: any) => state.viewListener.sidebarOpen);
   const screenSmall767 = useSelector(
-    (state) => state.viewListener.screenWidth767
+    (state: any) => state.viewListener.screenWidth767
   );
 
   const [timeRange, setTimeRange] = useState({
@@ -48,12 +55,12 @@ export default function GanttChartMode(props) {
       day < 10 ? "0" + day : day
     }`;
 
-    const startDate = `${timeRange.fromSelectYear}-${
-      months[timeRange.fromSelectMonth]
-    }-01`;
+    const startDate = `${timeRange.fromSelectYear}-${String(timeRange.fromSelectMonth + 1).padStart(2, '0')}-01`;
 
-    scrollingContainer.scrollLeft =
-      (dayDiff(startDate, formattedToday) - 2) * 30;
+    if (scrollingContainer) {
+      scrollingContainer.scrollLeft =
+        (dayDiff(startDate, formattedToday) - 2) * 30;
+    }
   };
 
   return (

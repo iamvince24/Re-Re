@@ -4,6 +4,24 @@ import { monthDiff, getDaysInMonth } from "../../../../../utils/dateFunctions";
 import { months } from "../../../../../utils/constants";
 import GanttChartComponent from "./GanttChartComponent";
 
+interface TimeRange {
+  fromSelectMonth: number;
+  fromSelectYear: string;
+  toSelectMonth: number;
+  toSelectYear: string;
+}
+
+interface GanttChartListProps {
+  theme: any;
+  timeRange: TimeRange;
+  tasks?: any;
+  setTasks?: any;
+  taskDurations?: any;
+  setTaskDurations?: any;
+  notebookData: any;
+  isSmallScreen: boolean;
+}
+
 export default function GanttChartList({
   theme,
   timeRange,
@@ -12,21 +30,21 @@ export default function GanttChartList({
   taskDurations,
   setTaskDurations,
   notebookData,
-}) {
+}: GanttChartListProps) {
   // for dynamic css styling
-  const ganttTimePeriod = {
+  const ganttTimePeriod: React.CSSProperties = {
     display: "grid",
     gridAutoFlow: "column",
     gridAutoColumns: "minmax(var(--width-Days), 1fr)",
-    textAlign: "center",
+    textAlign: "center" as const,
     height: "var(--cell-height)",
   };
 
-  const ganttTimePeriodSpan = {
+  const ganttTimePeriodSpan: React.CSSProperties = {
     margin: "auto",
   };
 
-  const ganttTimePeriodCell = {
+  const ganttTimePeriodCell: React.CSSProperties = {
     position: "relative",
     padding: "0.5px 0px",
     display: "flex",
@@ -142,11 +160,10 @@ export default function GanttChartList({
             display: "grid",
           }}
         >
-          {notebookData?.map((notebook, index) => {
+          {notebookData?.map((notebook: any, index: number) => {
             return (
               <GanttChartComponent
                 theme={theme}
-                id={notebook.id}
                 notebookIndex={index}
                 key={index}
                 notebookData={notebookData}

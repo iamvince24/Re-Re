@@ -3,7 +3,7 @@ import './App.css'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import Application from './pages/Application/index'
 import Navigation from './component/layout/navigation/index'
-import Home from './pages/Home/index'
+import Home from './pages/home/index'
 import Login from './pages/Login/index'
 import { useMediaQuery } from '@mui/material'
 import { handleScreenWidth500 } from './store/action'
@@ -13,7 +13,7 @@ import { Theme } from '@mui/material/styles'
 
 interface AppProps {
   dispatch: Dispatch
-  theme?: Theme
+  theme: Theme
   state?: any
 }
 

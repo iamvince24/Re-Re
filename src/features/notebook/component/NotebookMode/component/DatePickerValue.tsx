@@ -1,26 +1,51 @@
 import * as React from "react";
 import { Fragment, useState, useEffect } from "react";
-import dayjs from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 import { ConfigProvider, Space } from "antd";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import { DatePicker } from "antd";
 import { useSelector } from "react-redux";
 import { getDatabase, update, ref } from "firebase/database";
+import { Theme } from "@mui/material/styles";
 dayjs.extend(customParseFormat);
 
 const { RangePicker } = DatePicker;
 const dateFormat = "YYYY-MM-DD";
 
-export default function DatePickerValue(props) {
+interface DatePickerValueProps {
+  theme: Theme;
+}
+
+interface RootState {
+  viewListener: {
+    screenWidth767: boolean;
+  };
+  notebookData: {
+    notebooks: Array<{
+      chapters?: Array<{
+        id: string;
+        start: string;
+        end: string;
+        [key: string]: any;
+      }>;
+    }>;
+    focusNotebookAndChapterIndex: {
+      notebookIndex: number;
+      chapterIndex: number;
+    };
+  };
+}
+
+export default function DatePickerValue(props: DatePickerValueProps) {
   const { theme } = props;
   const screenSmall767 = useSelector(
-    (state) => state.viewListener.screenWidth767
+    (state: RootState) => state.viewListener.screenWidth767
   );
 
-  const allNotebookData = useSelector((state) => state.notebookData.notebooks);
+  const allNotebookData = useSelector((state: RootState) => state.notebookData.notebooks);
 
   const focusNotebookAndChapterIndex = useSelector(
-    (state) => state.notebookData.focusNotebookAndChapterIndex
+    (state: RootState) => state.notebookData.focusNotebookAndChapterIndex
   );
   const notebookIndex = focusNotebookAndChapterIndex.notebookIndex;
   const chapterIndex = focusNotebookAndChapterIndex.chapterIndex;
@@ -30,44 +55,47 @@ export default function DatePickerValue(props) {
   const [startvalue, setStartValue] = useState("2024-01-01");
   const [endvalue, setEndValue] = useState("2024-01-02");
 
-  const handleNewDate = (startValue, endValue) => {
-    setStartValue(startValue);
-    setEndValue(endValue);
+  const handleNewDate = (startValue: Dayjs, endValue: Dayjs) => {
+    setStartValue(startValue.format(dateFormat));
+    setEndValue(endValue.format(dateFormat));
     handleUpdateNewDate(
       dayjs(startValue).format(dateFormat),
       dayjs(endValue).format(dateFormat)
     );
   };
 
-  const handleUpdateNewDate = (startValue, endValue) => {
+  const handleUpdateNewDate = (startValue: string, endValue: string) => {
     const db = getDatabase();
+    const currentChapter = allNotebookData[notebookIndex]?.chapters?.[chapterIndex];
+    if (!currentChapter) return;
+    
     const postData = {
-      ...allNotebookData[notebookIndex]?.chapters[chapterIndex],
+      ...currentChapter,
       start: startValue,
       end: endValue,
     };
 
     const dataPath = `/users/${uid}/notebooks/${notebookIndex}/chapters/${chapterIndex}`;
 
-    const updates = {};
+    const updates: { [key: string]: any } = {};
     updates[dataPath] = postData;
 
     return update(ref(db), updates);
   };
 
   useEffect(() => {
-    let tempStartValue =
-      allNotebookData[notebookIndex].chapters === undefined
+    let tempStartValue: string | null =
+      allNotebookData[notebookIndex]?.chapters === undefined
         ? null
-        : allNotebookData[notebookIndex]?.chapters[chapterIndex].start;
-    let tempEndValue =
-      allNotebookData[notebookIndex].chapters === undefined
+        : allNotebookData[notebookIndex]?.chapters?.[chapterIndex]?.start || null;
+    let tempEndValue: string | null =
+      allNotebookData[notebookIndex]?.chapters === undefined
         ? null
-        : allNotebookData[notebookIndex]?.chapters[chapterIndex].end;
+        : allNotebookData[notebookIndex]?.chapters?.[chapterIndex]?.end || null;
 
-    setStartValue(tempStartValue);
-    setEndValue(tempEndValue);
-  }, [focusNotebookAndChapterIndex]);
+    setStartValue(tempStartValue || "2024-01-01");
+    setEndValue(tempEndValue || "2024-01-02");
+  }, [focusNotebookAndChapterIndex, allNotebookData, notebookIndex, chapterIndex]);
 
   return (
     <Fragment>
@@ -133,12 +161,10 @@ export default function DatePickerValue(props) {
           token: {
             colorPrimary: `${theme.palette.secondary.main}`,
             borderRadius: 4,
-            hoverBorderColor: `${theme.palette.secondary.main}`,
             colorBorder: `${theme.palette.secondary.main}`,
             colorText: `${theme.palette.secondary.main}`,
             colorIcon: `${theme.palette.secondary.main}`,
             colorIconHover: `${theme.palette.secondary.main}`,
-            warningActiveShadow: "none",
             // colorBgContainer: "#F3D9D2",
             // cellActiveWithRangeBg: "#F3D9D2",
           },
@@ -158,8 +184,10 @@ export default function DatePickerValue(props) {
             format={dateFormat}
             className="custom-range-picker"
             onChange={(newValue) => {
-              const [startValue, endValue] = newValue;
-              handleNewDate(startValue, endValue);
+              if (newValue && newValue[0] && newValue[1]) {
+                const [startValue, endValue] = newValue;
+                handleNewDate(startValue, endValue);
+              }
             }}
           />
         </Space>

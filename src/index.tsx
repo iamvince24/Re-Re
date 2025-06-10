@@ -11,7 +11,6 @@ import store from './store/store'
 declare module '@mui/material/styles' {
   interface Palette {
     lightPrimary: Palette['primary']
-    background: Palette['primary']
     modeTabButton: Palette['primary']
     buttonBackground: Palette['primary']
     ganttHoliday: Palette['primary']
@@ -27,7 +26,6 @@ declare module '@mui/material/styles' {
 
   interface PaletteOptions {
     lightPrimary?: PaletteOptions['primary']
-    background?: PaletteOptions['primary']
     modeTabButton?: PaletteOptions['primary']
     buttonBackground?: PaletteOptions['primary']
     ganttHoliday?: PaletteOptions['primary']
@@ -39,6 +37,10 @@ declare module '@mui/material/styles' {
       red: { solid: string; gradient: { gradientLeft: string; gradientRight: string } }
       green: { solid: string; gradient: { gradientLeft: string; gradientRight: string } }
     }
+  }
+
+  interface TypeBackground {
+    main?: string;
   }
 }
 

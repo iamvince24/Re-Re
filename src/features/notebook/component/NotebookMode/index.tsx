@@ -13,7 +13,9 @@ import { getDatabase, update, ref } from "firebase/database";
 import { useSelector } from "react-redux";
 import { handleSidebarOpen } from "../../../../store/action";
 
+// @ts-ignore - no type definitions available
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+// @ts-ignore - no type definitions available  
 import { nightOwl } from "react-syntax-highlighter/dist/esm/styles/prism";
 import ReactMarkdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
@@ -48,20 +50,45 @@ const TextArea = styled("div")(() => ({
   alignContent: "flex-start",
 }));
 
-export default function NotebookMode(props) {
+interface NotebookModeProps {
+  dispatch: any;
+  theme: any;
+}
+
+interface RootState {
+  notebookData: {
+    notebooks: Array<{
+      chapters?: Array<{
+        content: string;
+        name: string;
+        [key: string]: any;
+      }>;
+    }>;
+    focusNotebookAndChapterIndex: {
+      notebookIndex: number;
+      chapterIndex: number;
+    };
+  };
+  viewListener: {
+    screenWidth767: boolean;
+    sidebarOpen: boolean;
+  };
+}
+
+export default function NotebookMode(props: NotebookModeProps) {
   const { dispatch, theme } = props;
 
-  const allNotebookData = useSelector((state) => state.notebookData.notebooks);
+  const allNotebookData = useSelector((state: RootState) => state.notebookData.notebooks);
   const screenSmall767 = useSelector(
-    (state) => state.viewListener.screenWidth767
+    (state: RootState) => state.viewListener.screenWidth767
   );
-  const isSidebarOpen = useSelector((state) => state.viewListener.sidebarOpen);
+  const isSidebarOpen = useSelector((state: RootState) => state.viewListener.sidebarOpen);
 
   const notebookIndex = useSelector(
-    (state) => state.notebookData.focusNotebookAndChapterIndex.notebookIndex
+    (state: RootState) => state.notebookData.focusNotebookAndChapterIndex.notebookIndex
   );
   const chapterIndex = useSelector(
-    (state) => state.notebookData.focusNotebookAndChapterIndex.chapterIndex
+    (state: RootState) => state.notebookData.focusNotebookAndChapterIndex.chapterIndex
   );
 
   const [toggleNotebookDisplay, setToggleNotebookDisplay] = useState(false);
@@ -76,21 +103,24 @@ export default function NotebookMode(props) {
     dispatch(handleSidebarOpen(true));
   };
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setMarkdownText(e.target.value);
   };
 
-  const handleUpdateNotebookContent = (e, content) => {
+  const handleUpdateNotebookContent = (e: React.MouseEvent, content: string) => {
     setToggleNotebookDisplay(false);
 
     const db = getDatabase();
+    const currentChapter = allNotebookData[notebookIndex]?.chapters?.[chapterIndex];
+    if (!currentChapter) return;
+    
     const postData = {
-      ...allNotebookData[notebookIndex]?.chapters[chapterIndex],
+      ...currentChapter,
       content: content,
     };
 
     const dataPath = `/users/${uid}/notebooks/${notebookIndex}/chapters/${chapterIndex}`;
-    const updates = {};
+    const updates: { [key: string]: any } = {};
     updates[dataPath] = postData;
 
     return update(ref(db), updates);
@@ -103,7 +133,7 @@ export default function NotebookMode(props) {
     margin: "0",
   };
 
-  const handleKeyDown = (e) => {
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Escape") {
       setToggleNotebookDisplay(false);
     }
@@ -111,13 +141,13 @@ export default function NotebookMode(props) {
 
   useEffect(() => {
     let tempMarkdownText =
-      allNotebookData[notebookIndex].chapters === undefined
-        ? null
-        : allNotebookData[notebookIndex]?.chapters[chapterIndex]?.content;
+      allNotebookData[notebookIndex]?.chapters === undefined
+        ? ""
+        : allNotebookData[notebookIndex]?.chapters?.[chapterIndex]?.content || "";
     let tempChapterName =
-      allNotebookData[notebookIndex].chapters === undefined
-        ? null
-        : allNotebookData[notebookIndex]?.chapters[chapterIndex]?.name;
+      allNotebookData[notebookIndex]?.chapters === undefined
+        ? ""
+        : allNotebookData[notebookIndex]?.chapters?.[chapterIndex]?.name || "";
 
     setMarkdownTextTemp(tempMarkdownText);
     setMarkdownText(tempMarkdownText);
@@ -271,7 +301,8 @@ export default function NotebookMode(props) {
                 <ReactMarkdown
                   rehypePlugins={[rehypeRaw]}
                   components={{
-                    code: ({ node, inline, className, children, ...props }) => {
+                    code: ({ node, className, children, ...props }: any) => {
+                      const inline = props.inline;
                       const match = /language-(\w+)/.exec(className || "");
                       return !inline && match ? (
                         <SyntaxHighlighter

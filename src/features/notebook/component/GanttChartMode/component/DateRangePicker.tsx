@@ -1,16 +1,24 @@
 import * as React from "react";
 import { Fragment, useState } from "react";
-import dayjs from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 import { ConfigProvider, Space } from "antd";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import { DatePicker } from "antd";
 import { months } from "../../../../../utils/constants";
+import { Theme } from "@mui/material/styles";
+import { TimeRange } from '../types';
 dayjs.extend(customParseFormat);
 
 const { RangePicker } = DatePicker;
 const dateFormat = "YYYY-MM";
 
-export default function DateRangePicker(props) {
+interface DateRangePickerProps {
+  timeRange: TimeRange;
+  setTimeRange: React.Dispatch<React.SetStateAction<TimeRange>>;
+  theme: Theme;
+}
+
+export default function DateRangePicker(props: DateRangePickerProps) {
   const { timeRange, setTimeRange, theme } = props;
   const [startvalue, setStartValue] = useState(
     `${timeRange.fromSelectYear}-${months[timeRange.fromSelectMonth]}`
@@ -19,9 +27,9 @@ export default function DateRangePicker(props) {
     `${timeRange.toSelectYear}-${months[timeRange.toSelectMonth]}`
   );
 
-  function handleNewDate(startValue, endValue) {
-    setStartValue(startValue);
-    setEndValue(endValue);
+  function handleNewDate(startValue: Dayjs, endValue: Dayjs) {
+    setStartValue(startValue.format(dateFormat));
+    setEndValue(endValue.format(dateFormat));
   }
 
   return (
@@ -100,14 +108,11 @@ export default function DateRangePicker(props) {
           token: {
             colorPrimary: `${theme.palette.secondary.main}`,
             borderRadius: 4,
-            hoverBorderColor: `${theme.palette.secondary.main}`,
             colorBorder: `${theme.palette.secondary.main}`,
             colorText: `${theme.palette.secondary.main}`,
             colorIcon: `${theme.palette.secondary.main}`,
             colorIconHover: `${theme.palette.secondary.main}`,
-            warningActiveShadow: "none",
             colorBgContainer: "red",
-            cellActiveWithRangeBg: "red",
           },
         }}
       >
@@ -126,15 +131,17 @@ export default function DateRangePicker(props) {
             format={dateFormat}
             className="custom-range-picker"
             onChange={(newValue) => {
-              const [startValue, endValue] = newValue;
-              handleNewDate(startValue, endValue);
-              setTimeRange((prevState) => ({
-                ...prevState,
-                fromSelectMonth: startValue.$M,
-                fromSelectYear: `${startValue.$y}`,
-                toSelectMonth: endValue.$M,
-                toSelectYear: `${endValue.$y}`,
-              }));
+              if (newValue && newValue.length === 2) {
+                const [startValue, endValue] = newValue as [Dayjs, Dayjs];
+                handleNewDate(startValue, endValue);
+                setTimeRange((prevState: TimeRange) => ({
+                  ...prevState,
+                  fromSelectMonth: startValue.month(),
+                  fromSelectYear: `${startValue.year()}`,
+                  toSelectMonth: endValue.month(),
+                  toSelectYear: `${endValue.year()}`,
+                }));
+              }
             }}
           />
         </Space>

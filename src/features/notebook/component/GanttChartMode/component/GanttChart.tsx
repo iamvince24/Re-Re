@@ -5,17 +5,37 @@ import GanttChartList from "./GanttChartList";
 import GanttNotebookList from "./GanttNotebookList";
 import { v4 as uuidv4 } from "uuid";
 import { useSelector } from "react-redux";
+import { Theme } from "@mui/material/styles";
 
-export default function GanttChart(props) {
+interface TimeRange {
+  fromSelectMonth: number;
+  fromSelectYear: string;
+  toSelectMonth: number;
+  toSelectYear: string;
+}
+
+interface GanttChartProps {
+  notebookData: any;
+  timeRange: TimeRange;
+  theme: Theme;
+}
+
+interface RootState {
+  viewListener: {
+    screenWidth767: boolean;
+  };
+}
+
+export default function GanttChart(props: GanttChartProps) {
   const { notebookData, timeRange, theme } = props;
 
   const screenSmall767 = useSelector(
-    (state) => state.viewListener.screenWidth767
+    (state: RootState) => state.viewListener.screenWidth767
   );
 
   return (
     <Fragment>
-      <Grid>
+      <Grid theme={theme}>
         <GanttNotebookList
           theme={theme}
           key={uuidv4()}

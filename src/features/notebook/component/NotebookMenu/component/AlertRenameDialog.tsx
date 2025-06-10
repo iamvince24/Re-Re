@@ -8,7 +8,7 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import MenuItem from "@mui/material/MenuItem";
 import styled from "styled-components";
-import { ThemeProvider } from "@mui/material/styles";
+import { ThemeProvider, Theme } from "@mui/material/styles";
 
 import { getDatabase, update, ref } from "firebase/database";
 
@@ -27,49 +27,70 @@ const TextInput = styled("input")(() => ({
   },
 }));
 
-export default function FormDialog(props) {
+interface FormDialogProps {
+  notebookIndex: number;
+  chapterIndex?: number;
+  notebookData: Array<{
+    name: string;
+    chapters?: Array<{
+      name: string;
+      [key: string]: any;
+    }>;
+    [key: string]: any;
+  }>;
+  theme: Theme;
+  num?: number;
+  id?: string;
+  handleCloseBtn: (event: React.MouseEvent) => void;
+  handleClose: () => void;
+  onChange: (name: string, num: number) => void;
+}
+
+export default function FormDialog(props: FormDialogProps) {
   const { notebookIndex, chapterIndex } = props;
 
   let defaultName = "";
   if (chapterIndex !== undefined) {
-    defaultName = props.notebookData[notebookIndex].chapters[chapterIndex].name;
+    defaultName = props.notebookData[notebookIndex]?.chapters?.[chapterIndex]?.name || "";
   } else {
-    defaultName = props.notebookData[notebookIndex].name;
+    defaultName = props.notebookData[notebookIndex]?.name || "";
   }
 
   const [open, setOpen] = React.useState(false);
   const [newName, setNewName] = React.useState(defaultName);
 
-  const handleClick = (event) => {
+  const handleClick = (event: React.MouseEvent) => {
     event.stopPropagation();
   };
 
-  const handleClickOpen = (event) => {
+  const handleClickOpen = (event: React.MouseEvent) => {
     setOpen(true);
     event.stopPropagation();
   };
 
-  const handleClose = (event) => {
+  const handleClose = (event: React.MouseEvent) => {
     event.stopPropagation();
     setOpen(false);
     props.handleCloseBtn(event);
   };
 
-  const handleConfirm = (e) => {
+  const handleConfirm = () => {
     setOpen(false);
     props.handleClose();
-    props.onChange(newName, props.num);
+    if (props.num !== undefined) {
+      props.onChange(newName, props.num);
+    }
     setNewName("");
   };
 
-  const handleRename = (name) => {
+  const handleRename = (name: string) => {
     const db = getDatabase();
     const uid = window.localStorage.getItem("uid");
 
-    let postData = {};
+    let postData: any = {};
     if (chapterIndex !== undefined) {
       postData = {
-        ...props.notebookData[notebookIndex].chapters[chapterIndex],
+        ...props.notebookData[notebookIndex]?.chapters?.[chapterIndex],
         name: name,
       };
     } else {
@@ -86,7 +107,7 @@ export default function FormDialog(props) {
       dataPath = `/users/${uid}/notebooks/${notebookIndex}`;
     }
 
-    const updates = {};
+    const updates: { [key: string]: any } = {};
     updates[dataPath] = postData;
 
     return update(ref(db), updates);
@@ -95,7 +116,7 @@ export default function FormDialog(props) {
   return (
     <Fragment>
       <ThemeProvider theme={props.theme}>
-        <MenuItem variant="outlined" onClick={handleClickOpen}>
+        <MenuItem onClick={handleClickOpen}>
           Rename
         </MenuItem>
         <Dialog open={open} onClose={handleClose}>
@@ -108,9 +129,8 @@ export default function FormDialog(props) {
             <TextInput
               placeholder="New Notebook Name"
               value={newName}
-              onChange={(e) => setNewName(e.target.value)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setNewName(e.target.value)}
               onClick={handleClick}
-              defaultValue={"dsfsd"}
               autoFocus
             />
           </DialogContent>

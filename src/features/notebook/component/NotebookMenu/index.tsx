@@ -17,7 +17,7 @@ import { useSelector } from "react-redux";
 import PositionedMenu from "./component/PositionedMenu";
 import { debounce } from "lodash";
 
-function AddNotebook(uid, index) {
+function AddNotebook(uid: string | null, index: number) {
   const db = getDatabase();
 
   const currentDate = new Date();
@@ -50,13 +50,13 @@ function AddNotebook(uid, index) {
   };
 
   const newPostKey = index;
-  const updates = {};
+  const updates: { [key: string]: any } = {};
   updates["/users/" + uid + "/notebooks/" + newPostKey] = postData;
 
   return update(ref(db), updates);
 }
 
-function formatDate(date) {
+function formatDate(date: Date): string {
   const year = date.getFullYear();
   const month = date.getMonth() + 1;
   const day = date.getDate();
@@ -65,21 +65,38 @@ function formatDate(date) {
   }`;
 }
 
-function generateNumericId() {
+function generateNumericId(): number {
   const fullId = uuidv4();
   const numericId = fullId.replace(/\D/g, "").substring(0, 5);
   return parseInt(numericId, 10);
 }
 
-export default function NotebookMenu(props) {
+interface NotebookMenuProps {
+  dispatch: any;
+  theme: any;
+  uid: string | null;
+}
+
+interface RootState {
+  notebookData: {
+    notebooks: any[];
+    username: string;
+  };
+  viewListener: {
+    isGanttMode: boolean;
+    screenWidth767: boolean;
+  };
+}
+
+export default function NotebookMenu(props: NotebookMenuProps) {
   const { dispatch, theme, uid } = props;
   const navigate = useNavigate();
-  const allNotebookData = useSelector((state) => state.notebookData.notebooks);
-  const isGanttMode = useSelector((state) => state.viewListener.isGanttMode);
-  const username = useSelector((state) => state.notebookData.username);
+  const allNotebookData = useSelector((state: RootState) => state.notebookData.notebooks);
+  const isGanttMode = useSelector((state: RootState) => state.viewListener.isGanttMode);
+  const username = useSelector((state: RootState) => state.notebookData.username);
 
   const screenSmall767 = useSelector(
-    (state) => state.viewListener.screenWidth767
+    (state: RootState) => state.viewListener.screenWidth767
   );
 
   const handleDrawerClose = () => {
@@ -138,8 +155,6 @@ export default function NotebookMenu(props) {
           </IconButton>
         </Box>
         <Box
-          size="small"
-          variant="contained"
           sx={{
             width: "100%",
             boxShadow: "none",
@@ -174,7 +189,7 @@ export default function NotebookMenu(props) {
             Notebook
           </Button>
           <Button
-            color="modeTabButton"
+            color="inherit"
             sx={{
               width: "50%",
               color: `${theme.palette.secondary.main}`,

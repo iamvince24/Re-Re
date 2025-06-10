@@ -1,6 +1,5 @@
 import { useState, Fragment } from "react";
 
-import Button from "@mui/material/Button";
 import {
   monthDiff,
   getDaysInMonth,
@@ -8,27 +7,45 @@ import {
   createFormattedDateFromStr,
   createFormattedDateFromDate,
   dayDiff,
-} from "../../../utils/dateFunctions";
-import { months } from "../../../utils/constants";
+} from "../../../../../utils/dateFunctions";
+import { months } from "../../../../../utils/constants";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import { Box } from "@mui/system";
 import Typography from "@mui/joy/Typography";
-
-import IconButton from "@mui/material/IconButton";
-import MenuIcon from "@mui/icons-material/Menu";
 import Brightness1Icon from "@mui/icons-material/Brightness1";
+import { TimeRange } from '../types';
 
-import ColorMenu from "../../ColorMenu";
+interface Task {
+  id: number;
+}
+
+interface TaskDuration {
+  id: string;
+  task: number;
+  start: string;
+  end: string;
+}
+
+interface TimeTableProps {
+  timeRange: TimeRange;
+  tasks: Task[];
+  taskDurations: TaskDuration[];
+  setTaskDurations: React.Dispatch<React.SetStateAction<TaskDuration[]>>;
+}
 
 export default function TimeTable({
   timeRange,
   tasks,
   taskDurations,
   setTaskDurations,
-}) {
-  const [contextMenu, setContextMenu] = useState(null);
-  const handleContextMenu = (event, taskId, formattedDate) => {
+}: TimeTableProps) {
+  const [contextMenu, setContextMenu] = useState<{
+    mouseX: number;
+    mouseY: number;
+    taskId: number;
+    formattedDate: string;
+  } | null>(null);
+  const handleContextMenu = (event: React.MouseEvent, taskId: number, formattedDate: string) => {
     event.preventDefault();
     const mouseX = event.clientX + 2;
     const mouseY = event.clientY - 6;
@@ -48,7 +65,7 @@ export default function TimeTable({
     display: "grid",
     gridAutoFlow: "column",
     gridAutoColumns: "minmax(var(--width-Days), 1fr)",
-    textAlign: "center",
+    textAlign: "center" as const,
     height: "var(--cell-height)",
   };
 
@@ -57,13 +74,13 @@ export default function TimeTable({
   };
 
   const ganttTimePeriodCell = {
-    position: "relative",
+    position: "relative" as const,
     padding: "0.5px 0px",
     display: "flex",
   };
 
   const taskDuration = {
-    position: "absolute",
+    position: "absolute" as const,
     height: "calc(var(--cell-height) - 10px)",
     zIndex: "5",
     background:
@@ -87,11 +104,11 @@ export default function TimeTable({
   const numMonths = monthDiff(startMonth, endMonth) + 1;
   let month = new Date(startMonth);
 
-  let monthRows = [];
-  let dayRows = [];
-  let dayRow = [];
-  let taskRows = [];
-  let taskRow = [];
+  let monthRows: React.ReactElement[] = [];
+  let dayRows: React.ReactElement[] = [];
+  let dayRow: React.ReactElement[] = [];
+  let taskRows: React.ReactElement[] = [];
+  let taskRow: React.ReactElement[] = [];
 
   for (let i = 0; i < numMonths; i++) {
     // create month rows
@@ -157,8 +174,8 @@ export default function TimeTable({
     month.setMonth(month.getMonth() + 1);
   }
 
-  const [taskDurationElDraggedId, setTaskDurationElDraggedId] = useState(null);
-  function handleDragStart(taskDurationId) {
+  const [taskDurationElDraggedId, setTaskDurationElDraggedId] = useState<string | null>(null);
+  function handleDragStart(taskDurationId: string) {
     setTaskDurationElDraggedId(taskDurationId);
   }
 
@@ -200,7 +217,7 @@ export default function TimeTable({
                       className="taskDuration"
                       key={`${i}-${el.id}`}
                       draggable="true"
-                      tabIndex="0"
+                      tabIndex={0}
                       onDragStart={() => handleDragStart(el.id)}
                       style={{
                         ...taskDuration,
@@ -239,7 +256,7 @@ export default function TimeTable({
     });
   }
 
-  function deleteTaskDuration(e, id) {
+  function deleteTaskDuration(e: React.KeyboardEvent, id: string) {
     if (e.key === "Delete" || e.key === "Backspace") {
       // update taskDurations
       const newTaskDurations = taskDurations.filter(
@@ -250,33 +267,36 @@ export default function TimeTable({
     }
   }
 
-  function onTaskDurationDrop(e) {
-    const targetCell = e.target;
+  function onTaskDurationDrop(e: React.DragEvent) {
+    const targetCell = e.target as HTMLElement;
     // prevent adding on another taskDuration
-    if (!targetCell.hasAttribute("draggable")) {
+    if (!targetCell.hasAttribute("draggable") && taskDurationElDraggedId) {
       // find task
       const taskDuration = taskDurations.filter(
         (taskDuration) => taskDuration.id === taskDurationElDraggedId
       )[0];
       const dataTask = targetCell.getAttribute("data-task");
       const dataDate = targetCell.getAttribute("data-date");
-      const daysDuration = dayDiff(taskDuration.start, taskDuration.end);
-      // get new task values
-      // get start, calc end using daysDuration - make Date objects - change taskDurations
-      const newTask = parseInt(dataTask);
-      const newStartDate = new Date(dataDate);
-      let newEndDate = new Date(dataDate);
-      newEndDate.setDate(newEndDate.getDate() + daysDuration - 1);
-      // update taskDurations
-      taskDuration.task = newTask;
-      taskDuration.start = createFormattedDateFromDate(newStartDate);
-      taskDuration.end = createFormattedDateFromDate(newEndDate);
-      const newTaskDurations = taskDurations.filter(
-        (taskDuration) => taskDuration.id !== taskDurationElDraggedId
-      );
-      newTaskDurations.push(taskDuration);
-      // update state (if data on backend - make API request to update data)
-      setTaskDurations(newTaskDurations);
+      
+      if (taskDuration && dataTask && dataDate) {
+        const daysDuration = dayDiff(taskDuration.start, taskDuration.end);
+        // get new task values
+        // get start, calc end using daysDuration - make Date objects - change taskDurations
+        const newTask = parseInt(dataTask);
+        const newStartDate = new Date(dataDate);
+        let newEndDate = new Date(dataDate);
+        newEndDate.setDate(newEndDate.getDate() + daysDuration - 1);
+        // update taskDurations
+        taskDuration.task = newTask;
+        taskDuration.start = createFormattedDateFromDate(newStartDate);
+        taskDuration.end = createFormattedDateFromDate(newEndDate);
+        const newTaskDurations = taskDurations.filter(
+          (taskDuration) => taskDuration.id !== taskDurationElDraggedId
+        );
+        newTaskDurations.push(taskDuration);
+        // update state (if data on backend - make API request to update data)
+        setTaskDurations(newTaskDurations);
+      }
     }
     setTaskDurationElDraggedId(null);
   }

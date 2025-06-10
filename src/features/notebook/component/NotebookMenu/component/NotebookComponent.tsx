@@ -16,17 +16,32 @@ import { handleModeUpdate } from "../../../../../store/action";
 import { handleSidebarOpen } from "../../../../../store/action";
 import { handleUpdateIndex } from "../../../../../store/action";
 import { useSelector } from "react-redux";
+import type { Notebook, Chapter } from "../../../../../types";
 
-export default function NotebookComponent(props) {
+interface NotebookComponentProps {
+  dispatch: any;
+  notebookIndex: number;
+  notebook: Notebook;
+  theme: any;
+  notebookData?: any;
+}
+
+interface RootState {
+  viewListener: {
+    screenWidth767: boolean;
+  };
+}
+
+export default function NotebookComponent(props: NotebookComponentProps) {
   const { dispatch, notebookIndex, notebook } = props;
   // console.log(notebookIndex);
   const [open, setOpen] = React.useState(true);
 
   const screenSmall767 = useSelector(
-    (state) => state.viewListener.screenWidth767
+    (state: RootState) => state.viewListener.screenWidth767
   );
 
-  const handleClick = (event) => {
+  const handleClick = (event: React.MouseEvent) => {
     event.stopPropagation();
     setOpen(!open);
   };
@@ -62,7 +77,7 @@ export default function NotebookComponent(props) {
               <InboxIcon />
             </ImportContactsIcon>
             <ListItemText
-              primary={props.notebook?.name}
+              primary={props.notebook.name}
               primaryTypographyProps={{
                 fontWeight: 700,
                 pt: "2px",
@@ -76,14 +91,14 @@ export default function NotebookComponent(props) {
               theme={props.theme}
               addChapter={true}
               id={props.notebook.id}
-              notebookId={notebook.id}
+              notebookId={String(props.notebook.id)}
               notebook={props.notebook}
               notebookData={props.notebookData}
               deleteMessage={props.notebook.name}
             />
           </ListItemButton>
-          {props.notebook?.chapters
-            ? props.notebook?.chapters.map((chapters, index) => {
+          {props.notebook.chapters && props.notebook.chapters.length > 0
+            ? props.notebook.chapters.map((chapters: Chapter, index: number) => {
                 return (
                   <Collapse
                     in={open}
@@ -132,8 +147,8 @@ export default function NotebookComponent(props) {
                           chapterIndex={index}
                           theme={props.theme}
                           id={props.notebook.id}
-                          notebookId={notebook.id}
-                          chapterId={chapters.id}
+                          notebookId={String(props.notebook.id)}
+                          chapterId={String(chapters.id)}
                           notebook={props.notebook}
                           notebookData={props.notebookData}
                           deleteMessage={chapters.name}

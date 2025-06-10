@@ -15,9 +15,14 @@ import NotebookMenu from "../../features/notebook/component/NotebookMenu";
 import GanttChartMode from "../../features/notebook/component/GanttChartMode";
 import NotebookMode from "../../features/notebook/component/NotebookMode";
 
+interface AppBarProps {
+  open?: boolean;
+  drawerwidth?: number | string;
+}
+
 const AppBar = styled(MuiAppBar, {
-  shouldForwardProp: (prop) => prop !== "open",
-})(({ theme, open, drawerwidth }) => ({
+  shouldForwardProp: (prop) => prop !== "open" && prop !== "drawerwidth",
+})<AppBarProps>(({ theme, open, drawerwidth }) => ({
   transition: theme.transitions.create(["margin", "width"], {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
@@ -38,38 +43,54 @@ const ApplicationContainer = styled(Box)`
   background-color: black;
 `;
 
-export default function Application(props) {
+interface ApplicationProps {
+  theme: any;
+  dispatch: any;
+}
+
+interface RootState {
+  notebookData: {
+    notebooks: any[];
+  };
+  viewListener: {
+    screenWidth767: boolean;
+    isGanttMode: boolean;
+    sidebarOpen: boolean;
+  };
+}
+
+export default function Application(props: ApplicationProps) {
   const { theme, dispatch } = props;
-  const allNotebookData = useSelector((state) => state.notebookData.notebooks);
+  const allNotebookData = useSelector((state: RootState) => state.notebookData.notebooks);
 
   const screenSmall767 = useSelector(
-    (state) => state.viewListener.screenWidth767
+    (state: RootState) => state.viewListener.screenWidth767
   );
 
-  const isGanttMode = useSelector((state) => state.viewListener.isGanttMode);
-  const isSidebarOpen = useSelector((state) => state.viewListener.sidebarOpen);
+  const isGanttMode = useSelector((state: RootState) => state.viewListener.isGanttMode);
+  const isSidebarOpen = useSelector((state: RootState) => state.viewListener.sidebarOpen);
 
   const drawerwidth = screenSmall767 ? "100vw" : 350;
 
-  function handleSetGanttUnfoldList(allData) {
-    let indexList = [];
-    let ganttUnfoldList = {};
-    allData?.forEach((notebook, index) => {
+  function handleSetGanttUnfoldList(allData: any[]) {
+    let indexList: number[] = [];
+    let ganttUnfoldList: { [key: string]: string } = {};
+    allData?.forEach((notebook: any, index: number) => {
       indexList.push(index);
     });
-    indexList?.forEach((element, index) => {
+    indexList?.forEach((element: number, index: number) => {
       ganttUnfoldList = {
         ...ganttUnfoldList,
         [`${element}`]: "true",
       };
-      dispatch(handleGanttUnfold(`${index}`, true));
+      dispatch(handleGanttUnfold(index, true));
     });
   }
 
-  function updatedUserName(uid, name) {
+  function updatedUserName(uid: string | null, name: string) {
     const db = getDatabase();
     const postData = `${name}`;
-    const updates = {};
+    const updates: { [key: string]: any } = {};
     updates["/users/" + uid + "/username/"] = postData;
 
     return update(ref(db), updates);
@@ -131,6 +152,7 @@ export default function Application(props) {
                   name: "Please Add Notebook",
                   start: "2024-01-01",
                   end: "2024-01-02",
+                  color: "white",
                   chapters: [
                     {
                       id: "15433",
@@ -181,8 +203,6 @@ export default function Application(props) {
             <NotebookMenu
               dispatch={dispatch}
               theme={theme}
-              sx={{ border: "none" }}
-              notebookData={allNotebookData}
               uid={uid}
             />
           </Drawer>
@@ -193,7 +213,7 @@ export default function Application(props) {
             position="fixed"
             open={isSidebarOpen}
             style={{
-              bgcolor: "#F3D9D2",
+              backgroundColor: "#F3D9D2",
               borderLeft: isSidebarOpen
                 ? `0.5px solid ${theme.palette.dividerBorder.main}`
                 : "none",

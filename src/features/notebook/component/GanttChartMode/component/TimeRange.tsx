@@ -1,5 +1,6 @@
 import * as React from "react";
 import { Fragment } from "react";
+import { TimeRange } from '../types';
 
 const months = [
   "Jan",
@@ -16,7 +17,12 @@ const months = [
   "Dec",
 ];
 
-export default function TimeRange({ timeRange, setTimeRange }) {
+interface TimeRangeProps {
+  timeRange: TimeRange;
+  setTimeRange: React.Dispatch<React.SetStateAction<TimeRange>>;
+}
+
+export default function TimeRange({ timeRange, setTimeRange }: TimeRangeProps) {
   // add date selector values
   let monthsOptions = [];
   for (let i = 0; i < months.length; i++) {
@@ -36,12 +42,12 @@ export default function TimeRange({ timeRange, setTimeRange }) {
     );
   }
 
-  function onChange(e) {
+  function onChange(e: React.ChangeEvent<HTMLSelectElement>) {
     const { value, id } = e.target;
 
     if (id === "from-select-month") {
       setTimeRange((prevState) => {
-        return { ...prevState, fromSelectMonth: value };
+        return { ...prevState, fromSelectMonth: parseInt(value) };
       });
     }
     if (id === "from-select-year") {
@@ -51,7 +57,7 @@ export default function TimeRange({ timeRange, setTimeRange }) {
     }
     if (id === "to-select-month") {
       setTimeRange((prevState) => {
-        return { ...prevState, toSelectMonth: value };
+        return { ...prevState, toSelectMonth: parseInt(value) };
       });
     }
     if (id === "to-select-year") {

@@ -45,7 +45,7 @@ export default function Navigation(props: NavigationProps) {
       await handleNewUserData(uid)
       navigate('/application')
     } catch (error) {
-      console.error('Login failed', error.message)
+      console.error('Login failed', (error as Error).message)
       alert('The account or password is wrong, please fill it in again.')
     }
   }, 500)
@@ -62,7 +62,7 @@ export default function Navigation(props: NavigationProps) {
     return randomString
   }
 
-  const handleSectionScroll = async (target, offset) => {
+  const handleSectionScroll = async (target: string, offset: number) => {
     if (isLoginPath) {
       await navigate('/')
       const targetElement = document.getElementById(target)

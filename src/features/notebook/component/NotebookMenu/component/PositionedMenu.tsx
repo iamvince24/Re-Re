@@ -9,13 +9,18 @@ import { useNavigate } from "react-router-dom";
 import { logout } from "../../../../../firebase";
 import ChangeUserNameFormDialog from "./ChangeUserNameFormDialog";
 
-export default function PositionedMenu(props) {
+interface PositionedMenuProps {
+  theme: any;
+  username: string;
+}
+
+export default function PositionedMenu(props: PositionedMenuProps) {
   const { theme, username } = props;
   const navigate = useNavigate();
 
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
-  const handleClick = (event) => {
+  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {

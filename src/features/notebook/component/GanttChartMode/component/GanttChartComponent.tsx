@@ -15,8 +15,66 @@ import Brightness1Icon from "@mui/icons-material/Brightness1";
 import { getDatabase, ref, update } from "firebase/database";
 import dayjs from "dayjs";
 import { useSelector } from "react-redux";
+import { Theme } from "@mui/material/styles";
 
-export default function GanttChartComponent(props) {
+interface TimeRange {
+  fromSelectMonth: number;
+  fromSelectYear: string;
+  toSelectMonth: number;
+  toSelectYear: string;
+}
+
+interface Chapter {
+  id: string;
+  name: string;
+  start: string;
+  end: string;
+  color: string;
+}
+
+interface Notebook {
+  id: string;
+  name: string;
+  start: string;
+  end: string;
+  color: string;
+  chapters?: Chapter[];
+}
+
+interface TaskDuration {
+  id: string;
+  [key: string]: any;
+}
+
+interface GanttChartComponentProps {
+  theme: Theme;
+  notebookIndex: number;
+  notebook: Notebook;
+  timeRange: TimeRange;
+  startMonth: Date;
+  numMonths: number;
+  taskDurations: TaskDuration[];
+  setTaskDurations: React.Dispatch<React.SetStateAction<TaskDuration[]>>;
+  ganttTimePeriod: React.CSSProperties;
+  ganttTimePeriodCell: React.CSSProperties;
+  notebookData: Notebook[];
+}
+
+interface ContextMenuState {
+  mouseX: number;
+  mouseY: number;
+}
+
+interface RootState {
+  notebookData: {
+    notebooks: Notebook[];
+  };
+  viewListener: {
+    ganttUnfold: { [key: number]: boolean };
+  };
+}
+
+export default function GanttChartComponent(props: GanttChartComponentProps) {
   const {
     theme,
     notebookIndex,
@@ -30,9 +88,9 @@ export default function GanttChartComponent(props) {
     ganttTimePeriodCell,
   } = props;
 
-  const allNotebookData = useSelector((state) => state.notebookData.notebooks);
+  const allNotebookData = useSelector((state: RootState) => state.notebookData.notebooks);
 
-  const isUnfold = useSelector((state) =>
+  const isUnfold = useSelector((state: RootState) =>
     state.viewListener.ganttUnfold[notebookIndex] ? "block" : "none"
   );
 
@@ -40,10 +98,10 @@ export default function GanttChartComponent(props) {
     months[timeRange.fromSelectMonth]
   }-01`;
 
-  const [taskDurationElDraggedId, setTaskDurationElDraggedId] = useState(null);
-  const [contextMenu, setContextMenu] = useState(null);
-  const [targetType, setTargetType] = useState(null);
-  const [chapterIndex, setChapterIndex] = useState(null);
+  const [taskDurationElDraggedId, setTaskDurationElDraggedId] = useState<string | null>(null);
+  const [contextMenu, setContextMenu] = useState<ContextMenuState | null>(null);
+  const [targetType, setTargetType] = useState<string | null>(null);
+  const [chapterIndex, setChapterIndex] = useState<number | null>(null);
 
   if (allNotebookData === undefined) {
     console.log(undefined);
@@ -72,11 +130,11 @@ export default function GanttChartComponent(props) {
     dayjs(latestDate).format(dateFormat),
   ];
 
-  const updatedNotebookTimeRange = (startDate, endDate) => {
+  const updatedNotebookTimeRange = (startDate: string, endDate: string) => {
     const uid = window.localStorage.getItem("uid");
     const db = getDatabase();
 
-    const updates = {};
+    const updates: { [key: string]: string } = {};
     updates["/users/" + uid + "/notebooks/" + notebookIndex + "/start/"] =
       startDate;
     updates["/users/" + uid + "/notebooks/" + notebookIndex + "/end/"] =
@@ -93,7 +151,7 @@ export default function GanttChartComponent(props) {
     }
   });
 
-  const handleContextMenu = (event, target, index) => {
+  const handleContextMenu = (event: React.MouseEvent, target: string, index: number | null) => {
     event.preventDefault();
     setTargetType(target);
     setChapterIndex(index);
@@ -108,13 +166,13 @@ export default function GanttChartComponent(props) {
     setContextMenu(null);
   };
 
-  let taskRows = [];
-  let notebookTitleRow = [];
-  let chapterRows = [];
-  let chapterRow = [];
+  let taskRows: JSX.Element[] = [];
+  let notebookTitleRow: JSX.Element[] = [];
+  let chapterRows: JSX.Element[] = [];
+  let chapterRow: JSX.Element[] = [];
   let mnth = new Date(startMonth);
 
-  const noteBookColor = notebook.color;
+  const noteBookColor = notebook.color as keyof typeof theme.palette.colorOption;
 
   for (let i = 0; i < numMonths; i++) {
     const curYear = mnth.getFullYear();
@@ -176,7 +234,7 @@ export default function GanttChartComponent(props) {
         className="taskDuration"
         key={uuidv4()}
         draggable="true"
-        tabIndex="0"
+        tabIndex={0}
         // onDragStart={() => handleDragStart(notebook.id)}
         style={{
           position: "relative",
@@ -222,7 +280,7 @@ export default function GanttChartComponent(props) {
   notebookTitleRow = [];
 
   notebook.chapters?.map((chapter, index) => {
-    const chapterColor = chapter.color;
+    const chapterColor = chapter.color as keyof typeof theme.palette.colorOption;
     let chapterMnth = new Date(startMonth);
     for (let i = 0; i < numMonths; i++) {
       const curYear = chapterMnth.getFullYear();
@@ -279,11 +337,11 @@ export default function GanttChartComponent(props) {
         data-task={notebook.id}
       >
         <div
-          handletype={"chapter"}
+          data-handletype="chapter"
           key={uuidv4()}
           className="taskDuration"
           draggable="true"
-          tabIndex="0"
+          tabIndex={0}
           // onDragStart={() => handleDragStart(notebook.id)}
           style={{
             position: "relative",
@@ -343,7 +401,7 @@ export default function GanttChartComponent(props) {
     chapterRow = [];
   });
 
-  function deleteTaskDuration(e, id) {
+  function deleteTaskDuration(e: React.KeyboardEvent, id: string) {
     if (e.key === "Delete" || e.key === "Backspace") {
       // update taskDurations
       const newTaskDurations = taskDurations.filter(
@@ -354,15 +412,15 @@ export default function GanttChartComponent(props) {
     }
   }
 
-  const handleColorChange = (target, color, chapterIndex) => {
+  const handleColorChange = (target: string, color: string, chapterIndex: number | null) => {
     const db = getDatabase();
 
     const uid = window.localStorage.getItem("uid");
 
-    let postData = {};
-    if (target === "chapter") {
+    let postData: any = {};
+    if (target === "chapter" && chapterIndex !== null) {
       postData = {
-        ...props.notebookData[notebookIndex].chapters[chapterIndex],
+        ...props.notebookData[notebookIndex]?.chapters?.[chapterIndex],
         color: color,
       };
     } else {
@@ -373,13 +431,13 @@ export default function GanttChartComponent(props) {
     }
 
     let dataPath = "";
-    if (target === "chapter") {
+    if (target === "chapter" && chapterIndex !== null) {
       dataPath = `/users/${uid}/notebooks/${notebookIndex}/chapters/${chapterIndex}`;
     } else {
       dataPath = `/users/${uid}/notebooks/${notebookIndex}`;
     }
 
-    const updates = {};
+    const updates: { [key: string]: any } = {};
     updates[dataPath] = postData;
 
     return update(ref(db), updates);
@@ -403,7 +461,7 @@ export default function GanttChartComponent(props) {
         >
           <MenuItem
             onClick={(e) => {
-              handleColorChange(targetType, "white", chapterIndex);
+              if (targetType) handleColorChange(targetType, "white", chapterIndex);
               handleClose();
             }}
             sx={{
@@ -416,7 +474,7 @@ export default function GanttChartComponent(props) {
           </MenuItem>
           <MenuItem
             onClick={(e) => {
-              handleColorChange(targetType, "blue", chapterIndex);
+              if (targetType) handleColorChange(targetType, "blue", chapterIndex);
               handleClose();
             }}
             sx={{
@@ -433,7 +491,7 @@ export default function GanttChartComponent(props) {
           </MenuItem>
           <MenuItem
             onClick={(e) => {
-              handleColorChange(targetType, "yellow", chapterIndex);
+              if (targetType) handleColorChange(targetType, "yellow", chapterIndex);
               handleClose();
             }}
             sx={{
@@ -450,7 +508,7 @@ export default function GanttChartComponent(props) {
           </MenuItem>
           <MenuItem
             onClick={(e) => {
-              handleColorChange(targetType, "red", chapterIndex);
+              if (targetType) handleColorChange(targetType, "red", chapterIndex);
               handleClose();
             }}
             sx={{ gap: "5px", color: `${theme.palette.colorOption.red.solid}` }}
@@ -464,7 +522,7 @@ export default function GanttChartComponent(props) {
           </MenuItem>
           <MenuItem
             onClick={(e) => {
-              handleColorChange(targetType, "green", chapterIndex);
+              if (targetType) handleColorChange(targetType, "green", chapterIndex);
               handleClose();
             }}
             sx={{

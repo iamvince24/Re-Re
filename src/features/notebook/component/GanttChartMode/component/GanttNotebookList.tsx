@@ -4,14 +4,26 @@ import { useEffect, useRef } from "react";
 import GanttNotebookListComponent from "./GanttNotebookListComponent";
 import { useSelector } from "react-redux";
 
-export default function GanttNotebookList({ theme }) {
-  const allNotebookData = useSelector((state) => state.notebookData.notebooks);
+interface GanttNotebookListProps {
+  theme: any;
+  notebookData: any;
+  isSmallScreen: boolean;
+}
 
-  const inputRef = useRef([]);
-  const indexRef = useRef(null);
+interface RootState {
+  notebookData: {
+    notebooks: any[];
+  };
+}
+
+export default function GanttNotebookList({ theme }: GanttNotebookListProps) {
+  const allNotebookData = useSelector((state: RootState) => state.notebookData.notebooks);
+
+  const inputRef = useRef<HTMLInputElement[]>([]);
+  const indexRef = useRef<number | null>(null);
 
   useEffect(() => {
-    if (inputRef.current.length && indexRef.current >= 0) {
+    if (inputRef.current.length && indexRef.current !== null && indexRef.current >= 0) {
       inputRef?.current[indexRef.current]?.focus();
     }
   });

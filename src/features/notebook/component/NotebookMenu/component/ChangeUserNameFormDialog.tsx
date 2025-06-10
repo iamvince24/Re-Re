@@ -11,9 +11,20 @@ import { useSelector } from "react-redux";
 import { ThemeProvider } from "@mui/material/styles";
 import { getDatabase, ref, update } from "firebase/database";
 
-export default function ChangeUserNameFormDialog(props) {
+interface ChangeUserNameFormDialogProps {
+  handleMenuClose: () => void;
+  theme: any;
+}
+
+interface RootState {
+  notebookData: {
+    username: string;
+  };
+}
+
+export default function ChangeUserNameFormDialog(props: ChangeUserNameFormDialogProps) {
   const { handleMenuClose, theme } = props;
-  const username = useSelector((state) => state.notebookData.username);
+  const username = useSelector((state: RootState) => state.notebookData.username);
 
   const [textFieldValue, setTextFieldValue] = useState(username);
   const [open, setOpen] = useState(false);
@@ -29,11 +40,13 @@ export default function ChangeUserNameFormDialog(props) {
 
   const uid = window.localStorage.getItem("uid");
 
-  const updatedUserName = (uid, name) => {
+  const updatedUserName = (uid: string | null, name: string) => {
     const db = getDatabase();
     const postData = `${name}`;
-    const updates = {};
-    updates["/users/" + uid + "/username/"] = postData;
+    const updates: {[key: string]: string} = {};
+    if (uid) {
+      updates["/users/" + uid + "/username/"] = postData;
+    }
 
     handleClose();
     update(ref(db), updates);
@@ -42,7 +55,7 @@ export default function ChangeUserNameFormDialog(props) {
   return (
     <Fragment>
       <ThemeProvider theme={theme}>
-        <MenuItem variant="outlined" onClick={handleClickOpen}>
+        <MenuItem onClick={handleClickOpen}>
           Change User Name
         </MenuItem>
         <Dialog
@@ -50,10 +63,10 @@ export default function ChangeUserNameFormDialog(props) {
           onClose={handleClose}
           PaperProps={{
             component: "form",
-            onSubmit: (event) => {
+            onSubmit: (event: React.FormEvent<HTMLFormElement>) => {
               event.preventDefault();
               const formData = new FormData(event.currentTarget);
-              const formJson = Object.fromEntries(formData.entries());
+              const formJson = Object.fromEntries(formData as any);
               const email = formJson.email;
               console.log(email);
               handleClose();

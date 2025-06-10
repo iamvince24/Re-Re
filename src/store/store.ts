@@ -1,14 +1,13 @@
-import { configureStore } from "@reduxjs/toolkit";
+import { createStore, combineReducers } from "redux";
 import notebookData from "./notebookSlice";
 import viewListener from "./screenSlice";
 
-const store = configureStore({
-  reducer: {
-    notebookData: notebookData,
-    viewListener: viewListener,
-  },
-  devTools: process.env.NODE_ENV !== 'production',
+const rootReducer = combineReducers({
+  notebookData: notebookData,
+  viewListener: viewListener,
 });
+
+const store = createStore(rootReducer);
 
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
