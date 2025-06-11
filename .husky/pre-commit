@@ -1,0 +1,13 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+# Run TypeScript type checking
+echo "🔍 Running TypeScript type checking..."
+npm run typecheck
+
+# Run Prettier formatting
+echo "🎨 Running Prettier formatting..."
+npm run format
+
+# Add formatted files back to staging
+git add .

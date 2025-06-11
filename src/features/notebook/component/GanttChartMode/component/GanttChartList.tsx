@@ -1,25 +1,25 @@
-import { Fragment, useState, useEffect } from "react";
-import { v4 as uuidv4 } from "uuid";
-import { monthDiff, getDaysInMonth } from "../../../../../utils/dateFunctions";
-import { months } from "../../../../../utils/constants";
-import GanttChartComponent from "./GanttChartComponent";
+import { Fragment, useState, useEffect } from 'react'
+import { v4 as uuidv4 } from 'uuid'
+import { monthDiff, getDaysInMonth } from '../../../../../utils/dateFunctions'
+import { months } from '../../../../../utils/constants'
+import GanttChartComponent from './GanttChartComponent'
 
 interface TimeRange {
-  fromSelectMonth: number;
-  fromSelectYear: string;
-  toSelectMonth: number;
-  toSelectYear: string;
+  fromSelectMonth: number
+  fromSelectYear: string
+  toSelectMonth: number
+  toSelectYear: string
 }
 
 interface GanttChartListProps {
-  theme: any;
-  timeRange: TimeRange;
-  tasks?: any;
-  setTasks?: any;
-  taskDurations?: any;
-  setTaskDurations?: any;
-  notebookData: any;
-  isSmallScreen: boolean;
+  theme: any
+  timeRange: TimeRange
+  tasks?: any
+  setTasks?: any
+  taskDurations?: any
+  setTaskDurations?: any
+  notebookData: any
+  isSmallScreen: boolean
 }
 
 export default function GanttChartList({
@@ -33,36 +33,32 @@ export default function GanttChartList({
 }: GanttChartListProps) {
   // for dynamic css styling
   const ganttTimePeriod: React.CSSProperties = {
-    display: "grid",
-    gridAutoFlow: "column",
-    gridAutoColumns: "minmax(var(--width-Days), 1fr)",
-    textAlign: "center" as const,
-    height: "var(--cell-height)",
-  };
+    display: 'grid',
+    gridAutoFlow: 'column',
+    gridAutoColumns: 'minmax(var(--width-Days), 1fr)',
+    textAlign: 'center' as const,
+    height: 'var(--cell-height)',
+  }
 
   const ganttTimePeriodSpan: React.CSSProperties = {
-    margin: "auto",
-  };
+    margin: 'auto',
+  }
 
   const ganttTimePeriodCell: React.CSSProperties = {
-    position: "relative",
-    padding: "0.5px 0px",
-    display: "flex",
-  };
+    position: 'relative',
+    padding: '0.5px 0px',
+    display: 'flex',
+  }
 
-  const [startMonth, setStartMonth] = useState(
-    new Date(parseInt(timeRange.fromSelectYear), timeRange.fromSelectMonth)
-  );
-  const [endMonth, setEndMonth] = useState(
-    new Date(parseInt(timeRange.toSelectYear), timeRange.toSelectMonth)
-  );
+  const [startMonth, setStartMonth] = useState(new Date(parseInt(timeRange.fromSelectYear), timeRange.fromSelectMonth))
+  const [endMonth, setEndMonth] = useState(new Date(parseInt(timeRange.toSelectYear), timeRange.toSelectMonth))
 
-  const numMonths = monthDiff(startMonth, endMonth) + 1;
-  let month = new Date(startMonth);
+  const numMonths = monthDiff(startMonth, endMonth) + 1
+  let month = new Date(startMonth)
 
-  let monthRows = [];
-  let dayRows = [];
-  let dayRow = [];
+  let monthRows = []
+  let dayRows = []
+  let dayRow = []
 
   for (let i = 0; i < numMonths; i++) {
     // create month rows
@@ -71,9 +67,9 @@ export default function GanttChartList({
         key={uuidv4()}
         style={{
           ...ganttTimePeriod,
-          outline: "none",
-          borderBottom: "1px solid var(--color-TimeTable-Border)",
-          borderRight: "1px solid var(--color-TimeTable-Border)",
+          outline: 'none',
+          borderBottom: '1px solid var(--color-TimeTable-Border)',
+          borderRight: '1px solid var(--color-TimeTable-Border)',
         }}
       >
         <span
@@ -84,36 +80,33 @@ export default function GanttChartList({
             fontWeight: 500,
           }}
         >
-          {months[month.getMonth()] + " " + month.getFullYear()}
+          {months[month.getMonth()] + ' ' + month.getFullYear()}
         </span>
-      </div>
-    );
+      </div>,
+    )
 
     // create day and week rows
-    const numDays = getDaysInMonth(month.getFullYear(), month.getMonth() + 1);
-    const currYear = month.getFullYear();
-    const currMonth = month.getMonth() + 1;
+    const numDays = getDaysInMonth(month.getFullYear(), month.getMonth() + 1)
+    const currYear = month.getFullYear()
+    const currMonth = month.getMonth() + 1
 
     for (let j = 1; j <= numDays; j++) {
-      const currentDate = new Date(currYear, currMonth - 1, j);
-      const dayOfWeek = currentDate.getDay();
+      const currentDate = new Date(currYear, currMonth - 1, j)
+      const dayOfWeek = currentDate.getDay()
 
       dayRow.push(
         <div
           key={uuidv4()}
           style={{
             ...ganttTimePeriod,
-            outline: "none",
-            borderBottom: "1px solid var(--color-TimeTable-Border)",
-            backgroundColor:
-              dayOfWeek === 0 || dayOfWeek === 6
-                ? `${theme.palette.ganttHoliday.main}`
-                : "none",
+            outline: 'none',
+            borderBottom: '1px solid var(--color-TimeTable-Border)',
+            backgroundColor: dayOfWeek === 0 || dayOfWeek === 6 ? `${theme.palette.ganttHoliday.main}` : 'none',
           }}
         >
           <span style={ganttTimePeriodSpan}>{j}</span>
-        </div>
-      );
+        </div>,
+      )
     }
 
     dayRows.push(
@@ -121,26 +114,22 @@ export default function GanttChartList({
         key={uuidv4()}
         style={{
           ...ganttTimePeriod,
-          outline: "none",
-          color: "var(--primary-color)",
+          outline: 'none',
+          color: 'var(--primary-color)',
         }}
       >
         {dayRow}
-      </div>
-    );
+      </div>,
+    )
 
-    dayRow = [];
-    month.setMonth(month.getMonth() + 1);
+    dayRow = []
+    month.setMonth(month.getMonth() + 1)
   }
 
   useEffect(() => {
-    setStartMonth(
-      new Date(parseInt(timeRange.fromSelectYear), timeRange.fromSelectMonth)
-    );
-    setEndMonth(
-      new Date(parseInt(timeRange.toSelectYear), timeRange.toSelectMonth)
-    );
-  }, [timeRange]);
+    setStartMonth(new Date(parseInt(timeRange.fromSelectYear), timeRange.fromSelectMonth))
+    setEndMonth(new Date(parseInt(timeRange.toSelectYear), timeRange.toSelectMonth))
+  }, [timeRange])
 
   return (
     <Fragment>
@@ -148,7 +137,7 @@ export default function GanttChartList({
         id="gantt-grid-container__time"
         style={{
           gridTemplateColumns: `repeat(${numMonths}, 1fr)`,
-          alignContent: "start",
+          alignContent: 'start',
         }}
       >
         {monthRows}
@@ -156,8 +145,8 @@ export default function GanttChartList({
         <div
           id="gantt-time-period-cell-container"
           style={{
-            gridColumn: "1/-1",
-            display: "grid",
+            gridColumn: '1/-1',
+            display: 'grid',
           }}
         >
           {notebookData?.map((notebook: any, index: number) => {
@@ -176,7 +165,7 @@ export default function GanttChartList({
                 ganttTimePeriod={ganttTimePeriod}
                 ganttTimePeriodCell={ganttTimePeriodCell}
               />
-            );
+            )
           })}
         </div>
       </div>
@@ -214,5 +203,5 @@ export default function GanttChartList({
       `}
       </style>
     </Fragment>
-  );
+  )
 }

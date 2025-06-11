@@ -1,101 +1,96 @@
-import * as React from "react";
-import { Fragment, useState, useEffect } from "react";
-import dayjs, { Dayjs } from "dayjs";
-import { ConfigProvider, Space } from "antd";
-import customParseFormat from "dayjs/plugin/customParseFormat";
-import { DatePicker } from "antd";
-import { useSelector } from "react-redux";
-import { getDatabase, update, ref } from "firebase/database";
-import { Theme } from "@mui/material/styles";
-dayjs.extend(customParseFormat);
+import * as React from 'react'
+import { Fragment, useState, useEffect } from 'react'
+import dayjs, { Dayjs } from 'dayjs'
+import { ConfigProvider, Space } from 'antd'
+import customParseFormat from 'dayjs/plugin/customParseFormat'
+import { DatePicker } from 'antd'
+import { useSelector } from 'react-redux'
+import { getDatabase, update, ref } from 'firebase/database'
+import { Theme } from '@mui/material/styles'
+dayjs.extend(customParseFormat)
 
-const { RangePicker } = DatePicker;
-const dateFormat = "YYYY-MM-DD";
+const { RangePicker } = DatePicker
+const dateFormat = 'YYYY-MM-DD'
 
 interface DatePickerValueProps {
-  theme: Theme;
+  theme: Theme
 }
 
 interface RootState {
   viewListener: {
-    screenWidth767: boolean;
-  };
+    screenWidth767: boolean
+  }
   notebookData: {
     notebooks: Array<{
       chapters?: Array<{
-        id: string;
-        start: string;
-        end: string;
-        [key: string]: any;
-      }>;
-    }>;
+        id: string
+        start: string
+        end: string
+        [key: string]: any
+      }>
+    }>
     focusNotebookAndChapterIndex: {
-      notebookIndex: number;
-      chapterIndex: number;
-    };
-  };
+      notebookIndex: number
+      chapterIndex: number
+    }
+  }
 }
 
 export default function DatePickerValue(props: DatePickerValueProps) {
-  const { theme } = props;
-  const screenSmall767 = useSelector(
-    (state: RootState) => state.viewListener.screenWidth767
-  );
+  const { theme } = props
+  const screenSmall767 = useSelector((state: RootState) => state.viewListener.screenWidth767)
 
-  const allNotebookData = useSelector((state: RootState) => state.notebookData.notebooks);
+  const allNotebookData = useSelector((state: RootState) => state.notebookData.notebooks)
 
   const focusNotebookAndChapterIndex = useSelector(
-    (state: RootState) => state.notebookData.focusNotebookAndChapterIndex
-  );
-  const notebookIndex = focusNotebookAndChapterIndex.notebookIndex;
-  const chapterIndex = focusNotebookAndChapterIndex.chapterIndex;
+    (state: RootState) => state.notebookData.focusNotebookAndChapterIndex,
+  )
+  const notebookIndex = focusNotebookAndChapterIndex.notebookIndex
+  const chapterIndex = focusNotebookAndChapterIndex.chapterIndex
 
-  const uid = window.localStorage.getItem("uid");
+  const uid = window.localStorage.getItem('uid')
 
-  const [startvalue, setStartValue] = useState("2024-01-01");
-  const [endvalue, setEndValue] = useState("2024-01-02");
+  const [startvalue, setStartValue] = useState('2024-01-01')
+  const [endvalue, setEndValue] = useState('2024-01-02')
 
   const handleNewDate = (startValue: Dayjs, endValue: Dayjs) => {
-    setStartValue(startValue.format(dateFormat));
-    setEndValue(endValue.format(dateFormat));
-    handleUpdateNewDate(
-      dayjs(startValue).format(dateFormat),
-      dayjs(endValue).format(dateFormat)
-    );
-  };
+    setStartValue(startValue.format(dateFormat))
+    setEndValue(endValue.format(dateFormat))
+    handleUpdateNewDate(dayjs(startValue).format(dateFormat), dayjs(endValue).format(dateFormat))
+  }
 
   const handleUpdateNewDate = (startValue: string, endValue: string) => {
-    const db = getDatabase();
-    const currentChapter = allNotebookData[notebookIndex]?.chapters?.[chapterIndex];
-    if (!currentChapter) return;
-    
+    const db = getDatabase()
+    const currentChapter = allNotebookData[notebookIndex]?.chapters?.[chapterIndex]
+    if (!currentChapter) return
+
     const postData = {
       ...currentChapter,
       start: startValue,
       end: endValue,
-    };
+    }
 
-    const dataPath = `/users/${uid}/notebooks/${notebookIndex}/chapters/${chapterIndex}`;
+    const dataPath = `/users/${uid}/notebooks/${notebookIndex}/chapters/${chapterIndex}`
 
-    const updates: { [key: string]: any } = {};
-    updates[dataPath] = postData;
+    const updates: { [key: string]: any } = {}
+    updates[dataPath] = postData
 
-    return update(ref(db), updates);
-  };
+    return update(ref(db), updates)
+  }
 
   useEffect(() => {
     let tempStartValue: string | null =
       allNotebookData[notebookIndex]?.chapters === undefined
         ? null
-        : allNotebookData[notebookIndex]?.chapters?.[chapterIndex]?.start || null;
+        : allNotebookData[notebookIndex]?.chapters?.[chapterIndex]?.start || null
     let tempEndValue: string | null =
       allNotebookData[notebookIndex]?.chapters === undefined
         ? null
-        : allNotebookData[notebookIndex]?.chapters?.[chapterIndex]?.end || null;
+        : allNotebookData[notebookIndex]?.chapters?.[chapterIndex]?.end || null
 
-    setStartValue(tempStartValue || "2024-01-01");
-    setEndValue(tempEndValue || "2024-01-02");
-  }, [focusNotebookAndChapterIndex, allNotebookData, notebookIndex, chapterIndex]);
+    setStartValue(tempStartValue || '2024-01-01')
+    setEndValue(tempEndValue || '2024-01-02')
+  }, [focusNotebookAndChapterIndex, allNotebookData, notebookIndex, chapterIndex])
 
   return (
     <Fragment>
@@ -173,25 +168,25 @@ export default function DatePickerValue(props: DatePickerValueProps) {
         <Space direction="vertical" size={12}>
           <RangePicker
             style={{
-              border: "none",
+              border: 'none',
               background: `${theme.palette.primary.main}`,
-              zIndex: "10000",
-              height: screenSmall767 ? "35px" : "42px",
+              zIndex: '10000',
+              height: screenSmall767 ? '35px' : '42px',
             }}
             allowClear={false}
             allowEmpty={[false, false]}
             value={[dayjs(startvalue), dayjs(endvalue)]}
             format={dateFormat}
             className="custom-range-picker"
-            onChange={(newValue) => {
+            onChange={newValue => {
               if (newValue && newValue[0] && newValue[1]) {
-                const [startValue, endValue] = newValue;
-                handleNewDate(startValue, endValue);
+                const [startValue, endValue] = newValue
+                handleNewDate(startValue, endValue)
               }
             }}
           />
         </Space>
       </ConfigProvider>
     </Fragment>
-  );
+  )
 }

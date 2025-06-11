@@ -12,7 +12,7 @@ import NotebookMode from '../../../assets/img/NotebookMode.webp'
 import GanttMode from '../../../assets/img/GanttMode.webp'
 
 interface LabTabsProps {
-  theme: Theme;
+  theme: Theme
 }
 
 export default function LabTabs(props: LabTabsProps) {

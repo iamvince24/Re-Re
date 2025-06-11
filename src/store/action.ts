@@ -1,77 +1,77 @@
-import { Notebook } from './notebookSlice';
+import { Notebook } from './notebookSlice'
 
 // All data
 export const fetchNotebookData = (data: Notebook[]) => {
   return {
-    type: "notebookData/fetchNotebookData",
+    type: 'notebookData/fetchNotebookData',
     payload: data,
-  } as const;
-};
+  } as const
+}
 
 // All data
 export const updatedUsername = (name: string) => {
   return {
-    type: "username/updatedUsername",
+    type: 'username/updatedUsername',
     payload: name,
-  } as const;
-};
+  } as const
+}
 
 //Focus Notebook & Chapter Index
 export const handleUpdateIndex = (notebookIndex: number, chapterIndex: number) => {
   return {
-    type: "notebookData/handleUpdateIndex",
+    type: 'notebookData/handleUpdateIndex',
     payload: {
       notebookIndex: notebookIndex,
       chapterIndex: chapterIndex,
     },
-  } as const;
-};
+  } as const
+}
 
 // Screen
 export const handleScreenWidth500 = (boolean: boolean) => {
   return {
-    type: "screenListener/handleScreenWidth500",
+    type: 'screenListener/handleScreenWidth500',
     payload: boolean,
-  } as const;
-};
+  } as const
+}
 
 export const handleScreenWidth767 = (boolean: boolean) => {
   return {
-    type: "screenListener/handleScreenWidth767",
+    type: 'screenListener/handleScreenWidth767',
     payload: boolean,
-  } as const;
-};
+  } as const
+}
 
 //Mode
 export const handleModeUpdate = (boolean: boolean) => {
   return {
-    type: "mode/handleModeUpdate",
+    type: 'mode/handleModeUpdate',
     payload: boolean,
-  } as const;
-};
+  } as const
+}
 
 //Sidebar
 export const handleSidebarOpen = (boolean: boolean) => {
   return {
-    type: "sidebar/handleSidebarOpen",
+    type: 'sidebar/handleSidebarOpen',
     payload: boolean,
-  } as const;
-};
+  } as const
+}
 
 // GanttUnfold
 export const handleUpdatedGanttUnfoldList = (list: Record<string, boolean>) => {
   return {
-    type: "gantt/handleUpdatedGanttUnfoldList",
+    type: 'gantt/handleUpdatedGanttUnfoldList',
     payload: list,
-  } as const;
-};
+  } as const
+}
 
 export const handleGanttUnfold = (index: number, boolean: boolean) => {
   return {
-    type: "gantt/handleGanttUnfold",
+    type: 'gantt/handleGanttUnfold',
     payload: {
       index: index,
       boolean: boolean,
     },
-  } as const;
-};
+  } as const
+}

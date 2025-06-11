@@ -1,35 +1,31 @@
-import * as React from "react";
-import { Fragment, useState } from "react";
-import dayjs, { Dayjs } from "dayjs";
-import { ConfigProvider, Space } from "antd";
-import customParseFormat from "dayjs/plugin/customParseFormat";
-import { DatePicker } from "antd";
-import { months } from "../../../../../utils/constants";
-import { Theme } from "@mui/material/styles";
-import { TimeRange } from '../types';
-dayjs.extend(customParseFormat);
+import * as React from 'react'
+import { Fragment, useState } from 'react'
+import dayjs, { Dayjs } from 'dayjs'
+import { ConfigProvider, Space } from 'antd'
+import customParseFormat from 'dayjs/plugin/customParseFormat'
+import { DatePicker } from 'antd'
+import { months } from '../../../../../utils/constants'
+import { Theme } from '@mui/material/styles'
+import { TimeRange } from '../types'
+dayjs.extend(customParseFormat)
 
-const { RangePicker } = DatePicker;
-const dateFormat = "YYYY-MM";
+const { RangePicker } = DatePicker
+const dateFormat = 'YYYY-MM'
 
 interface DateRangePickerProps {
-  timeRange: TimeRange;
-  setTimeRange: React.Dispatch<React.SetStateAction<TimeRange>>;
-  theme: Theme;
+  timeRange: TimeRange
+  setTimeRange: React.Dispatch<React.SetStateAction<TimeRange>>
+  theme: Theme
 }
 
 export default function DateRangePicker(props: DateRangePickerProps) {
-  const { timeRange, setTimeRange, theme } = props;
-  const [startvalue, setStartValue] = useState(
-    `${timeRange.fromSelectYear}-${months[timeRange.fromSelectMonth]}`
-  );
-  const [endvalue, setEndValue] = useState(
-    `${timeRange.toSelectYear}-${months[timeRange.toSelectMonth]}`
-  );
+  const { timeRange, setTimeRange, theme } = props
+  const [startvalue, setStartValue] = useState(`${timeRange.fromSelectYear}-${months[timeRange.fromSelectMonth]}`)
+  const [endvalue, setEndValue] = useState(`${timeRange.toSelectYear}-${months[timeRange.toSelectMonth]}`)
 
   function handleNewDate(startValue: Dayjs, endValue: Dayjs) {
-    setStartValue(startValue.format(dateFormat));
-    setEndValue(endValue.format(dateFormat));
+    setStartValue(startValue.format(dateFormat))
+    setEndValue(endValue.format(dateFormat))
   }
 
   return (
@@ -112,17 +108,17 @@ export default function DateRangePicker(props: DateRangePickerProps) {
             colorText: `${theme.palette.secondary.main}`,
             colorIcon: `${theme.palette.secondary.main}`,
             colorIconHover: `${theme.palette.secondary.main}`,
-            colorBgContainer: "red",
+            colorBgContainer: 'red',
           },
         }}
       >
         <Space direction="vertical" size={12}>
           <RangePicker
             style={{
-              border: "none",
+              border: 'none',
               background: `${theme.palette.primary.main}`,
-              zIndex: "10000",
-              height: "42px",
+              zIndex: '10000',
+              height: '42px',
             }}
             picker="month"
             allowClear={false}
@@ -130,22 +126,22 @@ export default function DateRangePicker(props: DateRangePickerProps) {
             value={[dayjs(startvalue), dayjs(endvalue)]}
             format={dateFormat}
             className="custom-range-picker"
-            onChange={(newValue) => {
+            onChange={newValue => {
               if (newValue && newValue.length === 2) {
-                const [startValue, endValue] = newValue as [Dayjs, Dayjs];
-                handleNewDate(startValue, endValue);
+                const [startValue, endValue] = newValue as [Dayjs, Dayjs]
+                handleNewDate(startValue, endValue)
                 setTimeRange((prevState: TimeRange) => ({
                   ...prevState,
                   fromSelectMonth: startValue.month(),
                   fromSelectYear: `${startValue.year()}`,
                   toSelectMonth: endValue.month(),
                   toSelectYear: `${endValue.year()}`,
-                }));
+                }))
               }
             }}
           />
         </Space>
       </ConfigProvider>
     </Fragment>
-  );
+  )
 }

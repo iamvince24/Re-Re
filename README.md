@@ -65,4 +65,3 @@ Re-Re is a note-taking application that can be used to record and review the lea
 ## License
 
 Copyright Notice and Statement: currently not offering any license. Permission only to view and download.
-

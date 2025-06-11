@@ -1,25 +1,25 @@
 function client(endpoint, { body, ...customConfig } = {}) {
-  const headers = { "Content-Type": "application/json" };
+  const headers = { 'Content-Type': 'application/json' }
   const config = {
-    method: body ? "POST" : "GET",
+    method: body ? 'POST' : 'GET',
     ...customConfig,
     headers: {
       ...headers,
       ...customConfig.headers,
     },
-  };
+  }
   if (body) {
-    config.body = JSON.stringify(body);
+    config.body = JSON.stringify(body)
   }
 
-  return window.fetch(`${endpoint}`, config).then(async (response) => {
+  return window.fetch(`${endpoint}`, config).then(async response => {
     if (response.ok) {
-      return await response.json();
+      return await response.json()
     } else {
-      const errorMessage = await response.text();
-      return Promise.reject(new Error(errorMessage));
+      const errorMessage = await response.text()
+      return Promise.reject(new Error(errorMessage))
     }
-  });
+  })
 }
 
-export { client };
+export { client }

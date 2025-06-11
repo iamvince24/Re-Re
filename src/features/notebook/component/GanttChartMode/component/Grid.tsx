@@ -1,20 +1,18 @@
-import { useSelector } from "react-redux";
+import { useSelector } from 'react-redux'
 
 interface GridProps {
-  children: React.ReactNode;
-  theme: any;
+  children: React.ReactNode
+  theme: any
 }
 
 interface RootState {
   viewListener: {
-    screenWidth767: boolean;
-  };
+    screenWidth767: boolean
+  }
 }
 
 export default function Grid({ children, theme }: GridProps) {
-  const screenSmall767 = useSelector(
-    (state: RootState) => state.viewListener.screenWidth767
-  );
+  const screenSmall767 = useSelector((state: RootState) => state.viewListener.screenWidth767)
 
   return (
     <div id="gantt-grid-container">
@@ -24,7 +22,7 @@ export default function Grid({ children, theme }: GridProps) {
           height: auto;
           max-height: calc(100% - 240px);
           display: grid;   
-          grid-template-columns: ${screenSmall767 ? "180px 1fr" : "225px 1fr"};
+          grid-template-columns: ${screenSmall767 ? '180px 1fr' : '225px 1fr'};
           border-radius: 5px;
           outline: 2px solid var(--primary-color);
           margin: 25px 20px 0px ;
@@ -34,5 +32,5 @@ export default function Grid({ children, theme }: GridProps) {
         }
       `}</style>
     </div>
-  );
+  )
 }

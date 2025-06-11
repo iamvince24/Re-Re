@@ -1,69 +1,56 @@
-import * as React from "react";
-import { Fragment } from "react";
-import { TimeRange } from '../types';
+import * as React from 'react'
+import { Fragment } from 'react'
+import type { TimeRange } from '../types'
 
-const months = [
-  "Jan",
-  "Feb",
-  "Mar",
-  "Apr",
-  "May",
-  "Jun",
-  "Jul",
-  "Aug",
-  "Sep",
-  "Oct",
-  "Nov",
-  "Dec",
-];
+const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 
 interface TimeRangeProps {
-  timeRange: TimeRange;
-  setTimeRange: React.Dispatch<React.SetStateAction<TimeRange>>;
+  timeRange: TimeRange
+  setTimeRange: React.Dispatch<React.SetStateAction<TimeRange>>
 }
 
 export default function TimeRange({ timeRange, setTimeRange }: TimeRangeProps) {
   // add date selector values
-  let monthsOptions = [];
+  let monthsOptions = []
   for (let i = 0; i < months.length; i++) {
     monthsOptions.push(
       <option key={i} value={i}>
         {months[i]}
-      </option>
-    );
+      </option>,
+    )
   }
 
-  const yearsOptions = [];
+  const yearsOptions = []
   for (let i = 2022; i <= 2050; i++) {
     yearsOptions.push(
       <option key={i} value={i}>
         {i}
-      </option>
-    );
+      </option>,
+    )
   }
 
   function onChange(e: React.ChangeEvent<HTMLSelectElement>) {
-    const { value, id } = e.target;
+    const { value, id } = e.target
 
-    if (id === "from-select-month") {
-      setTimeRange((prevState) => {
-        return { ...prevState, fromSelectMonth: parseInt(value) };
-      });
+    if (id === 'from-select-month') {
+      setTimeRange(prevState => {
+        return { ...prevState, fromSelectMonth: parseInt(value) }
+      })
     }
-    if (id === "from-select-year") {
-      setTimeRange((prevState) => {
-        return { ...prevState, fromSelectYear: value };
-      });
+    if (id === 'from-select-year') {
+      setTimeRange(prevState => {
+        return { ...prevState, fromSelectYear: value }
+      })
     }
-    if (id === "to-select-month") {
-      setTimeRange((prevState) => {
-        return { ...prevState, toSelectMonth: parseInt(value) };
-      });
+    if (id === 'to-select-month') {
+      setTimeRange(prevState => {
+        return { ...prevState, toSelectMonth: parseInt(value) }
+      })
     }
-    if (id === "to-select-year") {
-      setTimeRange((prevState) => {
-        return { ...prevState, toSelectYear: value };
-      });
+    if (id === 'to-select-year') {
+      setTimeRange(prevState => {
+        return { ...prevState, toSelectYear: value }
+      })
     }
   }
 
@@ -105,10 +92,10 @@ export default function TimeRange({ timeRange, setTimeRange }: TimeRangeProps) {
           // }
         `}
       </style>
-      <div id="time-range__container" style={{ display: "none" }}>
+      <div id="time-range__container" style={{ display: 'none' }}>
         <h2>Tracker Period</h2>
         <div id="time-range">
-          <fieldset id="select-from" style={{ paddingLeft: "0px" }}>
+          <fieldset id="select-from" style={{ paddingLeft: '0px' }}>
             <legend>From</legend>
             <select
               id="from-select-month"
@@ -123,7 +110,7 @@ export default function TimeRange({ timeRange, setTimeRange }: TimeRangeProps) {
               name="from-select-year"
               value={timeRange.fromSelectYear}
               onChange={onChange}
-              style={{ marginLeft: "5px" }}
+              style={{ marginLeft: '5px' }}
             >
               {yearsOptions}
             </select>
@@ -131,12 +118,7 @@ export default function TimeRange({ timeRange, setTimeRange }: TimeRangeProps) {
 
           <fieldset id="select-to">
             <legend>To</legend>
-            <select
-              id="to-select-month"
-              name="to-select-month"
-              value={timeRange.toSelectMonth}
-              onChange={onChange}
-            >
+            <select id="to-select-month" name="to-select-month" value={timeRange.toSelectMonth} onChange={onChange}>
               {monthsOptions}
             </select>
             <select
@@ -144,7 +126,7 @@ export default function TimeRange({ timeRange, setTimeRange }: TimeRangeProps) {
               name="to-select-year"
               value={timeRange.toSelectYear}
               onChange={onChange}
-              style={{ marginLeft: "5px" }}
+              style={{ marginLeft: '5px' }}
             >
               {yearsOptions}
             </select>
@@ -152,5 +134,5 @@ export default function TimeRange({ timeRange, setTimeRange }: TimeRangeProps) {
         </div>
       </div>
     </Fragment>
-  );
+  )
 }

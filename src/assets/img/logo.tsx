@@ -1,14 +1,14 @@
-import SvgIcon from "@mui/material/SvgIcon";
-import React, { Fragment } from "react";
-import { ThemeProvider, Theme } from "@mui/material/styles";
-import IconButton from "@mui/material/IconButton";
+import SvgIcon from '@mui/material/SvgIcon'
+import React, { Fragment } from 'react'
+import { ThemeProvider, Theme } from '@mui/material/styles'
+import IconButton from '@mui/material/IconButton'
 
 interface LogoProps {
-  width: string | number;
-  height: string | number;
-  theme: Theme;
-  color: string;
-  isSmallScreenW500: boolean;
+  width: string | number
+  height: string | number
+  theme: Theme
+  color: string
+  isSmallScreenW500: boolean
 }
 
 export default function Logo(props: LogoProps) {
@@ -26,5 +26,5 @@ export default function Logo(props: LogoProps) {
         <path d="M159 183C159 180.277 158.782 177.605 158.363 175C156.36 162.544 149.756 151.627 140.35 144.047C124.594 158.898 103.36 168 80 168V160C124.183 160 160 124.183 160 80C160 35.8172 124.183 7.62939e-06 80 0H0V183H159Z" />
       </svg>
     </SvgIcon>
-  );
+  )
 }

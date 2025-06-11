@@ -1,32 +1,32 @@
-import * as React from "react";
-import { Fragment } from "react";
-import { useEffect, useRef } from "react";
-import GanttNotebookListComponent from "./GanttNotebookListComponent";
-import { useSelector } from "react-redux";
+import * as React from 'react'
+import { Fragment } from 'react'
+import { useEffect, useRef } from 'react'
+import GanttNotebookListComponent from './GanttNotebookListComponent'
+import { useSelector } from 'react-redux'
 
 interface GanttNotebookListProps {
-  theme: any;
-  notebookData: any;
-  isSmallScreen: boolean;
+  theme: any
+  notebookData: any
+  isSmallScreen: boolean
 }
 
 interface RootState {
   notebookData: {
-    notebooks: any[];
-  };
+    notebooks: any[]
+  }
 }
 
 export default function GanttNotebookList({ theme }: GanttNotebookListProps) {
-  const allNotebookData = useSelector((state: RootState) => state.notebookData.notebooks);
+  const allNotebookData = useSelector((state: RootState) => state.notebookData.notebooks)
 
-  const inputRef = useRef<HTMLInputElement[]>([]);
-  const indexRef = useRef<number | null>(null);
+  const inputRef = useRef<HTMLInputElement[]>([])
+  const indexRef = useRef<number | null>(null)
 
   useEffect(() => {
     if (inputRef.current.length && indexRef.current !== null && indexRef.current >= 0) {
-      inputRef?.current[indexRef.current]?.focus();
+      inputRef?.current[indexRef.current]?.focus()
     }
-  });
+  })
 
   return (
     <Fragment>
@@ -68,5 +68,5 @@ export default function GanttNotebookList({ theme }: GanttNotebookListProps) {
         `}
       </style>
     </Fragment>
-  );
+  )
 }

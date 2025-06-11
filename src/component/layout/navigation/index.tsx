@@ -15,9 +15,9 @@ import { useLocation } from 'react-router-dom'
 import { debounce } from 'lodash'
 
 interface NavigationProps {
-  theme: Theme;
-  isSmallScreenW500: boolean;
-  isSmallScreenW767: boolean;
+  theme: Theme
+  isSmallScreenW500: boolean
+  isSmallScreenW767: boolean
 }
 
 export default function Navigation(props: NavigationProps) {
