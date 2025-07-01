@@ -74,14 +74,14 @@ export default function FormDialog(props: FormDialogProps) {
     props.handleCloseBtn(event)
   }
 
-  const handleConfirm = () => {
-    setOpen(false)
-    props.handleClose()
-    if (props.num !== undefined) {
-      props.onChange(newName, props.num)
-    }
-    setNewName('')
-  }
+  // const handleConfirm = () => {
+  //   setOpen(false)
+  //   props.handleClose()
+  //   if (props.num !== undefined) {
+  //     props.onChange(newName, props.num)
+  //   }
+  //   setNewName('')
+  // }
 
   const handleRename = (name: string) => {
     const db = getDatabase()
@@ -113,11 +113,15 @@ export default function FormDialog(props: FormDialogProps) {
     return update(ref(db), updates)
   }
 
+  const handleDialogClick = (event: React.MouseEvent) => {
+    event.stopPropagation()
+  }
+
   return (
     <Fragment>
       <ThemeProvider theme={props.theme}>
         <MenuItem onClick={handleClickOpen}>Rename</MenuItem>
-        <Dialog open={open} onClose={handleClose}>
+        <Dialog open={open} onClose={handleClose} onClick={handleDialogClick}>
           <DialogTitle>Rename</DialogTitle>
           <DialogContent sx={{ width: '500px' }}>
             <DialogContentText>Please fill in the name you want to rename.</DialogContentText>
@@ -132,7 +136,15 @@ export default function FormDialog(props: FormDialogProps) {
           </DialogContent>
           <DialogActions onClick={handleClose}>
             <Button color="secondary">Cancel</Button>
-            {props.num ? (
+            <Button
+              color="secondary"
+              onClick={() => {
+                handleRename(newName)
+              }}
+            >
+              Confirm
+            </Button>
+            {/* {props.num ? (
               <Button
                 color="secondary"
                 onClick={() => {
@@ -151,7 +163,7 @@ export default function FormDialog(props: FormDialogProps) {
               >
                 Confirm
               </Button>
-            ) : null}
+            ) : null} */}
           </DialogActions>
         </Dialog>
       </ThemeProvider>
