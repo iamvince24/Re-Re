@@ -54,14 +54,16 @@ export default function AlertDeleteDialog(props: AlertDeleteDialogProps) {
 
   const uid = window.localStorage.getItem('uid')
 
-  const handleDelete = async () => {
+  const handleDelete = async (event: React.MouseEvent) => {
+    event.stopPropagation()
+
     const db = getDatabase()
 
-    let postData: any = {}
+    let postData: any = []
     if (chapterIndex !== undefined && notebookIndex !== undefined) {
-      postData = allNotebookData[notebookIndex]?.chapters?.filter(chapter => chapter.id !== chapterId) || []
+      postData = allNotebookData[notebookIndex]?.chapters?.filter(chapter => String(chapter.id) !== chapterId) || []
     } else {
-      postData = allNotebookData.filter(notebook => notebook.id !== notebookId)
+      postData = allNotebookData.filter(notebook => String(notebook.id) !== notebookId)
     }
 
     let dataPath = ''
@@ -70,9 +72,21 @@ export default function AlertDeleteDialog(props: AlertDeleteDialogProps) {
     } else {
       dataPath = `/users/${uid}/notebooks`
     }
+
     const updates: { [key: string]: any } = {}
     updates[dataPath] = postData
-    return update(ref(db), updates)
+
+    try {
+      await update(ref(db), updates)
+      setOpen(false)
+      props.handleCloseBtn(event)
+    } catch (error) {
+      console.error('Delete operation failed:', error)
+    }
+  }
+
+  const handleDialogClick = (event: React.MouseEvent) => {
+    event.stopPropagation()
   }
 
   return (
@@ -85,6 +99,7 @@ export default function AlertDeleteDialog(props: AlertDeleteDialogProps) {
           onClose={handleClose}
           aria-labelledby="alert-dialog-title"
           aria-describedby="alert-dialog-description"
+          onClick={handleDialogClick}
         >
           <DialogTitle id="alert-dialog-title">{`Delete ${props.deleteMessage}?`}</DialogTitle>
           <DialogContent>
